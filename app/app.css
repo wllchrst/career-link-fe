@@ -10,8 +10,17 @@
   --secondary:#134B70;
   --accent: #508C9B;
   --white:#FFFFFF;
+  --gray: #8E8E93;
   --dark-gray:#1E1E1E;
+  --dark-gray-40: rgba(12,12,12,0.4);
   --background:#EEEEEE;
+  --green: #999B50;
+  --light-green: #34C759;
+  --dark-yellow: #999B50;
+  --purple:#76509B;
+  --blue:#50659B;
+  --orange: #FF6B00;
+
 }
 
 html,
