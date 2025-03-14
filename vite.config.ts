@@ -6,7 +6,7 @@ import react from "@vitejs/plugin-react";
 import path from "path";
 
 export default defineConfig({
-  plugins: [tailwindcss(), reactRouter(), tsconfigPaths(), react()],
+  plugins: [tailwindcss(), reactRouter(), tsconfigPaths()],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./"),
