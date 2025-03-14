@@ -7,7 +7,7 @@ interface AnnouncementListProps {
 
 export const AnnouncementLists = ({ announcements }: AnnouncementListProps) => {
   return (
-    <div>
+    <div className="flex flex-col gap-5">
       {announcements.map((announcement) => (
         <AnnouncementCard key={announcement.id} announcement={announcement} />
       ))}

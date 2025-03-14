@@ -22,8 +22,8 @@ export const announcementsData: Announcement[] = [
 
 const Announcements = () => {
   return (
-    <div>
-      <h1>Announcements</h1>
+    <div className="container flex flex-col mt-4">
+      <h1 className="text-2xl text-primary font-bold mb-4">Announcements</h1>
       <AnnouncementLists announcements={announcementsData} />
     </div>
   );

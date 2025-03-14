@@ -6,13 +6,15 @@ interface AnnouncementCardProps {
 
 export const AnnouncementCard = ({ announcement }: AnnouncementCardProps) => {
   return (
-    <div className="bg-white shadow p-3">
+    <div className="bg-white shadow p-5 border rounded-sm">
       <div className="flex justify-between">
-        <div>{announcement.title}</div>
+        <div className="text-xl font-medium text-primary">
+          {announcement.title}
+        </div>
         <div>{announcement.createdAt}</div>
       </div>
       <div>{announcement.type}</div>
-      <div>{announcement.description}</div>
+      <div className="text-accent">{announcement.description}</div>
     </div>
   );
 };
