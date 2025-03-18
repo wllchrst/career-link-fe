@@ -5,7 +5,7 @@ export default function Navbar(){
 
 
     return <>
-        <div className="w-full bg-[var(--primary)] p-5 flex items-center gap-x-15">
+        <div className="w-full bg-[var(--primary)] p-5 flex items-center gap-x-10">
             <SidebarTrigger />
             <NavLink to={"/"}>
                 <h2 className="font-semibold text-white text-3xl">CareerLink</h2>
@@ -13,10 +13,10 @@ export default function Navbar(){
             <NavLink to={"/announcements"}>
                 <h4 className="font-medium text-white text-xl">Announcements</h4>
             </NavLink>
-            <NavLink to={"/"}>
+            <NavLink to={"/bootcamps"}>
                 <h4 className="font-medium text-white text-xl">Bootcamps</h4>
             </NavLink>
-            <NavLink to={"/"}>
+            <NavLink to={"/certificates"}>
                 <h4 className="font-medium text-white text-xl">Certificates</h4>
             </NavLink>
         </div>
