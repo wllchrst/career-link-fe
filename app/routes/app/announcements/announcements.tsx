@@ -13,7 +13,7 @@ export const announcementsData: Announcement[] = [
   {
     id: "2",
     title: "announcement 2",
-    type: "Update",
+    type: "Info",
     imageUrl: "dummy2",
     description: "another description",
     createdAt: "2025-04-26",
