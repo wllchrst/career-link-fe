@@ -1,4 +1,4 @@
-import {AnnouncementTag} from "~/components/announcement/AnnouncementTag";
+import {AnnouncementTag} from "~/components/announcement/announcement-tag";
 
 export const AnnouncementDetail = ({id}:{id:string}) => {
 

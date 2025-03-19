@@ -4,14 +4,14 @@ interface Color {
     [key:string]:string
 }
 
-const backgroundColors :Color = {
-    "Event":"[var(--orange)]",
-    "Info":"secondary"
+const styles :Color = {
+    "Event":"w-[6%] font-normal text-sm rounded-xl bg-(--orange)",
+    "Info":"w-[6%] font-normal text-sm rounded-xl bg-secondary"
 }
 
 export const AnnouncementTag = ({type}: { type:string }) => {
     return (
-        <Badge className={`w-[6%] font-normal text-sm rounded-xl bg-${backgroundColors[type]}`}>
+        <Badge className={`${styles[type]}`}>
         {type}
         </Badge>
     )

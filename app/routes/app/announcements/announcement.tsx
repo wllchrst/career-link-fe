@@ -1,5 +1,4 @@
 import type {Route} from "../../../../.react-router/types/app/routes/app/announcements/+types/announcement";
-import {AnnouncementTag} from "~/components/announcement/AnnouncementTag";
 import {AnnouncementDetail} from "~/features/announcements/components/announcement-detail";
 
 export async function loader({ params }: Route.LoaderArgs) {

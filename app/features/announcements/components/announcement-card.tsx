@@ -1,7 +1,7 @@
 import type { Announcement } from "~/types/api";
 import {Badge} from "~/components/ui/badge";
 import {NavLink} from "react-router";
-import {AnnouncementTag} from "~/components/announcement/AnnouncementTag";
+import {AnnouncementTag} from "~/components/announcement/announcement-tag";
 
 interface AnnouncementCardProps {
   announcement: Announcement;

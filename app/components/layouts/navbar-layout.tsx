@@ -15,7 +15,7 @@ export const NavbarLayout = ({ children }: Props) => {
     <SidebarProvider className="flex flex-col min-h-screen w-full box-border">
       <Navbar />
       <div className="mx-auto flex-grow relative min-h-screen w-full box-border bg-[var(--background)]">
-          <Sidebar className={"absolute"} side={"left"}>
+          <Sidebar className={"absolute min-h-full"} side={"left"}>
             <SidebarContent />
           </Sidebar>
           <CenterLayout>
