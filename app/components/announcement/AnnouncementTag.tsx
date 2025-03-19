@@ -11,7 +11,7 @@ const backgroundColors :Color = {
 
 export const AnnouncementTag = ({type}: { type:string }) => {
     return (
-        <Badge className={`w-[6%] text-sm rounded-xl bg-${backgroundColors[type]}`}>
+        <Badge className={`w-[6%] font-normal text-sm rounded-xl bg-${backgroundColors[type]}`}>
         {type}
         </Badge>
     )

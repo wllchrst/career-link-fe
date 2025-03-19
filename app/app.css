@@ -7,6 +7,7 @@
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --orange: #FF6B00;
 }
 
 :root{
@@ -23,7 +24,6 @@
   --dark-yellow: #999B50;
   --purple:#76509B;
   --blue:#50659B;
-  --orange: #FF6B00;
   --radius: 0.625rem;
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
