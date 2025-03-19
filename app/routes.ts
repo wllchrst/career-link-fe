@@ -6,4 +6,7 @@ export default [
         index("routes/app/announcements/announcements.tsx"),
         route(":announcement", "routes/app/announcements/announcement.tsx"),
     ]),
+    ...prefix("certificates",[
+        index("routes/app/certificates/certificates.tsx"),
+    ])
 ] satisfies RouteConfig;

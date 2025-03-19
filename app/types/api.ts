@@ -6,3 +6,13 @@ export type Announcement = {
   description: string;
   createdAt: string;
 };
+
+
+export type Certificate = {
+  id: string;
+  title: string;
+  type: string;
+  method: string;
+  createdAt: string;
+  imageUrl: string;
+}
