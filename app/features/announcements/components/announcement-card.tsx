@@ -12,7 +12,7 @@ export const AnnouncementCard = ({ announcement }: AnnouncementCardProps) => {
 
     return (
         <NavLink to={"/announcements/" + announcement.id}>
-            <div className="bg-white shadow p-5 border rounded-sm">
+            <div className="flex flex-col gap-1 bg-white shadow p-5 border rounded-sm">
                 <div className="flex justify-between">
                     <div className="text-xl font-medium text-primary">
                         {announcement.title}

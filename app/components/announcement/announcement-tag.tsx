@@ -5,8 +5,8 @@ interface Color {
 }
 
 const styles :Color = {
-    "Event":"w-[6%] font-normal text-sm rounded-xl bg-(--orange)",
-    "Info":"w-[6%] font-normal text-sm rounded-xl bg-secondary"
+    "Event":"xl:w-[5%] w-[7%] py-[0.3%] font-normal xl:text-sm text-xs rounded-xl bg-(--orange)",
+    "Info":"xl:w-[5%] w-[7%] py-[0.3%] font-normal xl:text-sm text-xs rounded-xl bg-secondary"
 }
 
 export const AnnouncementTag = ({type}: { type:string }) => {
