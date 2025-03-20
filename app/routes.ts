@@ -8,5 +8,6 @@ export default [
     ]),
     ...prefix("certificates",[
         index("routes/app/certificates/certificates.tsx"),
+        route(":certificate", "routes/app/certificates/certificate.tsx"),
     ])
 ] satisfies RouteConfig;
