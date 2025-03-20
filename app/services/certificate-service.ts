@@ -13,7 +13,7 @@ export const certificates: Certificate[] = [
         id: "2",
         title: "How to make a effective resume",
         type: "Soft Skill",
-        method:"Onsite",
+        method:"Self Learning",
         imageUrl: "dummy2",
         createdAt: "2025-04-26",
     },
