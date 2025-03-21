@@ -18,7 +18,7 @@ interface Props extends HTMLProps<HTMLDivElement> {
 
 export const NavbarLayout = ({ children }: Props) => {
   return (
-    <SidebarProvider className="flex flex-col min-h-screen w-full box-border bg-[var(--background)]">
+    <div className="flex flex-col min-h-screen w-full box-border bg-[var(--background)]">
       <Navbar />
       <div className="flex-grow relative min-h-screen w-full box-border">
         <Sidebar className={"absolute min-h-full"} side={"left"}>
@@ -28,6 +28,6 @@ export const NavbarLayout = ({ children }: Props) => {
           <CenterLayout>{children}</CenterLayout>
         </div>
       </div>
-    </SidebarProvider>
+    </div>
   );
 };
