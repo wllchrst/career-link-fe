@@ -1,73 +1,11 @@
-import { BootcampCard } from "~/components/bootcamp/bootcamp-card";
 import { CiSearch } from "react-icons/ci";
 import { FaFilter } from "react-icons/fa";
-import { FaArrowLeft } from "react-icons/fa";
-import { FaArrowRight } from "react-icons/fa";
-import type { Bootcamp } from "~/types/api";
+import {
+  bootcampsCarouselData,
+  bootcampsData,
+} from "~/features/bootcamp/bootcamp-dummy-data";
 import { BootcampsCarousel } from "~/features/bootcamp/components/bootcamps-carousel";
 import { BootcampsGrid } from "~/features/bootcamp/components/bootcamps-grid";
-
-export const bootcampsCarouselData: Bootcamp[] = [
-  {
-    id: "1",
-    name: "Bootcamp Name",
-    type: "Hard Skill",
-    method: "Self Learning",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adisipicing elit, sed do eiusmod temopor incididunt ut labore et dolore magna aliqua...",
-  },
-  {
-    id: "2",
-    name: "Bootcamp Name",
-    type: "Hard Skill",
-    method: "Self Learning",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adisipicing elit, sed do eiusmod temopor incididunt ut labore et dolore magna aliqua...",
-  },
-  {
-    id: "3",
-    name: "Bootcamp Name",
-    type: "Hard Skill",
-    method: "Self Learning",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adisipicing elit, sed do eiusmod temopor incididunt ut labore et dolore magna aliqua...",
-  },
-];
-
-export const bootcampsData: Bootcamp[] = [
-  {
-    id: "1",
-    name: "Bootcamp Name",
-    type: "Hard Skill",
-    method: "Self Learning",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adisipicing elit, sed do eiusmod temopor incididunt ut labore et dolore magna aliqua...",
-  },
-  {
-    id: "2",
-    name: "Bootcamp Name",
-    type: "Hard Skill",
-    method: "Self Learning",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adisipicing elit, sed do eiusmod temopor incididunt ut labore et dolore magna aliqua...",
-  },
-  {
-    id: "3",
-    name: "Bootcamp Name",
-    type: "Hard Skill",
-    method: "Self Learning",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adisipicing elit, sed do eiusmod temopor incididunt ut labore et dolore magna aliqua...",
-  },
-  {
-    id: "4",
-    name: "Bootcamp Name",
-    type: "Hard Skill",
-    method: "Self Learning",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adisipicing elit, sed do eiusmod temopor incididunt ut labore et dolore magna aliqua...",
-  },
-];
 
 const Bootcamps = () => {
   return (
