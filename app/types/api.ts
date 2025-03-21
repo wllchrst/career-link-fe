@@ -15,3 +15,11 @@ export type Certificate = {
   createdAt: string;
   imageUrl: string;
 };
+
+export type Bootcamp = {
+  id: string;
+  name: string;
+  type: string;
+  method: string;
+  description: string;
+};

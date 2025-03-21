@@ -3,33 +3,85 @@ import { CiSearch } from "react-icons/ci";
 import { FaFilter } from "react-icons/fa";
 import { FaArrowLeft } from "react-icons/fa";
 import { FaArrowRight } from "react-icons/fa";
+import type { Bootcamp } from "~/types/api";
+import { BootcampsCarousel } from "~/features/bootcamp/components/bootcamps-carousel";
+import { BootcampsGrid } from "~/features/bootcamp/components/bootcamps-grid";
+
+export const bootcampsCarouselData: Bootcamp[] = [
+  {
+    id: "1",
+    name: "Bootcamp Name",
+    type: "Hard Skill",
+    method: "Self Learning",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adisipicing elit, sed do eiusmod temopor incididunt ut labore et dolore magna aliqua...",
+  },
+  {
+    id: "2",
+    name: "Bootcamp Name",
+    type: "Hard Skill",
+    method: "Self Learning",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adisipicing elit, sed do eiusmod temopor incididunt ut labore et dolore magna aliqua...",
+  },
+  {
+    id: "3",
+    name: "Bootcamp Name",
+    type: "Hard Skill",
+    method: "Self Learning",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adisipicing elit, sed do eiusmod temopor incididunt ut labore et dolore magna aliqua...",
+  },
+];
+
+export const bootcampsData: Bootcamp[] = [
+  {
+    id: "1",
+    name: "Bootcamp Name",
+    type: "Hard Skill",
+    method: "Self Learning",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adisipicing elit, sed do eiusmod temopor incididunt ut labore et dolore magna aliqua...",
+  },
+  {
+    id: "2",
+    name: "Bootcamp Name",
+    type: "Hard Skill",
+    method: "Self Learning",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adisipicing elit, sed do eiusmod temopor incididunt ut labore et dolore magna aliqua...",
+  },
+  {
+    id: "3",
+    name: "Bootcamp Name",
+    type: "Hard Skill",
+    method: "Self Learning",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adisipicing elit, sed do eiusmod temopor incididunt ut labore et dolore magna aliqua...",
+  },
+  {
+    id: "4",
+    name: "Bootcamp Name",
+    type: "Hard Skill",
+    method: "Self Learning",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adisipicing elit, sed do eiusmod temopor incididunt ut labore et dolore magna aliqua...",
+  },
+];
 
 const Bootcamps = () => {
   return (
     <div className="container flex flex-col gap-6">
       <div className="flex flex-col gap-3 mt-4">
-        <h1 className="text-2xl text-primary font-bold mb-4">
+        <h1 className="text-2xl text-primary font-bold">
           Learners are Viewing
         </h1>
-        <h1 className=""></h1>
-        <div className="relative">
-          <button className="absolute left-[-1vw] top-1/2 -translate-y-1/2 z-10 w-12 h-12 flex items-center justify-center bg-accent text-white rounded-full shadow-md">
-            <FaArrowLeft />
-          </button>
-
-          <div className="flex gap-6 overflow-x-hidden">
-            <BootcampCard />
-            <BootcampCard />
-            <BootcampCard />
-          </div>
-
-          <button className="absolute right-[-1vw] top-1/2 -translate-y-1/2 z-10 w-12 h-12 flex items-center justify-center bg-accent text-white rounded-full shadow-md">
-            <FaArrowRight />
-          </button>
-        </div>
+        <BootcampsCarousel bootcamps={bootcampsCarouselData} />
       </div>
       <div className="flex flex-col">
-        <div className="text-2xl font-semibold">Learn Fast, Grow Faster</div>
+        <h1 className="text-2xl text-primary font-bold">
+          Learn Fast, Grow Faster
+        </h1>
         <div>
           Master essential hard and soft skills through our comprehensive
           training programs, accessible anytime, anywhere
@@ -53,12 +105,7 @@ const Bootcamps = () => {
             <div>Filter</div>
           </div>
         </div>
-        <div className="mt-5 grid grid-cols-3 gap-6">
-          <BootcampCard />
-          <BootcampCard />
-          <BootcampCard />
-          <BootcampCard />
-        </div>
+        <BootcampsGrid bootcamps={bootcampsData} />
       </div>
     </div>
   );
