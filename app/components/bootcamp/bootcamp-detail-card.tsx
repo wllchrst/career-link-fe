@@ -1,13 +1,17 @@
 import {BootcampMethodTag} from "~/components/bootcamp/bootcamp-method-tag";
+import { BootcampTypeTag } from "./bootcamp-type-tag";
 import {Button} from "~/components/ui/button";
 
 const BootcampDetailCard = () => {
     return (
         <>
             <div className={"flex bg-white p-6 rounded-xl gap-16"}>
-                <div className={"flex flex-col gap-4 justify-center"}>
+                <div className={"flex flex-col gap-2 justify-center"}>
                     <p className={"text-primary text-3xl font-semibold"}>Bootcamp Alek</p>
-                    <BootcampMethodTag type={"Self Learning"}/>
+                    <div className="flex gap-2">
+                        <BootcampTypeTag type="Hard Skill" />
+                        <BootcampMethodTag type={"Self Learning"}/>
+                    </div>
                     <p className={"text-justify"}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Impedit
                         natus sunt unde
                         voluptas voluptate. A ab architecto consectetur deserunt dolorem enim eum exercitationem impedit
@@ -18,7 +22,7 @@ const BootcampDetailCard = () => {
                         voluptate voluptatem? Accusantium aperiam, aspernatur at consequuntur dolore eaque error
                         explicabo impedit labore natus necessitatibus nihil nostrum perspiciatis quaerat rerum sequi sit
                         tempore vero? Deleniti, ducimus quisquam?</p>
-                    <Button className={"py-6 bg-accent font-normal"}>Enroll Now</Button>
+                    <Button className={"mt-7 py-6 bg-accent font-normal"}>Enroll Now</Button>
                 </div>
                 <img src="https://www.teacheracademy.eu/wp-content/uploads/2021/10/successful-teacher-1.jpg" alt=""
                      className="w-lg rounded-lg"/>
