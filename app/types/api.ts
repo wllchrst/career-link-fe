@@ -7,7 +7,6 @@ export type Announcement = {
   createdAt: string;
 };
 
-
 export type Certificate = {
   id: string;
   title: string;
@@ -15,4 +14,4 @@ export type Certificate = {
   method: string;
   createdAt: string;
   imageUrl: string;
-}
+};
