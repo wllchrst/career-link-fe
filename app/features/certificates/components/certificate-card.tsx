@@ -3,6 +3,7 @@ import {BootcampTypeTag} from "~/components/bootcamp/bootcamp-type-tag";
 import {BootcampMethodTag} from "~/components/bootcamp/bootcamp-method-tag";
 import { Download } from 'lucide-react';
 import {NavLink} from "react-router";
+import {Button} from "~/components/ui/button";
 
 
 interface CertificateCardProps {
@@ -26,7 +27,7 @@ export const CertificateCard = ({certificate}: CertificateCardProps) => {
                     <div className={"flex gap-x-6 items-center w-[15%] justify-end"}>
                         <Download size={"24"} color={"var(--primary)"}/>
                         <NavLink to={"/certificates/" + certificate.id}>
-                            <button className={"bg-accent text-white px-5 py-2 rounded-lg"}>Preview</button>
+                            <Button className={"bg-accent text-[var(--white)] rounded-lg"}>Preview</Button>
                         </NavLink>
                     </div>
                 </div>

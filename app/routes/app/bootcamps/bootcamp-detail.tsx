@@ -1,6 +1,14 @@
+import BootcampDetailCard from "~/components/bootcamp/bootcamp-detail-card";
+import BootcampDetailContent from "~/features/bootcamp/bootcamp-detail-content";
+
 const BootcampDetail = () => {
     return (
-        <div>Hello World</div>
+        <>
+            <div className={"flex flex-col gap-8 max-w-[100rem]"}>
+                <BootcampDetailCard/>
+                <BootcampDetailContent/>
+            </div>
+        </>
     )
 }
 

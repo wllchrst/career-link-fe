@@ -5,7 +5,7 @@ export default function Navbar(){
 
 
     return <>
-        <div className="w-full bg-[var(--primary)] p-5 flex items-center gap-x-10">
+        <div className="w-full bg-primary p-5 flex items-center gap-x-10">
             <SidebarTrigger />
             <NavLink to={"/"}>
                 <h2 className="font-semibold text-white text-3xl">CareerLink</h2>
