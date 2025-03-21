@@ -12,7 +12,7 @@ const RoleSwitcher = () => {
         onChange={(e) => setRole(e.target.checked ? "admin" : "user")}
         className="w-5 h-5 cursor-pointer"
       />
-      <label htmlFor="roleSwitch" className="cursor-pointer">
+      <label htmlFor="roleSwitch" className="cursor-pointer text-white">
         {role === "admin" ? "Admin" : "User"}
       </label>
     </div>

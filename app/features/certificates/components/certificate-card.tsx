@@ -14,7 +14,7 @@ export const CertificateCard = ({certificate}: CertificateCardProps) => {
 
     return (
         <>
-            <div className={"flex flex-col gap-2 shadow-lg p-5 border rounded-sm"}>
+            <div className={"flex flex-col gap-2 bg-white shadow-lg p-5 border rounded-md"}>
                 <div className="text-xl font-semibold text-primary">
                     {certificate.title}
                 </div>
