@@ -1,3 +1,10 @@
+export type Student = {
+  nim: string;
+  full_name: string;
+  email: string;
+  curr_semester: number;
+};
+
 export type Announcement = {
   id: string;
   title: string;

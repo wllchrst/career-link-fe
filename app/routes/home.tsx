@@ -1,6 +1,9 @@
+import HomeAdmin from "~/features/home/components/home-admin";
 import type { Route } from "../+types/home";
 import { Welcome } from "../components/welcome/welcome";
 import { HomeProfileCard } from "~/features/home/components/home-profile-card";
+import { useRole } from "~/role-testing-provider";
+import { StudentData } from "~/features/home/student-dummy-data";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -10,5 +13,11 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Home() {
-  return <HomeProfileCard />;
+  const { role } = useRole();
+
+  return (
+    <>
+      {role == "admin" ? <HomeAdmin student={StudentData}/> : <HomeProfileCard />}
+    </>
+  );
 }
