@@ -6,8 +6,17 @@ import {
 } from "~/features/bootcamp/bootcamp-dummy-data";
 import { BootcampsCarousel } from "~/features/bootcamp/components/bootcamps-carousel";
 import { BootcampsGrid } from "~/features/bootcamp/components/bootcamps-grid";
+import type { Route } from "./+types/bootcamps";
 
-const Bootcamps = () => {
+export const loader = async () => {
+  //TODO: api call
+
+  return { bootcampsData, bootcampsCarouselData }; //masih dummy data;
+};
+
+const Bootcamps = ({ loaderData }: Route.ComponentProps) => {
+  const { bootcampsData, bootcampsCarouselData } = loaderData;
+
   return (
     <div className="container flex flex-col gap-6">
       <div className="flex flex-col gap-3 mt-4">

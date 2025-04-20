@@ -1,10 +1,19 @@
-import type {Route} from "../../../../.react-router/types/app/routes/app/announcements/+types/announcement";
-import {AnnouncementDetail} from "~/features/announcements/components/announcement-detail";
+import { AnnouncementDetail } from "~/features/announcements/components/announcement-detail";
+import type { Route } from "./+types/announcement";
+import {
+  announcementsData,
+  getAnnouncementById,
+} from "~/services/announcement-service";
 
-export async function loader({ params }: Route.LoaderArgs) {
+export const loader = async ({ params }: Route.LoaderArgs) => {
+  //TODO: api call to get announcement detail by id
 
-}
+  const announcement = getAnnouncementById(params.announcementId);
+  if (!announcement) throw new Error();
 
-export default function Announcement({params,}: Route.ComponentProps) {
-    return <AnnouncementDetail id={params.announcement}/>;
+  return { announcement };
+};
+
+export default function Announcement({ loaderData }: Route.ComponentProps) {
+  return <AnnouncementDetail announcement={loaderData.announcement} />;
 }
