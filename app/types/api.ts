@@ -30,3 +30,9 @@ export type Bootcamp = {
   method: string;
   description: string;
 };
+
+export type BootcampCategory = {
+  id: string;
+  name: string;
+  description: string;
+};

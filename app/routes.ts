@@ -19,4 +19,10 @@ export default [
     index("routes/app/bootcamps/bootcamps.tsx"),
     route(":bootcamp", "routes/app/bootcamps/bootcamp-detail.tsx"),
   ]),
+  ...prefix("admin", [
+    route(
+      "bootcamp/category",
+      "routes/app/admin/bootcamps/bootcamp-categories.tsx"
+    ),
+  ]),
 ] satisfies RouteConfig;
