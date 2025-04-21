@@ -18,7 +18,7 @@ const Announcements = ({ loaderData }: Route.ComponentProps) => {
   return (
     <div className="container flex flex-col mt-2">
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl text-primary font-bold mb-4">Announcements</h1>
+        <h1 className="text-2xl text-primary font-bold">Announcements</h1>
         {role == "admin" && (
           <div className="flex gap-5">
             <div className="bg-accent text-white rounded-md p-3">
