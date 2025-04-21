@@ -1,24 +1,41 @@
 import { SidebarTrigger } from "~/components/ui/sidebar";
 import { NavLink } from "react-router";
 import RoleSwitcher from "./role-switcher";
+import { useRole } from "~/role-testing-provider";
+import { NavItem } from "./ui/nav-item";
 
 export default function Navbar() {
+  const { role } = useRole();
+
+  const navLinks = [
+    { label: "Announcements", to: "/announcements" },
+    { label: "Bootcamps", to: "/bootcamps", userOnly: true },
+    {
+      label: "Bootcamps",
+      to: "/bootcamps",
+      adminOnly: true,
+      children: [{ label: "Category", to: "/admin/bootcamp/category" }],
+    },
+    { label: "Certificates", to: "/certificates" },
+  ];
+
   return (
     <>
-      <div className="w-full bg-primary p-5 flex items-center gap-x-10">
+      <div className="w-full bg-primary flex items-center">
         <SidebarTrigger />
         <NavLink to={"/"}>
-          <h2 className="font-semibold text-white text-3xl">CareerLink</h2>
+          <h2 className="font-semibold text-white text-3xl mr-10">
+            CareerLink
+          </h2>
         </NavLink>
-        <NavLink to={"/announcements"}>
-          <h4 className="font-medium text-white text-xl">Announcements</h4>
-        </NavLink>
-        <NavLink to={"/bootcamps"}>
-          <h4 className="font-medium text-white text-xl">Bootcamps</h4>
-        </NavLink>
-        <NavLink to={"/certificates"}>
-          <h4 className="font-medium text-white text-xl">Certificates</h4>
-        </NavLink>
+
+        {navLinks.map((link) => {
+          if (link.adminOnly && role !== "admin") return null;
+          if (link.userOnly && role !== "user") return null;
+
+          return <NavItem key={link.label} link={link} />;
+        })}
+
         <RoleSwitcher />
       </div>
     </>
