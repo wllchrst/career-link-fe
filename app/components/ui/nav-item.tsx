@@ -11,8 +11,11 @@ interface Props {
 export const NavItem = ({ link }: { link: Props }) => {
   if (link.children) {
     return (
-      <div className="relative group px-5 py-5">
-        <span className="font-semibold text-white text-xl cursor-pointer flex items-center gap-1">
+      <div className="relative group p-5">
+        <NavLink
+          to={link.to}
+          className="font-semibold text-white text-xl cursor-pointer flex items-center gap-1"
+        >
           {link.label}
           <svg
             className="w-4 h-4 mt-1"
@@ -23,7 +26,7 @@ export const NavItem = ({ link }: { link: Props }) => {
           >
             <path d="M19 9l-7 7-7-7" />
           </svg>
-        </span>
+        </NavLink>
 
         <div className="absolute left-0 top-full hidden group-hover:block bg-primary shadow-md z-20 hover:bg-secondary">
           {link.children.map((child) => (
@@ -41,7 +44,7 @@ export const NavItem = ({ link }: { link: Props }) => {
   }
 
   return (
-    <NavLink to={link.to} className="font-semibold text-white text-xl px-5">
+    <NavLink to={link.to} className="font-semibold text-white text-xl p-5">
       {link.label}
     </NavLink>
   );
