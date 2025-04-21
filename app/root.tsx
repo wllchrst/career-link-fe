@@ -5,12 +5,14 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useNavigation,
 } from "react-router";
 
 import type { Route } from "./+types/root";
 import "./app.css";
 import { NavbarLayout } from "./components/layouts/navbar-layout";
 import { AppProvider } from "./provider";
+import GlobalSpinner from "./components/ui/global-spinner";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -44,9 +46,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
+  const navigation = useNavigation();
+  const isNavigating = Boolean(navigation.location);
+
   return (
     <AppProvider>
       <NavbarLayout>
+        {isNavigating && <GlobalSpinner />}
         <Outlet />
       </NavbarLayout>
     </AppProvider>

@@ -8,7 +8,10 @@ import {
 export const loader = async ({ params }: Route.LoaderArgs) => {
   //TODO: api call to get announcement detail by id
 
-  const announcement = getAnnouncementById(params.announcementId);
+  const { announcementId } = params;
+  if (!announcementId) throw new Error();
+
+  const announcement = getAnnouncementById(announcementId);
   if (!announcement) throw new Error();
 
   return { announcement };
