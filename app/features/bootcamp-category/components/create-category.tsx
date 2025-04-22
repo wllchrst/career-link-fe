@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import {
-  categorySchema,
+  createCategoryInputSchema,
   createBootcampCategory,
   type CreateCategoryInput,
 } from "~/features/bootcamp-category/api/create-category";
@@ -23,9 +23,9 @@ interface Props {
   onSuccess: () => void;
 }
 
-export const AddCategoryForm = ({ onSuccess }: Props) => {
+export const CreateCategory = ({ onSuccess }: Props) => {
   const form = useForm<CreateCategoryInput>({
-    resolver: zodResolver(categorySchema),
+    resolver: zodResolver(createCategoryInputSchema),
     defaultValues: {
       name: "",
       description: "",
