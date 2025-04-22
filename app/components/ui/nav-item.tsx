@@ -44,7 +44,7 @@ export const NavItem = ({ link }: { link: Props }) => {
   }
 
   return (
-    <NavLink to={link.to} className="font-semibold text-white text-xl p-5">
+    <NavLink to={link.to} className="font-medium text-white text-lg p-5">
       {link.label}
     </NavLink>
   );

@@ -5,13 +5,12 @@ export const api = Axios.create({
 });
 
 api.interceptors.response.use(
-  (reponse) => {
-    return reponse.data;
+  (response) => {
+    return response.data;
   },
   (error) => {
     const message = error.response?.data?.message || error.message;
     //TODO: show the error to the user
-
     return Promise.reject(error);
   }
 );
