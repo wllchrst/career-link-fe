@@ -1,3 +1,5 @@
+import type {DateTimezoneSetter} from "date-fns/parse/_lib/Setter";
+
 export type Student = {
   nim: string;
   full_name: string;
@@ -29,6 +31,7 @@ export type Bootcamp = {
   type: string;
   method: string;
   description: string;
+  sessions: Session[];
 };
 
 export type BootcampCategory = {
@@ -36,3 +39,55 @@ export type BootcampCategory = {
   name: string;
   description: string;
 };
+
+export type SessionData = {
+  id: string;
+  link: string;
+  description: string;
+}
+
+export type Option = {
+  id: string;
+  name: string;
+}
+
+export type Question = {
+  id: string;
+  text: string;
+  options: Option[];
+}
+
+export type SessionTest = {
+  id: string;
+  questions: Question[];
+  scores: Result[];
+}
+
+export type Session = {
+  id: string;
+  bootCamp: Bootcamp;
+  number: number;
+  title: string;
+  description: string;
+  materials: SessionData[];
+  preTest: SessionTest;
+  postTest: SessionTest;
+  assignment: Assignment;
+}
+
+export type Result = {
+  id: string;
+  userId: string;
+  testId: string;
+  score: number;
+}
+
+export type Assignment = {
+  id: string;
+  question: string;
+  answer: string;
+}
+
+
+
+
