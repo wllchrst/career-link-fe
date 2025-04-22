@@ -1,7 +1,7 @@
 import {FaArrowLeft} from "react-icons/fa";
 import {Link} from "react-router";
-import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "~/components/ui/accordion";
 import AccordionLayout from "~/components/layouts/accordion-layout";
+import QuizCard from "~/components/quiz/quiz-card";
 
 const Session = () => {
 
@@ -27,15 +27,18 @@ const Session = () => {
         </div>
         <h2 className={'font-semibold text-left text-4xl text-slate-700 py-6 w-full h-full'}>To Do List</h2>
 
-        <div className={'flex flex-col gap-y-6'}>
+        <div className={'flex flex-col gap-y-6 mb-8'}>
             <AccordionLayout text={'Pretest'}>
-                here pretest
+                <QuizCard />
             </AccordionLayout>
-            <AccordionLayout text={'Material'}>
+            <AccordionLayout text={'Material'} isLocked={true}>
                 here material
             </AccordionLayout>
-            <AccordionLayout text={'Post Test'}>
-                here post test
+            <AccordionLayout text={'Post Test'} isLocked={true}>
+                <QuizCard />
+            </AccordionLayout>
+            <AccordionLayout text={'Assignment'} isLocked={true}>
+                here assignment
             </AccordionLayout>
         </div>
     </div>
