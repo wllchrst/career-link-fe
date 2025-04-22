@@ -25,4 +25,7 @@ export default [
       "routes/app/admin/bootcamps/bootcamp-categories.tsx"
     ),
   ]),
+  ...prefix("quiz", [
+    index("routes/app/bootcamp-sessions/session-quiz-page.tsx"),
+  ]),
 ] satisfies RouteConfig;
