@@ -1,31 +1,15 @@
 import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "~/components/ui/accordion";
+import {Link} from "react-router";
 
 const BootcampDetailContent = () => {
     return (
         <>
             <div>
                 <p className={"text-primary text-3xl font-semibold ml-4 mb-8"}>Bootcamp Content</p>
-                <Accordion type="single" collapsible className="w-full flex flex-col gap-4">
-                    <AccordionItem value="item-1" className={"bg-white py-2 px-4 rounded-md shadow-md"}>
-                        <AccordionTrigger className={"text-xl font-medium decoration-transparent text-accent"}>Session
-                            1: Siapa itu Alexander the great?</AccordionTrigger>
-                        <AccordionContent className={"border-t-2"}>
-                            <div className={"bg-black w-4/5 h-lvh mt-4"}>
-
-                            </div>
-                        </AccordionContent>
-                    </AccordionItem>
-
-                    <AccordionItem value="item-2" className={"bg-white py-2 px-4 rounded-md shadow-md"}>
-                        <AccordionTrigger className={"text-xl font-medium decoration-transparent text-accent"}>Session
-                            2: Sumber Alexander the great?</AccordionTrigger>
-                        <AccordionContent className={"border-t-2"}>
-                            <div className={"bg-black w-4/5 h-lvh mt-4"}>
-
-                            </div>
-                        </AccordionContent>
-                    </AccordionItem>
-                </Accordion>
+                <Link to={'/'} type={'single'} className={"box-border flex items-center border-2 border-green-500 gap-x-4 bg-white p-2 rounded-md shadow-md"}>
+                    <h2 className={'font-normal text-xl text-green-500 border-r-2 border-green-500 p-6 h-full flex justify-center items-center aspect-square'}>1</h2>
+                    <h2 className={'font-normal text-xl text-green-500 p-6 h-full '}>Introduction to HTML CSS JS</h2>
+                </Link>
             </div>
         </>
     )
