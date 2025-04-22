@@ -33,7 +33,7 @@ export const NavItem = ({ link }: { link: Props }) => {
             <NavLink
               key={child.to}
               to={child.to}
-              className="block text-lg px-10 py-5 text-white font-medium"
+              className="block lg px-10 py-5 text-white font-medium"
             >
               {child.label}
             </NavLink>
