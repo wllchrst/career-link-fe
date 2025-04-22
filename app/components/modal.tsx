@@ -2,12 +2,13 @@ import { useEffect, type ReactNode } from "react";
 import ReactDOM from "react-dom";
 
 interface Props {
+  title?: string;
   isOpen: boolean;
   onClose: () => void;
   children: ReactNode;
 }
 
-export const Modal = ({ isOpen, onClose, children }: Props) => {
+export const Modal = ({ isOpen, onClose, children, title }: Props) => {
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -33,6 +34,7 @@ export const Modal = ({ isOpen, onClose, children }: Props) => {
         >
           ✕
         </button>
+        <h1 className="text-primary text-xl font-bold mb-3">{title}</h1>
         {children}
       </div>
     </div>,

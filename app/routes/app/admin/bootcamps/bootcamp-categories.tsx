@@ -4,6 +4,7 @@ import type { Route } from "./+types/bootcamp-categories";
 import { Button } from "~/components/ui/button";
 import { useState } from "react";
 import { Modal } from "~/components/modal";
+import { AddCategoryForm } from "~/features/bootcamp-category/components/add-category-form";
 
 export const loader = async () => {
   const { data: categories } = await getBootcampCategories();
@@ -16,8 +17,8 @@ const BootcampCategories = ({ loaderData }: Route.ComponentProps) => {
 
   return (
     <>
-      <Modal isOpen={open} onClose={() => setOpen(false)}>
-        <div>test</div>
+      <Modal title="Add category" isOpen={open} onClose={() => setOpen(false)}>
+        <AddCategoryForm onSuccess={() => {}} />
       </Modal>
 
       <div className="container flex flex-col mt-2">
