@@ -16,7 +16,7 @@ export const BootcampCard = ({ bootcamp }: BootcampCardProps) => {
         className="h-55 rounded-t-md"
       />
       <div className="flex flex-col p-3 gap-1">
-        <div className="text-lg">[{bootcamp.name}]</div>
+        <div className="text-lg">{bootcamp.name}</div>
         <div className="flex gap-2">
           <BootcampTypeTag type={bootcamp.type} />
           <BootcampMethodTag type={bootcamp.method} />

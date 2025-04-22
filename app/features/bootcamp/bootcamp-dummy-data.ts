@@ -30,15 +30,15 @@ export const bootcampsCarouselData: Bootcamp[] = [
 export const bootcampsData: Bootcamp[] = [
   {
     id: "1",
-    name: "Bootcamp Name",
+    name: "Frontend Development using Svelte",
     type: "Hard Skill",
     method: "Self Learning",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adisipicing elit, sed do eiusmod temopor incididunt ut labore et dolore magna aliqua...",
+      "Frontend Development using Svelte is a contemporary approach to building user interfaces that are efficient, reactive, and lightweight...",
   },
   {
     id: "2",
-    name: "Bootcamp Name",
+    name: "Backend Development using NestJS",
     type: "Hard Skill",
     method: "Self Learning",
     description:
@@ -46,7 +46,7 @@ export const bootcampsData: Bootcamp[] = [
   },
   {
     id: "3",
-    name: "Bootcamp Name",
+    name: "Docker",
     type: "Hard Skill",
     method: "Self Learning",
     description:
@@ -54,7 +54,7 @@ export const bootcampsData: Bootcamp[] = [
   },
   {
     id: "4",
-    name: "Bootcamp Name",
+    name: "Introduction to Artificial Intelligence",
     type: "Hard Skill",
     method: "Self Learning",
     description:

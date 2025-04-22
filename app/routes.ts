@@ -28,4 +28,10 @@ export default [
   ...prefix("quiz", [
     index("routes/app/bootcamp-sessions/session-quiz-page.tsx"),
   ]),
+  ...prefix("session", [
+      route(
+          ":id",
+          "routes/app/sessions/session-detail.tsx"
+      ),
+  ]),
 ] satisfies RouteConfig;
