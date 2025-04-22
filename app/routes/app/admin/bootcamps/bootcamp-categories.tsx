@@ -8,6 +8,7 @@ import { CreateCategory } from "~/features/bootcamp-category/components/create-c
 import { useRevalidator } from "react-router";
 import type { BootcampCategory } from "~/types/api";
 import { DeleteCategory } from "~/features/bootcamp-category/components/delete-category";
+import { UpdateCategory } from "~/features/bootcamp-category/components/update-category";
 
 export const loader = async () => {
   const { data: categories } = await getBootcampCategories();
@@ -28,6 +29,7 @@ const BootcampCategories = ({ loaderData }: Route.ComponentProps) => {
 
   const onUpdate = (category: BootcampCategory) => {
     setSelectedCategory(category);
+    setActiveModal("update");
   };
 
   const onDelete = (category: BootcampCategory) => {
@@ -43,6 +45,17 @@ const BootcampCategories = ({ loaderData }: Route.ComponentProps) => {
         onClose={() => setActiveModal(null)}
       >
         <CreateCategory onSuccess={onSuccess} />
+      </Modal>
+
+      <Modal
+        title="Update category"
+        isOpen={activeModal === "update"}
+        onClose={() => setActiveModal(null)}
+      >
+        <UpdateCategory
+          onSuccess={onSuccess}
+          selectedCategory={selectedCategory!}
+        />
       </Modal>
 
       <Modal
@@ -71,6 +84,7 @@ const BootcampCategories = ({ loaderData }: Route.ComponentProps) => {
         </Button>
         <CategoriesList
           onDelete={onDelete}
+          onUpdate={onUpdate}
           categories={loaderData.categories}
         />
       </div>

@@ -17,9 +17,12 @@ export const DeleteCategory = ({
 }: Props) => {
   const onDelete = async () => {
     const toastId = toast.loading("Deleting category...");
+
     try {
       await deleteBootcampCategory(selectedCategory.id);
+
       toast.success("Delete category success", { id: toastId });
+
       onSuccess();
     } catch (error) {
       toast.error(getErrorMessage(error), { id: toastId });

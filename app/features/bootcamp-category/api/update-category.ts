@@ -9,12 +9,12 @@ export const updateCategoryInputSchema = z.object({
 
 export type UpdateCategoryInput = z.infer<typeof updateCategoryInputSchema>;
 
-export const createBootcampCategory = ({
+export const updateBootcampCategory = ({
   data,
   categoryId,
 }: {
   data: UpdateCategoryInput;
   categoryId: string;
 }): Promise<{ data: BootcampCategory; message: string }> => {
-  return api.post(`/bootcamp/category/${categoryId}`, data);
+  return api.put(`/bootcamp/category/${categoryId}`, data);
 };
