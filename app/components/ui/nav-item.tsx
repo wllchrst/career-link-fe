@@ -14,7 +14,7 @@ export const NavItem = ({ link }: { link: Props }) => {
       <div className="relative group p-5">
         <NavLink
           to={link.to}
-          className="font-semibold text-white text-xl cursor-pointer flex items-center gap-1"
+          className="font-medium text-white text-lg cursor-pointer flex items-center gap-1"
         >
           {link.label}
           <svg
@@ -33,7 +33,7 @@ export const NavItem = ({ link }: { link: Props }) => {
             <NavLink
               key={child.to}
               to={child.to}
-              className="block  px-10 py-5 text-white font-bold"
+              className="block lg px-10 py-5 text-white font-medium"
             >
               {child.label}
             </NavLink>

@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import {
-  categorySchema,
+  createCategoryInputSchema,
+  createBootcampCategory,
   type CreateCategoryInput,
 } from "~/features/bootcamp-category/api/create-category";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,25 +16,34 @@ import {
 import { Input } from "~/components/ui/input";
 import { Textarea } from "~/components/ui/textarea";
 import { Button } from "~/components/ui/button";
+import toast from "react-hot-toast";
+import { getErrorMessage } from "~/lib/error";
 
 interface Props {
   onSuccess: () => void;
 }
 
-export const AddCategoryForm = ({ onSuccess }: Props) => {
+export const CreateCategory = ({ onSuccess }: Props) => {
   const form = useForm<CreateCategoryInput>({
-    resolver: zodResolver(categorySchema),
+    resolver: zodResolver(createCategoryInputSchema),
     defaultValues: {
       name: "",
       description: "",
     },
   });
 
-  const onSubmit = (data: CreateCategoryInput) => {
-    console.log("Submit:", data);
-    // TODO: Call API createCategory here
-    form.reset();
-    onSuccess();
+  const onSubmit = async (data: CreateCategoryInput) => {
+    const toastId = toast.loading("Creating category...");
+    try {
+      const res = await createBootcampCategory({ data });
+      toast.success(res.message, { id: toastId });
+      form.reset();
+      onSuccess();
+    } catch (error) {
+      toast.error(getErrorMessage(error), {
+        id: toastId,
+      });
+    }
   };
 
   return (

@@ -3,11 +3,11 @@ import { Button } from "~/components/ui/button";
 
 interface Props {
   categories: BootcampCategory[];
-  onEdit?: (category: BootcampCategory) => void;
+  onUpdate?: (category: BootcampCategory) => void;
   onDelete?: (category: BootcampCategory) => void;
 }
 
-export const CategoriesList = ({ categories, onEdit, onDelete }: Props) => {
+export const CategoriesList = ({ categories, onUpdate, onDelete }: Props) => {
   return (
     <div className="overflow-x-auto mt-6">
       <table className="min-w-full border border-gray-200 text-sm">
@@ -27,7 +27,7 @@ export const CategoriesList = ({ categories, onEdit, onDelete }: Props) => {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => onEdit?.(category)}
+                  onClick={() => onUpdate?.(category)}
                 >
                   Update
                 </Button>

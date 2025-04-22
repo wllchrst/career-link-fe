@@ -1,6 +1,8 @@
 import { useEffect, type ReactNode } from "react";
 import ReactDOM from "react-dom";
 
+export type ModalType = "create" | "delete" | "update" | null;
+
 interface Props {
   title?: string;
   isOpen: boolean;

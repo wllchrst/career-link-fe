@@ -2,17 +2,19 @@ import { z } from "zod";
 import { api } from "~/lib/api-client";
 import type { BootcampCategory } from "~/types/api";
 
-export const createCategoryInputSchema = z.object({
+export const updateCategoryInputSchema = z.object({
   name: z.string().min(1, "Name is required"),
   description: z.string().min(1, "Description is required"),
 });
 
-export type CreateCategoryInput = z.infer<typeof createCategoryInputSchema>;
+export type UpdateCategoryInput = z.infer<typeof updateCategoryInputSchema>;
 
-export const createBootcampCategory = ({
+export const updateBootcampCategory = ({
   data,
+  categoryId,
 }: {
-  data: CreateCategoryInput;
+  data: UpdateCategoryInput;
+  categoryId: string;
 }): Promise<{ data: BootcampCategory; message: string }> => {
-  return api.post("/bootcamp/category", data);
+  return api.put(`/bootcamp/category/${categoryId}`, data);
 };
