@@ -7,6 +7,8 @@ import type { BootcampType } from "~/types/api";
 import { BootcampTypesList } from "~/features/bootcamp-type/components/bootcamp-types-list";
 import { useRevalidator } from "react-router";
 import { CreateBootcampType } from "~/features/bootcamp-type/components/create-bootcamp-type";
+import { UpdateBootcampType } from "~/features/bootcamp-type/components/update-bootcamp-type";
+import { DeleteBootcampType } from "~/features/bootcamp-type/components/delete-bootcamp-type";
 
 export const loader = async () => {
   const { data: bootcampTypes } = await getBootcampTypes();
@@ -25,6 +27,16 @@ const BootcampTypes = ({ loaderData }: Route.ComponentProps) => {
     revalidator.revalidate();
   };
 
+  const onUpdate = (bootcampType: BootcampType) => {
+    setSelectedBootcampType(bootcampType);
+    setActiveModal("update");
+  };
+
+  const onDelete = (bootcampType: BootcampType) => {
+    setSelectedBootcampType(bootcampType);
+    setActiveModal("delete");
+  };
+
   return (
     <>
       <Modal
@@ -35,6 +47,29 @@ const BootcampTypes = ({ loaderData }: Route.ComponentProps) => {
         <CreateBootcampType onSuccess={onSuccess} />
       </Modal>
 
+      <Modal
+        title="Update bootcamp type"
+        isOpen={activeModal === "update"}
+        onClose={() => setActiveModal(null)}
+      >
+        <UpdateBootcampType
+          onSuccess={onSuccess}
+          selectedBootcampType={selectedBootcampType!}
+        />
+      </Modal>
+
+      <Modal
+        title="Delete bootcamp type"
+        isOpen={activeModal === "delete"}
+        onClose={() => setActiveModal(null)}
+      >
+        <div></div>
+        <DeleteBootcampType
+          onSuccess={onSuccess}
+          selectedBootcampType={selectedBootcampType!}
+        />
+      </Modal>
+
       <div className="container flex flex-col mt-2">
         <h1 className="text-2xl text-primary font-bold mb-4">Bootcamp Types</h1>
         <Button
@@ -43,7 +78,11 @@ const BootcampTypes = ({ loaderData }: Route.ComponentProps) => {
         >
           Add type
         </Button>
-        <BootcampTypesList bootcampTypes={loaderData.bootcampTypes} />
+        <BootcampTypesList
+          bootcampTypes={loaderData.bootcampTypes}
+          onUpdate={onUpdate}
+          onDelete={onDelete}
+        />
       </div>
     </>
   );
