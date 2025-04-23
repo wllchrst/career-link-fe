@@ -3,7 +3,7 @@ import {
   createCategoryInputSchema,
   createBootcampCategory,
   type CreateCategoryInput,
-} from "~/features/bootcamp-category/api/create-category";
+} from "~/features/bootcamp-category/api/create-bootcamp-category";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,

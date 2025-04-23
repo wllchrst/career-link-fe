@@ -2,7 +2,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { Button } from "~/components/ui/button";
 import type { BootcampCategory } from "~/types/api";
-import { deleteBootcampCategory } from "../api/delete-category";
+import { deleteBootcampCategory } from "../api/delete-bootcamp-category";
 import { getErrorMessage } from "~/lib/error";
 
 interface Props {

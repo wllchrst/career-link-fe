@@ -2,8 +2,8 @@ import { CiSearch } from "react-icons/ci";
 import { FaFilter } from "react-icons/fa";
 import { bootcampsData } from "~/features/bootcamp/bootcamp-dummy-data";
 import { BootcampsGrid } from "~/features/bootcamp/components/bootcamps-grid";
-import type { Route } from "./+types/bootcamps";
 import { Button } from "~/components/ui/button";
+import type { Route } from "./+types/bootcamps";
 
 export const loader = async () => {
   return { bootcampsData }; //masih dummy data;

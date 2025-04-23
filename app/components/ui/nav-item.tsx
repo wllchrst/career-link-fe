@@ -28,12 +28,12 @@ export const NavItem = ({ link }: { link: Props }) => {
           </svg>
         </NavLink>
 
-        <div className="absolute left-0 top-full hidden group-hover:block bg-primary shadow-md z-20 hover:bg-secondary">
+        <div className="absolute left-0 top-full hidden group-hover:block bg-primary shadow-md z-20">
           {link.children.map((child) => (
             <NavLink
               key={child.to}
               to={child.to}
-              className="block lg px-10 py-5 text-white font-medium"
+              className="block lg px-10 py-5 text-white font-medium hover:bg-secondary"
             >
               {child.label}
             </NavLink>

@@ -3,7 +3,7 @@ import {
   updateBootcampCategory,
   updateCategoryInputSchema,
   type UpdateCategoryInput,
-} from "../api/update-category";
+} from "../api/update-bootcamp-category";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
 import { Button } from "~/components/ui/button";
@@ -18,7 +18,7 @@ import {
 import { Input } from "~/components/ui/input";
 import { Textarea } from "~/components/ui/textarea";
 import { getErrorMessage } from "~/lib/error";
-import type { CreateCategoryInput } from "../api/create-category";
+import type { CreateCategoryInput } from "../api/create-bootcamp-category";
 import type { BootcampCategory } from "~/types/api";
 
 interface Props {

@@ -1,4 +1,4 @@
-import { getBootcampCategories } from "~/features/bootcamp-category/api/get-categories";
+import { getBootcampCategories } from "~/features/bootcamp-category/api/get-bootcamp-categories";
 import { BootcampCategoriesList } from "~/features/bootcamp-category/components/bootcamp-categories-list.";
 import { Button } from "~/components/ui/button";
 import { useState } from "react";
@@ -74,7 +74,7 @@ const BootcampCategories = ({ loaderData }: Route.ComponentProps) => {
 
       <div className="container flex flex-col mt-2">
         <h1 className="text-2xl text-primary font-bold mb-4">
-          Bootcamp Category
+          Bootcamp Categories
         </h1>
         <Button
           onClick={() => setActiveModal("create")}

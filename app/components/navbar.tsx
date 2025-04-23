@@ -14,7 +14,10 @@ export default function Navbar() {
       label: "Bootcamps",
       to: "/admin/bootcamps",
       adminOnly: true,
-      children: [{ label: "Category", to: "/admin/bootcamps/categories" }],
+      children: [
+        { label: "Category", to: "/admin/bootcamps/categories" },
+        { label: "Types", to: "/admin/bootcamps/types" },
+      ],
     },
     { label: "Certificates", to: "/certificates" },
   ];
