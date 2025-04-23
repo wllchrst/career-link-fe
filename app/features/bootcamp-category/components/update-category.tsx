@@ -87,7 +87,15 @@ export const UpdateCategory = ({ onSuccess, selectedCategory }: Props) => {
         />
 
         <div className="flex justify-end">
-          <Button type="submit">Submit</Button>
+          <Button
+            type="submit"
+            disabled={form.formState.isSubmitting}
+            className={
+              form.formState.isSubmitting ? "opacity-70 cursor-not-allowed" : ""
+            }
+          >
+            {form.formState.isSubmitting ? "Updating..." : "Update"}
+          </Button>
         </div>
       </form>
     </Form>

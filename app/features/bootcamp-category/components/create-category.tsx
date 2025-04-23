@@ -78,7 +78,15 @@ export const CreateCategory = ({ onSuccess }: Props) => {
         />
 
         <div className="flex justify-end">
-          <Button type="submit">Submit</Button>
+          <Button
+            type="submit"
+            disabled={form.formState.isSubmitting}
+            className={
+              form.formState.isSubmitting ? "opacity-70 cursor-not-allowed" : ""
+            }
+          >
+            {form.formState.isSubmitting ? "Creating..." : "Create"}
+          </Button>
         </div>
       </form>
     </Form>
