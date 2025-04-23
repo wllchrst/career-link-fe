@@ -21,17 +21,15 @@ export default [
   ]),
   ...prefix("admin", [
     route(
-      "bootcamp/category",
+      "bootcamps/category",
       "routes/app/admin/bootcamps/bootcamp-categories.tsx"
     ),
+    route("bootcamps", "routes/app/admin/bootcamps/bootcamps.tsx"),
   ]),
   ...prefix("quiz", [
     index("routes/app/bootcamp-sessions/session-quiz-page.tsx"),
   ]),
   ...prefix("session", [
-      route(
-          ":id",
-          "routes/app/sessions/session-detail.tsx"
-      ),
+    route(":id", "routes/app/sessions/session-detail.tsx"),
   ]),
 ] satisfies RouteConfig;

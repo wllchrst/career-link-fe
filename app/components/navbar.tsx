@@ -12,9 +12,9 @@ export default function Navbar() {
     { label: "Bootcamps", to: "/bootcamps", userOnly: true },
     {
       label: "Bootcamps",
-      to: "/bootcamps",
+      to: "/admin/bootcamps",
       adminOnly: true,
-      children: [{ label: "Category", to: "/admin/bootcamp/category" }],
+      children: [{ label: "Category", to: "/admin/bootcamps/category" }],
     },
     { label: "Certificates", to: "/certificates" },
   ];
