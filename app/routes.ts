@@ -20,11 +20,12 @@ export default [
     route(":bootcamp", "routes/app/bootcamps/bootcamp-detail.tsx"),
   ]),
   ...prefix("admin", [
+    route("bootcamps", "routes/app/admin/bootcamps/bootcamps.tsx"),
     route(
-      "bootcamps/category",
+      "bootcamps/categories",
       "routes/app/admin/bootcamps/bootcamp-categories.tsx"
     ),
-    route("bootcamps", "routes/app/admin/bootcamps/bootcamps.tsx"),
+    route("bootcamps/types", "routes/app/admin/bootcamps/bootcamp-types.tsx"),
   ]),
   ...prefix("quiz", [
     index("routes/app/bootcamp-sessions/session-quiz-page.tsx"),

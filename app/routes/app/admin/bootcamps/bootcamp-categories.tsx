@@ -1,6 +1,5 @@
 import { getBootcampCategories } from "~/features/bootcamp-category/api/get-categories";
 import { BootcampCategoriesList } from "~/features/bootcamp-category/components/bootcamp-categories-list.";
-import type { Route } from "./+types/bootcamp-categories";
 import { Button } from "~/components/ui/button";
 import { useState } from "react";
 import { Modal, type ModalType } from "~/components/modal";
@@ -9,6 +8,7 @@ import { useRevalidator } from "react-router";
 import type { BootcampCategory } from "~/types/api";
 import { DeleteBootcampCategory } from "~/features/bootcamp-category/components/delete-bootcamp-category";
 import { UpdateBootcampCategory } from "~/features/bootcamp-category/components/update-bootcamp-category";
+import type { Route } from "./+types/bootcamp-categories";
 
 export const loader = async () => {
   const { data: categories } = await getBootcampCategories();
