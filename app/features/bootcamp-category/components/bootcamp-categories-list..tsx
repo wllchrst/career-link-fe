@@ -7,7 +7,11 @@ interface Props {
   onDelete?: (category: BootcampCategory) => void;
 }
 
-export const CategoriesList = ({ categories, onUpdate, onDelete }: Props) => {
+export const BootcampCategoriesList = ({
+  categories,
+  onUpdate,
+  onDelete,
+}: Props) => {
   return (
     <div className="overflow-x-auto mt-6">
       {categories.length === 0 ? (

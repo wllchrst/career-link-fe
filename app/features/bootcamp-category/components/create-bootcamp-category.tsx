@@ -23,7 +23,7 @@ interface Props {
   onSuccess: () => void;
 }
 
-export const CreateCategory = ({ onSuccess }: Props) => {
+export const CreateBootcampCategory = ({ onSuccess }: Props) => {
   const form = useForm<CreateCategoryInput>({
     resolver: zodResolver(createCategoryInputSchema),
     defaultValues: {

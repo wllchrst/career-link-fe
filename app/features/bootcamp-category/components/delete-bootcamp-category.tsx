@@ -11,7 +11,7 @@ interface Props {
   selectedCategory: BootcampCategory;
 }
 
-export const DeleteCategory = ({
+export const DeleteBootcampCategory = ({
   onSuccess,
   onClose,
   selectedCategory,

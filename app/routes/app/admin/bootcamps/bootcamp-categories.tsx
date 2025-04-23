@@ -1,14 +1,14 @@
 import { getBootcampCategories } from "~/features/bootcamp-category/api/get-categories";
-import { CategoriesList } from "~/features/bootcamp-category/components/categories.list.";
+import { BootcampCategoriesList } from "~/features/bootcamp-category/components/bootcamp-categories-list.";
 import type { Route } from "./+types/bootcamp-categories";
 import { Button } from "~/components/ui/button";
 import { useState } from "react";
 import { Modal, type ModalType } from "~/components/modal";
-import { CreateCategory } from "~/features/bootcamp-category/components/create-category";
+import { CreateBootcampCategory } from "~/features/bootcamp-category/components/create-bootcamp-category";
 import { useRevalidator } from "react-router";
 import type { BootcampCategory } from "~/types/api";
-import { DeleteCategory } from "~/features/bootcamp-category/components/delete-category";
-import { UpdateCategory } from "~/features/bootcamp-category/components/update-category";
+import { DeleteBootcampCategory } from "~/features/bootcamp-category/components/delete-bootcamp-category";
+import { UpdateBootcampCategory } from "~/features/bootcamp-category/components/update-bootcamp-category";
 
 export const loader = async () => {
   const { data: categories } = await getBootcampCategories();
@@ -44,7 +44,7 @@ const BootcampCategories = ({ loaderData }: Route.ComponentProps) => {
         isOpen={activeModal === "create"}
         onClose={() => setActiveModal(null)}
       >
-        <CreateCategory onSuccess={onSuccess} />
+        <CreateBootcampCategory onSuccess={onSuccess} />
       </Modal>
 
       <Modal
@@ -52,7 +52,7 @@ const BootcampCategories = ({ loaderData }: Route.ComponentProps) => {
         isOpen={activeModal === "update"}
         onClose={() => setActiveModal(null)}
       >
-        <UpdateCategory
+        <UpdateBootcampCategory
           onSuccess={onSuccess}
           selectedCategory={selectedCategory!}
         />
@@ -64,7 +64,7 @@ const BootcampCategories = ({ loaderData }: Route.ComponentProps) => {
         onClose={() => setActiveModal(null)}
       >
         <div>
-          <DeleteCategory
+          <DeleteBootcampCategory
             onSuccess={onSuccess}
             onClose={() => setActiveModal(null)}
             selectedCategory={selectedCategory!}
@@ -82,7 +82,7 @@ const BootcampCategories = ({ loaderData }: Route.ComponentProps) => {
         >
           Add category
         </Button>
-        <CategoriesList
+        <BootcampCategoriesList
           onDelete={onDelete}
           onUpdate={onUpdate}
           categories={loaderData.categories}

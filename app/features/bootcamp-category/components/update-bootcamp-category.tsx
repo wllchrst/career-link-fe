@@ -26,7 +26,10 @@ interface Props {
   selectedCategory: BootcampCategory;
 }
 
-export const UpdateCategory = ({ onSuccess, selectedCategory }: Props) => {
+export const UpdateBootcampCategory = ({
+  onSuccess,
+  selectedCategory,
+}: Props) => {
   const form = useForm<UpdateCategoryInput>({
     resolver: zodResolver(updateCategoryInputSchema),
     defaultValues: {
