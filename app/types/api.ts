@@ -1,5 +1,3 @@
-
-
 export type Student = {
   nim: string;
   full_name: string;
@@ -40,28 +38,33 @@ export type BootcampCategory = {
   description: string;
 };
 
+export type BootcampType = {
+  id: string;
+  name: string;
+};
+
 export type SessionData = {
   id: string;
   link: string;
   description: string;
-}
+};
 
 export type Option = {
   id: string;
   name: string;
-}
+};
 
 export type Question = {
   id: string;
   text: string;
   options: Option[];
-}
+};
 
 export type SessionTest = {
   id: string;
   questions: Question[];
   scores: Result[];
-}
+};
 
 export type Session = {
   id: string;
@@ -73,21 +76,17 @@ export type Session = {
   preTest: SessionTest;
   postTest: SessionTest;
   assignment: Assignment;
-}
+};
 
 export type Result = {
   id: string;
   userId: string;
   testId: string;
   score: number;
-}
+};
 
 export type Assignment = {
   id: string;
   question: string;
   answer: string;
-}
-
-
-
-
+};
