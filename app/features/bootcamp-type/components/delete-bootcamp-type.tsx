@@ -38,7 +38,7 @@ export const DeleteBootcampType = ({
     <div className="flex flex-col gap-5">
       <p>
         Are you sure you want to delete{" "}
-        <strong>{selectedBootcampType.name}</strong> category?
+        <strong>{selectedBootcampType.name}</strong> type?
       </p>
       <div className="flex justify-end gap-2">
         <Button onClick={onClose} variant="outline" disabled={isLoading}>
