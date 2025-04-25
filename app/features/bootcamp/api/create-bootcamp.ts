@@ -8,7 +8,7 @@ export const createBootcampInputSchema = z.object({
   type_id: z.string().min(1, "Type ID is required"),
   speaker_id: z.string().min(1, "Speaker ID is required"),
   image_path: z.string().optional(),
-  image: z.instanceof(File).refine(file => !file, {message: "File required"}).refine(
+  image_file: z.instanceof(File).refine(
     (file) =>
       [
         "image/png",
@@ -28,5 +28,14 @@ export const createBootcamp = ({
 }: {
   data: CreateBootcampInput;
 }): Promise<{ data: { id: string }; message: string }> => {
-  return api.post("/bootcamp", data);
+  let formData = new FormData();
+
+  for ( let key in data ) {
+      formData.append(key, data[key]);
+  }
+  return api.post("/bootcamp", formData, {
+    headers: {
+      'Content-Type':'multipart/form-data'
+    }
+  });
 };

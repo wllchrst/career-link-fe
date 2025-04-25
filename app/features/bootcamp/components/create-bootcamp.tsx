@@ -45,13 +45,15 @@ export const CreateBootcamp = ({onSuccess, categories, types, speakers}: Props) 
             category_id: "",
             image_path: "",
             type_id: "",
-            speaker_id:"",
+            speaker_id:"sdf",
         },
     });
 
     const onSubmit = async (data: CreateBootcampInput) => {
+        
         const toastId = toast.loading("Creating bootcamp...");
         try {
+          console.log(data.image_file)
           const res = await createBootcamp({ data });
           toast.success(res.message, { id: toastId });
           form.reset();
@@ -66,6 +68,7 @@ export const CreateBootcamp = ({onSuccess, categories, types, speakers}: Props) 
       const handleImagePreview = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
+          form.setValue("image_path", file.name)
           setPreviewUrl(URL.createObjectURL(file));
         }
       };
@@ -80,7 +83,7 @@ export const CreateBootcamp = ({onSuccess, categories, types, speakers}: Props) 
                 <>
                   <Field control={form.control} placeholder="Enter name" label="Name" type="text" name="name"/>
                   <TextAreaField  control={form.control} placeholder="Enter description" label="Description" name="description"/>
-                  <FileField control={form.control} handlePreview={handleImagePreview} label="Bootcamp Image" name="image"/>
+                  <FileField control={form.control} handlePreview={handleImagePreview} label="Bootcamp Image" name="image_file"/>
                   {previewUrl && (
                     <img
                       src={previewUrl}
@@ -93,7 +96,7 @@ export const CreateBootcamp = ({onSuccess, categories, types, speakers}: Props) 
                   <SelectField control={form.control} name="category_id" label="Category" values={
                     categories.map(e => ( {
                       value: e.id,
-                      text: e.description
+                      text: e.name
                     }))
                   }/>
                   <SelectField control={form.control} name="type_id" label="Type" values={
@@ -110,7 +113,7 @@ export const CreateBootcamp = ({onSuccess, categories, types, speakers}: Props) 
                   }/>
                 </>
               }
-              <div className="flex justify-end">
+              <div className="flex gap-10 justify-end">
                 {
                   stage==0?
 
@@ -124,7 +127,6 @@ export const CreateBootcamp = ({onSuccess, categories, types, speakers}: Props) 
                   >
                     {"Next"}
                   </Button>:
-                  <div className="flex gap-5">
                   <Button
                     type="button"
                     disabled={form.formState.isSubmitting}
@@ -135,17 +137,16 @@ export const CreateBootcamp = ({onSuccess, categories, types, speakers}: Props) 
                   >
                     {"Back"}
                   </Button>
-                  <Button
-                    type="submit"
-                    disabled={form.formState.isSubmitting}
-                    className={
-                      form.formState.isSubmitting ? "opacity-70 cursor-not-allowed" : ""
-                    }
-                  >
-                    {form.formState.isSubmitting ? "Creating..." : "Create"}
-                  </Button>
-                  </div>
                 }
+                <Button
+                  type="submit"
+                  disabled={form.formState.isSubmitting}
+                  className={
+                    form.formState.isSubmitting ? "opacity-70 cursor-not-allowed" : ""
+                  }
+                >
+                  {form.formState.isSubmitting ? "Creating..." : "Create"}
+                </Button>
               </div>
             </form>
           </Form>

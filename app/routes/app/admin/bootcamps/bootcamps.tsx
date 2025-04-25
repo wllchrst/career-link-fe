@@ -10,13 +10,15 @@ import { Modal, type ModalType } from "~/components/modal";
 import { CreateBootcamp } from "~/features/bootcamp/components/create-bootcamp";
 import { getBootcampCategories } from "~/features/bootcamp-category/api/get-bootcamp-categories";
 import { getBootcampTypes } from "~/features/bootcamp-type/api/get-bootcamp-types";
+import { getBootcamps } from "~/features/bootcamp/api/get-bootcamps";
 
 export const loader = async () => {
   
   const { data: categories } = await getBootcampCategories();
   const { data: bootcampTypes } = await getBootcampTypes();
+  const { data: bootcamps } = await getBootcamps();
 
-  return { bootcampsData, categories, bootcampTypes }; //masih dummy data;
+  return { bootcamps, categories, bootcampTypes };
 };
 
 const Bootcamps = ({ loaderData }: Route.ComponentProps) => {
@@ -31,14 +33,14 @@ const Bootcamps = ({ loaderData }: Route.ComponentProps) => {
     
 
     
-  const { bootcampsData, categories, bootcampTypes } = loaderData;
+  const { bootcamps, categories, bootcampTypes } = loaderData;
 
   return (<>
      <Modal 
-          title="Add Bootcamp"
-          isOpen={activeModal === "create"}
-          onClose={() => setActiveModal(null)}
-        >
+        title="Add Bootcamp"
+        isOpen={activeModal === "create"}
+        onClose={() => setActiveModal(null)}
+      >
           <CreateBootcamp categories={categories} types={bootcampTypes} speakers={[]} onSuccess={onSuccess} />
     </Modal>
     <div className="container flex flex-col">
@@ -58,7 +60,7 @@ const Bootcamps = ({ loaderData }: Route.ComponentProps) => {
             <div>Filter</div>
           </div>
         </div>
-        <BootcampsGrid bootcamps={bootcampsData} />
+        <BootcampsGrid bootcamps={bootcamps} />
       </div>
     </div>
   </>

@@ -16,15 +16,16 @@ export default function TextAreaField<T extends FieldValues>({
     label,
     placeholder = "",
   }: Props<T>) {
+    
     return (
       <FormField
         control={control}
         name={name}
         render={({ field }) => (
-          <FormItem className="w-full">
+          <FormItem className="w-full h-1/4">
             <FormLabel>{label}</FormLabel>
             <FormControl>
-              <Textarea placeholder={placeholder} {...field} />
+              <Textarea  className="overflow-y-scroll resize-none h-20 border border-red-500" placeholder={placeholder} {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>

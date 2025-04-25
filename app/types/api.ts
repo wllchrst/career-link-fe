@@ -29,6 +29,7 @@ export type Bootcamp = {
   name: string;
   type: string;
   method: string;
+  image_path: string;
   description: string;
   sessions: Session[];
 };

@@ -11,7 +11,7 @@ export const BootcampCard = ({ bootcamp }: BootcampCardProps) => {
   return (
     <div className="flex flex-col bg-white shadow rounded-md">
       <img
-        src="https://www.teacheracademy.eu/wp-content/uploads/2021/10/successful-teacher-1.jpg"
+        src={`${import.meta.env.VITE_STORAGE_URL}/${bootcamp.image_path}`}
         alt=""
         className="h-55 rounded-t-md"
       />
@@ -22,7 +22,7 @@ export const BootcampCard = ({ bootcamp }: BootcampCardProps) => {
           <BootcampMethodTag type={bootcamp.method} />
         </div>
         <div className="text-xs text-justify my-2">{bootcamp.description}</div>
-        <NavLink to={"/bootcamps/1"} className="flex justify-end">
+        <NavLink to={`/bootcamps/${bootcamp.id}`} className="flex justify-end">
           <div className="bg-accent text-white rounded-md text-center w-30 p-2 text-sm mt-2">
             See Details
           </div>
