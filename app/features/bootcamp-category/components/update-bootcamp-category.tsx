@@ -20,6 +20,8 @@ import { Textarea } from "~/components/ui/textarea";
 import { getErrorMessage } from "~/lib/error";
 import type { CreateCategoryInput } from "../api/create-bootcamp-category";
 import type { BootcampCategory } from "~/types/api";
+import TextAreaField from "~/components/ui/text-area-field";
+import Field from "~/components/ui/form-field";
 
 interface Props {
   onSuccess: () => void;
@@ -61,34 +63,9 @@ export const UpdateBootcampCategory = ({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Name</FormLabel>
-              <FormControl>
-                <Input placeholder="Enter name" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Description</FormLabel>
-              <FormControl>
-                <Textarea placeholder="Enter description" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
+        <Field control={form.control} placeholder="Enter name" label="Name" type="text" name="name"/>
+        <TextAreaField control={form.control} placeholder="Enter description" label="Description" name="description"/>
+        
         <div className="flex justify-end">
           <Button
             type="submit"

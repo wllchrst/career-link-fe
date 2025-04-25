@@ -1,5 +1,6 @@
-export type Student = {
-  nim: string;
+export type User = {
+  id: string;
+  nim?: string;
   full_name: string;
   email: string;
   curr_semester: number;

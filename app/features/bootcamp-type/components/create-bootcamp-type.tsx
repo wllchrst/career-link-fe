@@ -17,6 +17,7 @@ import {
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
+import Field from "~/components/ui/form-field";
 
 interface Props {
   onSuccess: () => void;
@@ -47,20 +48,7 @@ export const CreateBootcampType = ({ onSuccess }: Props) => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Name</FormLabel>
-              <FormControl>
-                <Input placeholder="Enter name" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
+        <Field control={form.control} placeholder="Enter name" label="Name" type="text" name="name"/>
         <div className="flex justify-end">
           <Button
             type="submit"

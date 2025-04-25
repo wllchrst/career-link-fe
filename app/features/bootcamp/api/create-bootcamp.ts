@@ -8,6 +8,17 @@ export const createBootcampInputSchema = z.object({
   type_id: z.string().min(1, "Type ID is required"),
   speaker_id: z.string().min(1, "Speaker ID is required"),
   image_path: z.string().optional(),
+  image: z.instanceof(File).refine(file => !file, {message: "File required"}).refine(
+    (file) =>
+      [
+        "image/png",
+        "image/jpeg",
+        "image/jpg",
+        "image/svg+xml",
+        "image/gif",
+      ].includes(file.type),
+    { message: "Invalid image file type" }
+  )
 });
 
 export type CreateBootcampInput = z.infer<typeof createBootcampInputSchema>;

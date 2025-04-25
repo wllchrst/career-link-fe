@@ -27,7 +27,7 @@ export const Modal = ({ isOpen, onClose, children, title }: Props) => {
       onClick={onClose}
     >
       <div
-        className="relative max-w-md w-full bg-white p-6 rounded-2xl shadow-xl transition-transform transform scale-100"
+        className="relative max-w-lg w-full bg-white p-6 rounded-2xl shadow-xl transition-transform transform scale-100"
         onClick={(e) => e.stopPropagation()}
       >
         <button
