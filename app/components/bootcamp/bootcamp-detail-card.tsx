@@ -10,9 +10,10 @@ type BootcampDetailCardProps = {
     image: string;
     type: BootcampType;
     category: BootcampCategory;
+    onClick: () => void
 }
 
-const BootcampDetailCard = ({name, description, image, type, category}:BootcampDetailCardProps) => {
+const BootcampDetailCard = ({name, description, image, type, category, onClick}:BootcampDetailCardProps) => {
 
     const {role} = useRole()
     
@@ -30,7 +31,7 @@ const BootcampDetailCard = ({name, description, image, type, category}:BootcampD
 
                     </div>
                     {role == 'admin'? 
-                    <Button className={"mt-7 py-6 bg-accent font-normal"}>Add Session</Button>:
+                    <Button className={"mt-7 py-6 bg-accent font-normal"} onClick={onClick}>Add Session</Button>:
                     <Button className={"mt-7 py-6 bg-accent font-normal"}>Enroll Now</Button>
                     }
                 </div>
