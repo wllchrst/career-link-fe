@@ -11,6 +11,9 @@ import { CreateBootcamp } from "~/features/bootcamp/components/create-bootcamp";
 import { getBootcampCategories } from "~/features/bootcamp-category/api/get-bootcamp-categories";
 import { getBootcampTypes } from "~/features/bootcamp-type/api/get-bootcamp-types";
 import { getBootcamps } from "~/features/bootcamp/api/get-bootcamps";
+import type { Bootcamp } from "~/types/api";
+import { DeleteBootcamp } from "~/features/bootcamp/components/delete-bootcamp";
+import { UpdateBootcamp } from "~/features/bootcamp/components/update-bootcamp";
 
 export const loader = async () => {
   
@@ -25,13 +28,25 @@ export const loader = async () => {
 const Bootcamps = ({ loaderData }: Route.ComponentProps) => {
 
   const [activeModal, setActiveModal] = useState<ModalType>(null);
-      const revalidator = useRevalidator();
+  const revalidator = useRevalidator();
   
-    const onSuccess = () => {
-      setActiveModal(null);
-      revalidator.revalidate();
+  const onSuccess = () => {
+    setActiveModal(null);
+    revalidator.revalidate();
+  };
+  const [selectedBootcamp, setSelectedBootcamp] =
+      useState<Bootcamp | null>(null);
+   
+  
+    const onUpdate = (bootcamp: Bootcamp) => {
+      setSelectedBootcamp(bootcamp);
+      setActiveModal("update");
     };
-    
+  
+    const onDelete = (bootcamp: Bootcamp) => {
+      setSelectedBootcamp(bootcamp);
+      setActiveModal("delete");
+    };  
 
     
   const { bootcamps, categories, bootcampTypes } = loaderData;
@@ -44,6 +59,32 @@ const Bootcamps = ({ loaderData }: Route.ComponentProps) => {
       >
           <CreateBootcamp categories={categories} types={bootcampTypes} speakers={[]} onSuccess={onSuccess} />
     </Modal>
+    <Modal
+      title="Update bootcamp"
+      isOpen={activeModal === "update"}
+      onClose={() => setActiveModal(null)}
+    >
+      <UpdateBootcamp
+        onSuccess={onSuccess}
+        bootcamp={selectedBootcamp!}
+        categories={categories} types={bootcampTypes} speakers={[]}
+      />
+    </Modal>
+
+    <Modal
+      title="Delete bootcamp"
+      isOpen={activeModal === "delete"}
+      onClose={() => setActiveModal(null)}
+    >
+      <div>
+        <DeleteBootcamp
+          onSuccess={onSuccess}
+          onClose={() => setActiveModal(null)}
+          selectedCategory={selectedBootcamp!}
+        />
+      </div>
+    </Modal>
+
     <div className="container flex flex-col">
       <div className="flex flex-col">
         <h1 className="text-2xl text-primary font-bold mb-4">Bootcamps</h1>
@@ -61,7 +102,7 @@ const Bootcamps = ({ loaderData }: Route.ComponentProps) => {
             <div>Filter</div>
           </div>
         </div>
-        <BootcampsGrid bootcamps={bootcamps} />
+        <BootcampsGrid bootcamps={bootcamps} onUpdate={onUpdate} onDelete={onDelete} />
       </div>
     </div>
   </>

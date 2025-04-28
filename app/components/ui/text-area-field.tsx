@@ -25,7 +25,7 @@ export default function TextAreaField<T extends FieldValues>({
           <FormItem className="w-full h-1/4">
             <FormLabel>{label}</FormLabel>
             <FormControl>
-              <Textarea  className="overflow-y-scroll resize-none h-20 border border-red-500" placeholder={placeholder} {...field} />
+              <Textarea  className="overflow-y-scroll resize-none h-20" placeholder={placeholder} {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>

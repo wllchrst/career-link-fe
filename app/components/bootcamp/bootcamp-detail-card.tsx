@@ -2,6 +2,7 @@ import {BootcampMethodTag} from "~/components/bootcamp/bootcamp-method-tag";
 import { BootcampTypeTag } from "./bootcamp-type-tag";
 import {Button} from "~/components/ui/button";
 import type { BootcampCategory, BootcampType } from "~/types/api";
+import { useRole } from "~/role-testing-provider";
 
 type BootcampDetailCardProps = {
     name: string;
@@ -12,6 +13,8 @@ type BootcampDetailCardProps = {
 }
 
 const BootcampDetailCard = ({name, description, image, type, category}:BootcampDetailCardProps) => {
+
+    const {role} = useRole()
     
     return (
         <>
@@ -26,7 +29,10 @@ const BootcampDetailCard = ({name, description, image, type, category}:BootcampD
                         <p className={"text-justify"}>{description}</p>
 
                     </div>
+                    {role == 'admin'? 
+                    <Button className={"mt-7 py-6 bg-accent font-normal"}>Add Session</Button>:
                     <Button className={"mt-7 py-6 bg-accent font-normal"}>Enroll Now</Button>
+                    }
                 </div>
                 <img src={`${import.meta.env.VITE_STORAGE_URL}/${image}`} alt=""
                      className="w-lg rounded-lg border"/>
