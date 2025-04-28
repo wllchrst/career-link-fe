@@ -1,21 +1,25 @@
 import { CiSearch } from "react-icons/ci";
 import { FaFilter } from "react-icons/fa";
-import {
-  bootcampsCarouselData,
-  bootcampsData,
-} from "~/features/bootcamp/bootcamp-dummy-data";
 import { BootcampsCarousel } from "~/features/bootcamp/components/bootcamps-carousel";
 import { BootcampsGrid } from "~/features/bootcamp/components/bootcamps-grid";
 import type { Route } from "./+types/bootcamps";
+import { getBootcamps } from "~/features/bootcamp/api/get-bootcamps";
+import { getBootcampTypes } from "~/features/bootcamp-type/api/get-bootcamp-types";
+import { getBootcampCategories } from "~/features/bootcamp-category/api/get-bootcamp-categories";
+
 
 export const loader = async () => {
-  //TODO: api call
+  
+  const { data: categories } = await getBootcampCategories();
+  const { data: types } = await getBootcampTypes();
+  const { data: bootcamps } = await getBootcamps();
 
-  return { bootcampsData, bootcampsCarouselData }; //masih dummy data;
+
+  return { bootcamps, categories, types };
 };
 
 const Bootcamps = ({ loaderData }: Route.ComponentProps) => {
-  const { bootcampsData, bootcampsCarouselData } = loaderData;
+  const { bootcamps, types, categories } = loaderData;
 
   return (
     <div className="container flex flex-col gap-6">
@@ -23,7 +27,7 @@ const Bootcamps = ({ loaderData }: Route.ComponentProps) => {
         <h1 className="text-2xl text-primary font-bold">
           Learners are Viewing
         </h1>
-        <BootcampsCarousel bootcamps={bootcampsCarouselData} />
+        <BootcampsCarousel bootcamps={bootcamps} />
       </div>
       <div className="flex flex-col">
         <h1 className="text-2xl text-primary font-bold">
@@ -52,7 +56,7 @@ const Bootcamps = ({ loaderData }: Route.ComponentProps) => {
             <div>Filter</div>
           </div>
         </div>
-        <BootcampsGrid bootcamps={bootcampsData} />
+        <BootcampsGrid bootcamps={bootcamps} />
       </div>
     </div>
   );

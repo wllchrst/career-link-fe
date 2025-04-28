@@ -18,6 +18,7 @@ export const loader = async () => {
   const { data: bootcampTypes } = await getBootcampTypes();
   const { data: bootcamps } = await getBootcamps();
 
+
   return { bootcamps, categories, bootcampTypes };
 };
 

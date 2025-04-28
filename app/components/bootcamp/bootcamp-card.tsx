@@ -8,6 +8,7 @@ interface BootcampCardProps {
 }
 
 export const BootcampCard = ({ bootcamp }: BootcampCardProps) => {
+  console.log(bootcamp)
   return (
     <div className="flex flex-col bg-white shadow rounded-md">
       <img
@@ -18,8 +19,8 @@ export const BootcampCard = ({ bootcamp }: BootcampCardProps) => {
       <div className="flex flex-col p-3 gap-1">
         <div className="text-lg">{bootcamp.name}</div>
         <div className="flex gap-2">
-          <BootcampTypeTag type={bootcamp.type} />
-          <BootcampMethodTag type={bootcamp.method} />
+          {/* <BootcampTypeTag type={bootcamp.types.name} />
+          <BootcampMethodTag type={bootcamp.categories.name} /> */}
         </div>
         <div className="text-xs text-justify my-2">{bootcamp.description}</div>
         <NavLink to={`/bootcamps/${bootcamp.id}`} className="flex justify-end">
