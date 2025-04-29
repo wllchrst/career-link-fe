@@ -8,6 +8,8 @@ import { useState, type ChangeEvent } from "react";
 import TableLayout from "~/components/layouts/table-layout";
 import { TableCell, TableRow } from "~/components/ui/table";
 import Paginator from "~/components/ui/paginator";
+import { Button } from "~/components/ui/button";
+import pkg from 'file-saver';
 
 interface StudentProps {
     student: User[];
@@ -50,6 +52,15 @@ const HomeAdmin = ({ student } : StudentProps) => {
     }
   };
 
+    const exportToExcel = () => {
+        const worksheet = XLSX.utils.json_to_sheet(data);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+        const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+        const blob = new Blob([excelBuffer], {type: 'application/octet-stream'});
+        pkg.saveAs(blob, `${'Student-Data'}.xlsx`);
+    };
+
     const onPrev = () => {
         if (0 < page)
             setPage(page - 1)
@@ -81,9 +92,9 @@ const HomeAdmin = ({ student } : StudentProps) => {
                         Sync Data
                     </label>
                     <input type="file" id='file' onChange={handleFileUpload} className="hidden"/>
-                    <div className="flex text-accent border border-accent bg-white items-center h-12 rounded-md gap-2 p-3">
-                        <div>Download All Students</div>
-                    </div>
+                    <Button onClick={exportToExcel} className="flex text-accent border border-accent bg-white items-center h-12 rounded-md gap-2 p-3">
+                        Download All Students
+                    </Button>
                     <div className="flex text-accent border border-accent bg-white items-center h-12 rounded-md gap-2 p-3">
                         <FaFilter />
                         <div>Filter</div>
@@ -106,54 +117,6 @@ const HomeAdmin = ({ student } : StudentProps) => {
             </TableLayout>
             <Paginator onPrev={onPrev} onNext={onNext} />
             {/* student id, academic group, student name, student email, student phone */}
-            {/* <table className="mt-5 border-separate border-spacing-y-5">
-                <thead>
-                    <tr>
-                        <th className="pr-3">
-                            <input type="checkbox" className="w-4 h-4" />
-                        </th>
-                        <th className="font-normal">NIM</th>
-                        <th className="font-normal">Name</th>
-                        <th className="font-normal">Email</th>
-                        <th className="font-normal">Current Semester</th>
-                        <th className="font-normal">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {student.map((s, idx) => (
-                        <tr key={idx} className="bg-white shadow rounded-md">
-                            <td className="px-4 py-3 rounded-l-md">
-                                <input type="checkbox" className="w-4 h-4" />
-                            </td>
-                            <td className="px-4 py-3 text-sm text-center">
-                                {s.nim}
-                            </td>
-                            <td className="px-4 py-3 text-sm text-center">
-                                {s.full_name}
-                            </td>
-                            <td className="px-4 py-3 text-sm text-center">
-                                {s.email}
-                            </td>
-                            <td className="px-4 py-3 text-sm text-center">
-                                {s.curr_semester}
-                            </td>
-                            <td className="px-4 py-3 text-sm rounded-r-md">
-                                <div className="flex justify-center gap-4">
-                                    <button className="p-1 text-blue-600 hover:bg-blue-100 rounded-md transition-colors">
-                                        <MdEdit className="text-primary text-3xl"/>
-                                    </button>
-                                    <button className="p-1 text-red-600 hover:bg-red-100 rounded-md transition-colors">
-                                        <MdDelete className="text-primary text-3xl"/>
-                                    </button>
-                                    <button className="bg-accent text-white px-4 py-1 rounded-md text-sm">
-                                        Detail
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table> */}
         </div>
     )
 }
