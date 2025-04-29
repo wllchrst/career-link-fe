@@ -21,16 +21,16 @@ const Session = ({loaderData}:Route.ComponentProps) => {
         <h2 className={'font-semibold text-left text-4xl text-slate-700 py-6 w-full h-full'}>To Do List</h2>
 
         <div className={'flex flex-col gap-y-6 mb-8'}>
-            <AccordionLayout text={'Pretest'} isLocked>
+            <AccordionLayout text={'Pretest'}>
                 <QuizCard />
             </AccordionLayout>
-            <AccordionLayout text={'Material'} isLocked={true}>
+            <AccordionLayout text={'Material'} isLocked>
                 here material
             </AccordionLayout>
-            <AccordionLayout text={'Post Test'} isLocked={true}>
+            <AccordionLayout text={'Post Test'} isLocked>
                 <QuizCard />
             </AccordionLayout>
-            <AccordionLayout text={'Assignment'} isLocked={true}>
+            <AccordionLayout text={'Assignment'} isLocked>
                 here assignment
             </AccordionLayout>
         </div>

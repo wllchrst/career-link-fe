@@ -2,13 +2,50 @@ import { CiSearch } from "react-icons/ci";
 import { FaFilter } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
-import type { Student } from "~/types/api";
+import type { User } from "~/types/api";
+import * as XLSX from 'xlsx';
+import { useState, type ChangeEvent } from "react";
 
 interface StudentProps {
-    student: Student[];
+    student: User[];
 }
 
 const HomeAdmin = ({ student } : StudentProps) => {
+    
+
+  const [data, setData] = useState<string>('');
+
+  const handleFileUpload = (e:ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files;
+    const reader = new FileReader();
+
+    reader.onload = (event) => {
+        if (event.target == null) return
+
+        const workbook = XLSX.read(event.target.result, { type: 'binary' });
+        const sheetName = workbook.SheetNames[0];
+        const sheet = workbook.Sheets[sheetName];
+        let sheetData = XLSX.utils.sheet_to_json<string[]>(sheet, {header: 1});
+        sheetData = sheetData.slice(11)
+        
+        const headers = sheetData[0];
+        const rows = sheetData.slice(1).map((row) => {
+            const obj: any = {};
+            headers.forEach((header, index) => {
+                obj[header] = row[index];
+            });
+            return obj;
+        });
+
+        setData(JSON.stringify(rows))
+        console.log(sheetData.length)
+    };
+
+    if (file != null){
+        reader.readAsBinaryString(file[0]);
+    }
+  };
+
     return (
         <div className="container flex flex-col">
             <h1 className="text-2xl text-primary font-bold mb-4">Student Lists</h1>
@@ -27,9 +64,10 @@ const HomeAdmin = ({ student } : StudentProps) => {
                     </button>
                 </div>
                 <div className="flex gap-4">
-                    <div className="flex text-accent border border-accent bg-white items-center h-12 rounded-md gap-2 p-3">
-                        <div>Sync Data</div>
-                    </div>
+                    <label htmlFor="file" className="flex text-accent border border-accent bg-white items-center h-12 rounded-md gap-2 p-3">
+                        Sync Data
+                    </label>
+                    <input type="file" id='file' onChange={handleFileUpload} className="hidden"/>
                     <div className="flex text-accent border border-accent bg-white items-center h-12 rounded-md gap-2 p-3">
                         <div>Download All Students</div>
                     </div>
@@ -39,7 +77,9 @@ const HomeAdmin = ({ student } : StudentProps) => {
                     </div>
                 </div>
             </div>
-            <table className="mt-5 border-separate border-spacing-y-5">
+            {data}
+            {/* student id, academic group, student name, student email, student phone */}
+            {/* <table className="mt-5 border-separate border-spacing-y-5">
                 <thead>
                     <tr>
                         <th className="pr-3">
@@ -86,7 +126,7 @@ const HomeAdmin = ({ student } : StudentProps) => {
                         </tr>
                     ))}
                 </tbody>
-            </table>
+            </table> */}
         </div>
     )
 }
