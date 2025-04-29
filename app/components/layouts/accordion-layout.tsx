@@ -3,7 +3,7 @@ import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "~/co
 
 interface Props extends HTMLProps<HTMLDivElement> {
     text: string;
-    isLocked: boolean | undefined;
+    isLocked?: boolean | undefined;
     children: ReactNode;
 }
 

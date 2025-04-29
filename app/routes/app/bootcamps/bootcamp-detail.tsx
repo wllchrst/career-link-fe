@@ -1,6 +1,5 @@
 import BootcampDetailCard from "~/components/bootcamp/bootcamp-detail-card";
 import { getBootcamp } from "~/features/bootcamp/api/get-bootcamp";
-import BootcampDetailContent from "~/features/bootcamp/components/bootcamp-detail-content";
 import type { Route } from "./+types/bootcamp-detail";
 import { getBootcampCategory } from "~/features/bootcamp-category/api/get-bootcamp-category";
 import { getBootcampType } from "~/features/bootcamp-type/api/get-bootcamp-type";
@@ -8,6 +7,7 @@ import { Modal, type ModalType } from "~/components/modal";
 import { useRevalidator } from "react-router";
 import { useState } from "react";
 import { CreateSession } from "~/features/session/components/create-session";
+import SessionsGrid from "~/features/session/components/sessions-grid";
 
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
@@ -44,7 +44,7 @@ const BootcampDetail = ({ loaderData }: Route.ComponentProps) => {
       </Modal>
       <div className={"flex flex-col gap-8 max-w-[100rem]"}>
         <BootcampDetailCard name={bootcamp.name} description={bootcamp.description} category={category} type={type} image={bootcamp.image_path} onClick={() => setActiveModal('create')}/>
-        <BootcampDetailContent />
+        <SessionsGrid sessions={bootcamp.sessions ?? []}/>
       </div>
     </>
   );

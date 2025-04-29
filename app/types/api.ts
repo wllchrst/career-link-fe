@@ -73,7 +73,7 @@ export type SessionTest = {
 export type Session = {
   id: string;
   bootCamp: Bootcamp;
-  number: number;
+  session_number: number;
   title: string;
   description: string;
   materials: SessionData[];
