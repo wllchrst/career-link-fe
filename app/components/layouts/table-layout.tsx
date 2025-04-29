@@ -1,29 +1,23 @@
-import type {HTMLProps, ReactNode} from "react";
+import type { HTMLProps, ReactNode } from "react";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "~/components/ui/table";
 
 interface Props extends HTMLProps<HTMLDivElement> {
+    columns: string[];
     children: ReactNode;
+
 }
 
-export default function TableLayout() {
+export default function TableLayout<T>({columns, children}:Props) {
 
     return (
-        <Table>
-            <TableHeader>
+        <Table className="my-5 border border rounded-mdha">
+            <TableHeader className="bg-slate-600">
                 <TableRow>
-                    <TableHead className="w-[100px]">Attempt</TableHead>
-                    <TableHead>State</TableHead>
-                    <TableHead>Duration</TableHead>
-                    <TableHead className="text-center">Score</TableHead>
+                    {columns.map(e => <TableHead className="text-center text-white">{e}</TableHead>)}
                 </TableRow>
             </TableHeader>
             <TableBody>
-                <TableRow>
-                    <TableCell className="font-medium">1</TableCell>
-                    <TableCell>Finished</TableCell>
-                    <TableCell>1 minutes 22 seconds</TableCell>
-                    <TableCell className="text-center">95.00</TableCell>
-                </TableRow>
+                {children}
             </TableBody>
         </Table>
     )

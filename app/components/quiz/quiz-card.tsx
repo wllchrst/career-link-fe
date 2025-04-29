@@ -1,5 +1,6 @@
 import TableLayout from "~/components/layouts/table-layout";
 import {Link} from "react-router";
+import { TableCell, TableRow } from "../ui/table";
 
 const QuizCard = () => {
 
@@ -19,7 +20,14 @@ const QuizCard = () => {
                 </div>
             </div>
             <h2 className={'font-bold text-lg'}>Summary of Your Previous Attempts</h2>
-            <TableLayout />
+            <TableLayout columns={['No.', 'Status', 'Duration', 'Grade']}>
+                <TableRow>
+                    <TableCell className="font-medium">1</TableCell>
+                    <TableCell>Finished</TableCell>
+                    <TableCell>1 minutes 22 seconds</TableCell>
+                    <TableCell className="text-center">95.00</TableCell>
+                </TableRow>
+            </TableLayout>
             <Link to={'/quiz'}>
                 <button
                     className={'bg-[var(--accent)] text-white rounded-md p-2 w-40 hover:bg-[var(--secondary)] transition duration-200 ease-in-out'}>

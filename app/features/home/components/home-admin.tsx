@@ -5,6 +5,9 @@ import { MdDelete } from "react-icons/md";
 import type { User } from "~/types/api";
 import * as XLSX from 'xlsx';
 import { useState, type ChangeEvent } from "react";
+import TableLayout from "~/components/layouts/table-layout";
+import { TableCell, TableRow } from "~/components/ui/table";
+import Paginator from "~/components/ui/paginator";
 
 interface StudentProps {
     student: User[];
@@ -13,7 +16,8 @@ interface StudentProps {
 const HomeAdmin = ({ student } : StudentProps) => {
     
 
-  const [data, setData] = useState<string>('');
+  const [data, setData] = useState<User[]>([]);
+  const [page, setPage] = useState(0);
 
   const handleFileUpload = (e:ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files;
@@ -32,12 +36,12 @@ const HomeAdmin = ({ student } : StudentProps) => {
         const rows = sheetData.slice(1).map((row) => {
             const obj: any = {};
             headers.forEach((header, index) => {
-                obj[header] = row[index];
+                obj[header.toLowerCase().replace(' ', '_')] = row[index];
             });
             return obj;
         });
 
-        setData(JSON.stringify(rows))
+        setData(rows)
         console.log(sheetData.length)
     };
 
@@ -45,6 +49,15 @@ const HomeAdmin = ({ student } : StudentProps) => {
         reader.readAsBinaryString(file[0]);
     }
   };
+
+    const onPrev = () => {
+        if (0 < page)
+            setPage(page - 1)
+    }
+    const onNext = () => {
+        if (Math.floor(data.length / 10) > page)
+            setPage(page + 1)
+    }
 
     return (
         <div className="container flex flex-col">
@@ -77,7 +90,21 @@ const HomeAdmin = ({ student } : StudentProps) => {
                     </div>
                 </div>
             </div>
-            {data}
+            <TableLayout columns={['No.', 'NIM', 'Name', 'Email', 'Phone', 'Program']}>
+                {
+                    data.slice(page * 10, page * 10 + 10).map((e, idx) => 
+                        <TableRow className={`${idx%2 == 0?'bg-gray-300':''}`}>
+                            <TableCell className="font-medium">{(idx + page * 10) + 1}</TableCell>
+                            <TableCell>{e.student_id ?? '-'}</TableCell>
+                            <TableCell>{e.student_name}</TableCell>
+                            <TableCell>{e.student_email}</TableCell>
+                            <TableCell>{e.student_phone.replace('+62', '0')}</TableCell>
+                            <TableCell className="text-center">{e.academic_program ?? '-'}</TableCell>
+                        </TableRow>
+                    )
+                }
+            </TableLayout>
+            <Paginator onPrev={onPrev} onNext={onNext} />
             {/* student id, academic group, student name, student email, student phone */}
             {/* <table className="mt-5 border-separate border-spacing-y-5">
                 <thead>
