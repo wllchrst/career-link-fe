@@ -8,6 +8,8 @@ import Paginator from "~/components/ui/paginator";
 import { Button } from "~/components/ui/button";
 import { exportToExcel } from "~/lib/excel";
 import { useNavigate } from "react-router";
+import { syncUser } from "../api/sync-student-data";
+import { useState } from "react";
 
 interface StudentProps {
     student: User[];
@@ -17,6 +19,7 @@ interface StudentProps {
 
 const HomeAdmin = ({ student, cur, lastPage } : StudentProps) => {
     const perPage = 8
+    const [isLoading, setLoading] = useState(false)
     const navigate = useNavigate()
 
     const onPrev = () => {
@@ -26,6 +29,14 @@ const HomeAdmin = ({ student, cur, lastPage } : StudentProps) => {
     const onNext = () => {
         if (lastPage == cur) return
         navigate(`/?page=${cur + 1}&per_page=${perPage}`)
+    }
+    const sync = () => {
+        setLoading(true)
+        syncUser().then(e => {
+            setLoading(false)
+            navigate(`/?page=${1}&per_page=${perPage}`)
+            
+        })
     }
 
     return (
@@ -48,6 +59,9 @@ const HomeAdmin = ({ student, cur, lastPage } : StudentProps) => {
                 <div className="flex gap-4">
                     <Button onClick={() => exportToExcel('Student-data-master', student)} className="flex text-accent border border-accent bg-white items-center h-12 rounded-md gap-2 p-3 hover:text-white transition duration-400">
                         Download Student Data
+                    </Button>
+                    <Button onClick={sync} className="flex text-accent border border-accent bg-white items-center h-12 rounded-md gap-2 p-3 hover:text-white transition duration-400">
+                       {isLoading ? 'Syncing...':'Sync Data'}
                     </Button>
                     <div className="flex text-accent border border-accent bg-white items-center h-12 rounded-md gap-2 p-3">
                         <FaFilter />
