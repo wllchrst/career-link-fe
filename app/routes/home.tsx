@@ -1,9 +1,9 @@
 import HomeAdmin from "~/features/home/components/home-admin";
-import { Welcome } from "../components/welcome/welcome";
 import { HomeProfileCard } from "~/features/home/components/home-profile-card";
 import { useRole } from "~/role-testing-provider";
-import { StudentData } from "~/features/home/student-dummy-data";
 import type { Route } from "./+types/home";
+import { getUsers } from "~/features/home/api/get-student-data";
+import { useNavigate } from "react-router";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -12,13 +12,24 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-export default function Home() {
-  const { role } = useRole();
+export const loader = async ({request}:{request:Request}) => {
+    const url = new URL(request.url); 
+    const page = parseInt(url.searchParams.get("page") ?? "1");
+    const size = parseInt(url.searchParams.get("per_page") ?? "8");
+    const { data: students, meta } = await getUsers(page,size);
+    return {students, page, meta }
+};
 
+
+export default function Home({loaderData}: Route.ComponentProps) {
+  
+  const { role } = useRole();
+  const {students, page, meta} = loaderData
+  
   return (
     <>
       {role == "admin" ? (
-        <HomeAdmin student={StudentData} />
+        <HomeAdmin student={students} cur={page} lastPage={meta.last_page}/>
       ) : (
         <HomeProfileCard />
       )}

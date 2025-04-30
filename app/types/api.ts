@@ -1,10 +1,10 @@
 export type User = {
-  binusian_id: string;
-  student_id?: string;
-  student_name: string;
-  student_email: string;
-  student_phone: string;
-  academic_program?: string;
+  id: string;
+  nim?: string;
+  name: string;
+  email: string;
+  phone: string;
+  major?: string;
 };
 
 export type Announcement = {
