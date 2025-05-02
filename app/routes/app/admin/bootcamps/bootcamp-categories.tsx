@@ -40,7 +40,7 @@ const BootcampCategories = ({ loaderData }: Route.ComponentProps) => {
   return (
     <>
       <Modal
-        title="Add category"
+        title="Add Category"
         isOpen={activeModal === "create"}
         onClose={() => setActiveModal(null)}
       >
@@ -78,9 +78,9 @@ const BootcampCategories = ({ loaderData }: Route.ComponentProps) => {
         </h1>
         <Button
           onClick={() => setActiveModal("create")}
-          className="w-fit px-5 py-5"
+          className="w-fit px-5 py-5 bg-accent"
         >
-          Add category
+          Add Category
         </Button>
         <BootcampCategoriesList
           onDelete={onDelete}

@@ -36,7 +36,7 @@ export const Modal = ({ isOpen, onClose, children, title }: Props) => {
         >
           ✕
         </button>
-        <h1 className="text-primary text-xl font-bold mb-3">{title}</h1>
+        <h1 className="text-primary text-xl font-bold mb-3 text-center">{title}</h1>
         {children}
       </div>
     </div>,

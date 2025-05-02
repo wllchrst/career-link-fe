@@ -1,6 +1,7 @@
 import { CiSearch } from "react-icons/ci";
 import { FaFilter } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
 import type { User } from "~/types/api";
 import TableLayout from "~/components/layouts/table-layout";
 import { TableCell, TableRow } from "~/components/ui/table";
@@ -80,6 +81,39 @@ const HomeAdmin = ({ student, cur, lastPage } : StudentProps) => {
                             <TableCell>{e.phone.replace('+62', '0')}</TableCell>
                             <TableCell className="text-center">{e.major ?? '-'}</TableCell>
                         </TableRow>
+                        // <tr key={idx} className="bg-white shadow rounded-md">
+                        //     <td className="px-4 py-3 rounded-l-md">
+                        //         <input type="checkbox" className="w-4 h-4" />
+                        //     </td>
+                        //     <td className="px-4 py-3 text-sm text-center">
+                        //         {e.nim ?? '-'}
+                        //     </td>
+                        //     <td className="px-4 py-3 text-sm text-center">
+                        //         {e.name}
+                        //     </td>
+                        //     <td className="px-4 py-3 text-sm text-center">
+                        //         {e.email}
+                        //     </td>
+                        //     <td className="px-4 py-3 text-sm text-center">
+                        //         {e.phone.replace('+62', '0')}
+                        //     </td>
+                        //     <td className="px-4 py-3 text-sm text-center">
+                        //         {e.major ?? '-'}
+                        //     </td>
+                        //     <td className="px-4 py-3 text-sm rounded-r-md">
+                        //         <div className="flex justify-center gap-4">
+                        //             <button className="p-1 text-blue-600 hover:bg-blue-100 rounded-md transition-colors">
+                        //                 <MdEdit className="text-primary text-3xl"/>
+                        //             </button>
+                        //             <button className="p-1 text-red-600 hover:bg-red-100 rounded-md transition-colors">
+                        //                 <MdDelete className="text-primary text-3xl"/>
+                        //             </button>
+                        //             <button className="bg-accent text-white px-4 py-1 rounded-md text-sm">
+                        //                 Detail
+                        //             </button>
+                        //         </div>
+                        //     </td>
+                        // </tr>
                     )
                 }
             </TableLayout>

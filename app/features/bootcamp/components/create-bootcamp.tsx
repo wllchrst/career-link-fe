@@ -113,7 +113,7 @@ export const CreateBootcamp = ({onSuccess, categories, types, speakers}: Props) 
                   }/>
                 </>
               }
-              <div className="flex gap-10 justify-end">
+              <div className="flex gap-5 justify-end">
                 {
                   stage==0?
 
@@ -121,7 +121,7 @@ export const CreateBootcamp = ({onSuccess, categories, types, speakers}: Props) 
                     type="button"
                     disabled={form.formState.isSubmitting}
                     className={
-                      form.formState.isSubmitting ? "opacity-70 cursor-not-allowed" : ""
+                      `bg-accent ${form.formState.isSubmitting ? "opacity-70 cursor-not-allowed" : ""}`
                     }
                     onClick={() => setStage(1)}
                   >
@@ -132,7 +132,7 @@ export const CreateBootcamp = ({onSuccess, categories, types, speakers}: Props) 
                     disabled={form.formState.isSubmitting}
                     onClick={() => setStage(0)}
                     className={
-                      form.formState.isSubmitting ? "opacity-70 cursor-not-allowed" : ""
+                      `bg-accent ${form.formState.isSubmitting ? "opacity-70 cursor-not-allowed" : ""}`
                     }
                   >
                     {"Back"}
@@ -142,7 +142,7 @@ export const CreateBootcamp = ({onSuccess, categories, types, speakers}: Props) 
                   type="submit"
                   disabled={form.formState.isSubmitting}
                   className={
-                    form.formState.isSubmitting ? "opacity-70 cursor-not-allowed" : ""
+                    `bg-accent ${form.formState.isSubmitting ? "opacity-70 cursor-not-allowed" : ""}`
                   }
                 >
                   {form.formState.isSubmitting ? "Creating..." : "Create"}
