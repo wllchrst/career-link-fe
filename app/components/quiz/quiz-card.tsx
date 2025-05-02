@@ -1,8 +1,12 @@
 import TableLayout from "~/components/layouts/table-layout";
 import {Link} from "react-router";
 import { TableCell, TableRow } from "../ui/table";
+import { useRole } from "~/role-testing-provider";
+import { Button } from "../ui/button";
 
 const QuizCard = () => {
+    
+    const {role} = useRole()
 
     return (
         <>
@@ -11,7 +15,7 @@ const QuizCard = () => {
                     <h4>Opened: Tuesday, 11 May 2025, 12:00 PM</h4>
                     <h4>Closed: Friday, 14 May 2025, 12:00 PM</h4>
                 </div>
-                <h2 className={'font-bold'}>Highest Grade: 95.00 / 100.00</h2>
+                {/* <h2 className={'font-bold'}>Highest Grade: 95.00 / 100.00</h2> */}
             </div>
             <div className={'w-full flex justify-between items-start'}>
                 <div>
@@ -19,21 +23,31 @@ const QuizCard = () => {
                     <h4>Attempts Allowed: 2</h4>
                 </div>
             </div>
-            <h2 className={'font-bold text-lg'}>Summary of Your Previous Attempts</h2>
-            <TableLayout columns={['No.', 'Status', 'Duration', 'Grade']}>
-                <TableRow>
-                    <TableCell className="font-medium">1</TableCell>
-                    <TableCell>Finished</TableCell>
-                    <TableCell>1 minutes 22 seconds</TableCell>
-                    <TableCell className="text-center">95.00</TableCell>
-                </TableRow>
-            </TableLayout>
-            <Link to={'/quiz'}>
-                <button
-                    className={'bg-[var(--accent)] text-white rounded-md p-2 w-40 hover:bg-[var(--secondary)] transition duration-200 ease-in-out'}>
-                    Attempt Quiz
-                </button>
-            </Link>
+            
+            <div className="flex justify-start items-center">
+                {role == 'admin'?
+                    <Link to={'/quiz'}>
+                        <Button
+                            className={'bg-[var(--accent)] text-white rounded-md p-2 w-40 hover:bg-[var(--secondary)] transition duration-200 ease-in-out'}>
+                            Attempt Quiz
+                        </Button>
+                    </Link>:
+                    <>
+                        <Button
+                            className={'bg-[var(--accent)] text-white rounded-md p-2 w-40 hover:bg-[var(--secondary)] transition duration-200 ease-in-out'}>
+                            Add New Quiz
+                        </Button>
+                        <Button
+                            className={'bg-[var(--accent)] text-white rounded-md p-2 w-40 hover:bg-[var(--secondary)] transition duration-200 ease-in-out'}>
+                            Update
+                        </Button>
+                        <Button
+                            className={'bg-red-500 text-white rounded-md p-2 w-40 hover:bg-[var(--secondary)] transition duration-200 ease-in-out'}>
+                            Delete
+                        </Button>
+                    </>
+                }
+            </div>
         </>
     )
 }

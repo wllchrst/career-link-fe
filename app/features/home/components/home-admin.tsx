@@ -73,13 +73,13 @@ const HomeAdmin = ({ student, cur, lastPage } : StudentProps) => {
             <TableLayout columns={['No.', 'NIM', 'Name', 'Email', 'Phone', 'Program']}>
                 {
                     student.map((e, idx) => 
-                        <TableRow className={`${idx%2 == 0?'bg-gray-300':''}`}>
-                            <TableCell className="font-medium">{(idx + (cur - 1) * perPage) + 1}</TableCell>
-                            <TableCell>{e.nim ?? '-'}</TableCell>
-                            <TableCell>{e.name}</TableCell>
-                            <TableCell>{e.email}</TableCell>
-                            <TableCell>{e.phone.replace('+62', '0')}</TableCell>
-                            <TableCell className="text-center">{e.major ?? '-'}</TableCell>
+                        <TableRow className="shadow-md p-5 bg-white rounded-lg grid grid-cols-20">
+                            <TableCell className="font-medium text-center col-span-1">{(idx + (cur - 1) * perPage) + 1}</TableCell>
+                            <TableCell className=" col-span-2">{e.nim ?? '-'}</TableCell>
+                            <TableCell className=" col-span-7">{e.name}</TableCell>
+                            <TableCell className=" col-span-5">{e.email}</TableCell>
+                            <TableCell className=" col-span-2">{e.phone.replace('+62', '0')}</TableCell>
+                            <TableCell className="text-center col-span-3">{e.major ?? '-'}</TableCell>
                         </TableRow>
                         // <tr key={idx} className="bg-white shadow rounded-md">
                         //     <td className="px-4 py-3 rounded-l-md">
@@ -117,7 +117,7 @@ const HomeAdmin = ({ student, cur, lastPage } : StudentProps) => {
                     )
                 }
             </TableLayout>
-            <Paginator onPrev={onPrev} onNext={onNext} />
+            <Paginator onPrev={onPrev} onNext={onNext} lastPage={lastPage}/>
         </div>
     )
 }
