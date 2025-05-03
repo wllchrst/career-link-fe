@@ -8,17 +8,19 @@ export const createBootcampInputSchema = z.object({
   type_id: z.string().min(1, "Type ID is required"),
   speaker_id: z.string().min(1, "Speaker ID is required"),
   image_path: z.string().optional(),
-  image_file: z.instanceof(File).refine(
-    (file) =>
-      [
-        "image/png",
-        "image/jpeg",
-        "image/jpg",
-        "image/svg+xml",
-        "image/gif",
-      ].includes(file.type),
-    { message: "Invalid image file type" }
-  )
+  image_file: z
+    .instanceof(File)
+    .refine(
+      (file) =>
+        [
+          "image/png",
+          "image/jpeg",
+          "image/jpg",
+          "image/svg+xml",
+          "image/gif",
+        ].includes(file.type),
+      { message: "Invalid image file type" }
+    ),
 });
 
 export type CreateBootcampInput = z.infer<typeof createBootcampInputSchema>;
@@ -30,12 +32,12 @@ export const createBootcamp = ({
 }): Promise<{ data: { id: string }; message: string }> => {
   let formData = new FormData();
 
-  for ( let key in data ) {
-      formData.append(key, data[key]);
+  for (let key in data) {
+    formData.append(key, data[key]);
   }
   return api.post("/bootcamp", formData, {
     headers: {
-      'Content-Type':'multipart/form-data'
-    }
+      "Content-Type": "multipart/form-data",
+    },
   });
 };
