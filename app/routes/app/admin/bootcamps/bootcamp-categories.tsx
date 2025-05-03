@@ -78,7 +78,7 @@ const BootcampCategories = ({ loaderData }: Route.ComponentProps) => {
         </h1>
         <Button
           onClick={() => setActiveModal("create")}
-          className="w-fit px-5 py-5 bg-accent"
+          className="w-fit px-5 py-5"
         >
           Add Category
         </Button>
