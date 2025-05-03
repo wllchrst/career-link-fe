@@ -71,8 +71,8 @@ export type SessionTest = {
   id: string;
   type: TestType;
   title: string;
-  open_date: string;
-  close_date: string;
+  open_date: Date;
+  close_date: Date;
 };
 
 export type Session = {

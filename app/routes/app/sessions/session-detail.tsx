@@ -11,13 +11,17 @@ export const loader = async ({ params }: Route.LoaderArgs) => {
 
     const { data: session } = await getBootcampSession(params.id);
     const { data: tests } = await getSessionTest(session.id);
-    return {session, tests}
+    return {
+        session, 
+        preTest: tests.filter(e => e.type == TestType.PRE_TEST)[0],
+        postTest: tests.filter(e => e.type == TestType.POST_TEST)[0],
+    }
 };
 
 
 const Session = ({loaderData}:Route.ComponentProps) => {
 
-    const {session, tests} = loaderData
+    const {session, preTest, postTest} = loaderData
 
     return (
     <>
@@ -27,13 +31,13 @@ const Session = ({loaderData}:Route.ComponentProps) => {
             <h2 className={'font-semibold text-left text-4xl text-slate-700 py-6 w-full h-full'}>To Do List</h2>
             <div className={'flex flex-col gap-y-6 mb-8'}>
                 <AccordionLayout text={'Pretest'}>
-                    <TestCard testType={TestType.PRE_TEST} sessionId={session.id} test={tests.filter(e => e.type == TestType.PRE_TEST)[0]}/>
+                    <TestCard testType={TestType.PRE_TEST} sessionId={session.id} test={preTest}/>
                 </AccordionLayout>
                 <AccordionLayout text={'Material'}>
                     here material
                 </AccordionLayout>
                 <AccordionLayout text={'Post Test'}>
-                    <TestCard testType={TestType.POST_TEST} sessionId={session.id} test={tests.filter(e => e.type == TestType.POST_TEST)[0]}/>
+                    <TestCard testType={TestType.POST_TEST} sessionId={session.id} test={postTest}/>
                 </AccordionLayout>
                 <AccordionLayout text={'Assignment'}>
                     <AssignmentCard sessionId={session.id} />

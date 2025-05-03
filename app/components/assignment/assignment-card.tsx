@@ -29,19 +29,22 @@ const AssignmentCard = ({sessionId}:Props) => {
                 asd
             </Modal>  
             {role == 'admin' && <>
-                <Button
-                    className={'bg-slate-500 text-white rounded-md p-2 w-40 hover:bg-slate-700 transition duration-200 ease-in-out'}
-                >
-                    Add New Assignment
-                </Button>
-                <Button
-                    className={'bg-[var(--accent)] text-white rounded-md p-2 w-40 hover:bg-[var(--secondary)] transition duration-200 ease-in-out'}>
-                    Update
-                </Button>
-                <Button
-                    className={'bg-red-500 text-white rounded-md p-2 w-40 hover:bg-red-700 transition duration-200 ease-in-out'}>
-                    Delete
-                </Button>
+                <div className="flex gap-5 justify-start items-center">
+                    <Button
+                        className={'bg-slate-500 text-white rounded-md p-2 w-40 hover:bg-slate-700 transition duration-200 ease-in-out'}
+                        onClick={() => setActiveModal('create')}
+                    >
+                        Add New Assignment
+                    </Button>
+                    <Button
+                        className={'bg-[var(--accent)] text-white rounded-md p-2 w-40 hover:bg-[var(--secondary)] transition duration-200 ease-in-out'}>
+                        Update
+                    </Button>
+                    <Button
+                        className={'bg-red-500 text-white rounded-md p-2 w-40 hover:bg-red-700 transition duration-200 ease-in-out'}>
+                        Delete
+                    </Button>
+                </div>
             </>}
         </>
     )
