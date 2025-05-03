@@ -4,7 +4,11 @@ import { TableCell, TableRow } from "../ui/table";
 import { useRole } from "~/role-testing-provider";
 import { Button } from "../ui/button";
 
-const QuizCard = () => {
+interface Props{
+    onCreate: () => void
+}
+
+const QuizCard = ({onCreate}:Props) => {
     
     const {role} = useRole()
 
@@ -24,8 +28,8 @@ const QuizCard = () => {
                 </div>
             </div>
             
-            <div className="flex justify-start items-center">
-                {role == 'admin'?
+            <div className="flex gap-5 justify-start items-center">
+                {role != 'admin'?
                     <Link to={'/quiz'}>
                         <Button
                             className={'bg-[var(--accent)] text-white rounded-md p-2 w-40 hover:bg-[var(--secondary)] transition duration-200 ease-in-out'}>
@@ -34,7 +38,9 @@ const QuizCard = () => {
                     </Link>:
                     <>
                         <Button
-                            className={'bg-[var(--accent)] text-white rounded-md p-2 w-40 hover:bg-[var(--secondary)] transition duration-200 ease-in-out'}>
+                            className={'bg-slate-500 text-white rounded-md p-2 w-40 hover:bg-slate-700 transition duration-200 ease-in-out'}
+                            onClick={onCreate}
+                        >
                             Add New Quiz
                         </Button>
                         <Button
@@ -42,7 +48,7 @@ const QuizCard = () => {
                             Update
                         </Button>
                         <Button
-                            className={'bg-red-500 text-white rounded-md p-2 w-40 hover:bg-[var(--secondary)] transition duration-200 ease-in-out'}>
+                            className={'bg-red-500 text-white rounded-md p-2 w-40 hover:bg-red-700 transition duration-200 ease-in-out'}>
                             Delete
                         </Button>
                     </>
