@@ -1,19 +1,41 @@
 import TableLayout from "~/components/layouts/table-layout";
-import {Link} from "react-router";
+import {Link, useRevalidator} from "react-router";
 import { TableCell, TableRow } from "../ui/table";
 import { useRole } from "~/role-testing-provider";
 import { Button } from "../ui/button";
+import { Modal, type ModalType } from "../modal";
+import { useState } from "react";
+import { CreateTest } from "~/features/quiz/components/create-test";
+import { TestType } from "~/types/enum";
+import type { SessionTest } from "~/types/api";
 
 interface Props{
-    onCreate: () => void
+    sessionId: string;
+    testType: TestType;
+    test: SessionTest;
 }
 
-const QuizCard = ({onCreate}:Props) => {
+const TestCard = ({sessionId, testType, test}:Props) => {
+
+    const [activeModal, setActiveModal] = useState<ModalType>(null);
+    const revalidator = useRevalidator();
+    
+    const onSuccess = () => {
+        setActiveModal(null);
+        revalidator.revalidate();
+    };
     
     const {role} = useRole()
 
     return (
         <>
+        <Modal 
+            title={`Add ${testType?.replace('_', ' ')}`}
+            isOpen={activeModal === "create"}
+            onClose={() => setActiveModal(null)}
+          >
+              <CreateTest testType={testType} sessionId={sessionId} onSuccess={onSuccess} />
+        </Modal>
             <div className={'w-full flex justify-between items-start'}>
                 <div>
                     <h4>Opened: Tuesday, 11 May 2025, 12:00 PM</h4>
@@ -33,15 +55,15 @@ const QuizCard = ({onCreate}:Props) => {
                     <Link to={'/quiz'}>
                         <Button
                             className={'bg-[var(--accent)] text-white rounded-md p-2 w-40 hover:bg-[var(--secondary)] transition duration-200 ease-in-out'}>
-                            Attempt Quiz
+                            Attempt Test
                         </Button>
                     </Link>:
                     <>
                         <Button
                             className={'bg-slate-500 text-white rounded-md p-2 w-40 hover:bg-slate-700 transition duration-200 ease-in-out'}
-                            onClick={onCreate}
+                            onClick={() => setActiveModal('create')}
                         >
-                            Add New Quiz
+                            Add New Test
                         </Button>
                         <Button
                             className={'bg-[var(--accent)] text-white rounded-md p-2 w-40 hover:bg-[var(--secondary)] transition duration-200 ease-in-out'}>
@@ -58,4 +80,4 @@ const QuizCard = ({onCreate}:Props) => {
     )
 }
 
-export default QuizCard;
+export default TestCard;

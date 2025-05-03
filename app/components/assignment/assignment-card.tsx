@@ -1,0 +1,50 @@
+import { useRole } from "~/role-testing-provider"
+import { Button } from "../ui/button"
+import { Modal, type ModalType } from "../modal"
+import { useState } from "react"
+import { useRevalidator } from "react-router"
+
+interface Props {
+    sessionId: string
+}
+
+const AssignmentCard = ({sessionId}:Props) => {
+    const [activeModal, setActiveModal] = useState<ModalType>(null);
+    const revalidator = useRevalidator();
+    
+    const onSuccess = () => {
+        setActiveModal(null);
+        revalidator.revalidate();
+    };
+
+    const {role} = useRole()
+
+    return (
+        <>
+            <Modal 
+                title={`Add Assignment`}
+                isOpen={activeModal === "create"}
+                onClose={() => setActiveModal(null)}
+            >
+                asd
+            </Modal>  
+            {role == 'admin' && <>
+                <Button
+                    className={'bg-slate-500 text-white rounded-md p-2 w-40 hover:bg-slate-700 transition duration-200 ease-in-out'}
+                >
+                    Add New Assignment
+                </Button>
+                <Button
+                    className={'bg-[var(--accent)] text-white rounded-md p-2 w-40 hover:bg-[var(--secondary)] transition duration-200 ease-in-out'}>
+                    Update
+                </Button>
+                <Button
+                    className={'bg-red-500 text-white rounded-md p-2 w-40 hover:bg-red-700 transition duration-200 ease-in-out'}>
+                    Delete
+                </Button>
+            </>}
+        </>
+    )
+}
+
+export default AssignmentCard

@@ -1,77 +1,42 @@
 import AccordionLayout from "~/components/layouts/accordion-layout";
-import QuizCard from "~/components/quiz/quiz-card";
+import TestCard from "~/components/test/test-card";
 import type { Route } from "./+types/session-detail";
 import { getBootcampSession } from "~/features/session/api/get-session";
 import SessionCard from "~/components/session/session-card";
-import { useState } from "react";
-import { Modal, type ModalType } from "~/components/modal";
-import { useRevalidator } from "react-router";
-import { CreateTest } from "~/features/quiz/components/create-quiz";
-import { QuizType } from "~/types/enum";
-
+import AssignmentCard from "~/components/assignment/assignment-card";
+import { TestType } from "~/types/enum";
+import { getSessionTest } from "~/features/quiz/api/get-session-test";
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
 
     const { data: session } = await getBootcampSession(params.id);
-    return {session}
+    const { data: tests } = await getSessionTest(session.id);
+    return {session, tests}
 };
 
 
 const Session = ({loaderData}:Route.ComponentProps) => {
 
-    const {session} = loaderData
-    const [quizType, setQuizType] = useState<QuizType>()
-    const [activeModal, setActiveModal] = useState<ModalType>(null);
-    const revalidator = useRevalidator();
-    
-    const onSuccess = () => {
-    setActiveModal(null);
-    revalidator.revalidate();
-    };
-
-    const onCreatePretest = () => {
-        setQuizType(QuizType.PRE_TEST)
-        setActiveModal('create')
-    }
-    const onCreatePosttest = () => {
-        setQuizType(QuizType.POST_TEST)
-        setActiveModal('create')
-    }
-
-    // const onUpdate = (bootcamp: Bootcamp) => {
-    //     setSelectedBootcamp(bootcamp);
-    //     setActiveModal("update");
-    // };
-    
-    // const onDelete = (bootcamp: Bootcamp) => {
-    //     setSelectedBootcamp(bootcamp);
-    //     setActiveModal("delete");
-    // };
+    const {session, tests} = loaderData
 
     return (
     <>
-        <Modal 
-            title={`Add ${quizType?.replace('_', ' ')}`}
-            isOpen={activeModal === "create"}
-            onClose={() => setActiveModal(null)}
-          >
-              <CreateTest quizType={quizType ?? QuizType.PRE_TEST} sessionId={session.id} onSuccess={onSuccess} />
-        </Modal>
+        
         <div className={'flex flex-col w-full gap-y-4'}>
             <SessionCard session={session}/>
             <h2 className={'font-semibold text-left text-4xl text-slate-700 py-6 w-full h-full'}>To Do List</h2>
             <div className={'flex flex-col gap-y-6 mb-8'}>
                 <AccordionLayout text={'Pretest'}>
-                    <QuizCard onCreate={onCreatePretest}/>
+                    <TestCard testType={TestType.PRE_TEST} sessionId={session.id} test={tests.filter(e => e.type == TestType.PRE_TEST)[0]}/>
                 </AccordionLayout>
                 <AccordionLayout text={'Material'}>
                     here material
                 </AccordionLayout>
                 <AccordionLayout text={'Post Test'}>
-                    <QuizCard onCreate={onCreatePosttest}/>
+                    <TestCard testType={TestType.POST_TEST} sessionId={session.id} test={tests.filter(e => e.type == TestType.POST_TEST)[0]}/>
                 </AccordionLayout>
                 <AccordionLayout text={'Assignment'}>
-                    here assignment
+                    <AssignmentCard sessionId={session.id} />
                 </AccordionLayout>
             </div>
         </div>

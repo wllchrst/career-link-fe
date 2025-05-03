@@ -8,22 +8,25 @@ import toast from "react-hot-toast";
 import { getErrorMessage } from "~/lib/error";
 import Field from "~/components/ui/form-field";
 import { createTest, createTestInputSchema, type CreateTestInput } from "../api/create-test";
-import { QuizType } from "~/types/enum";
+import { TestType } from "~/types/enum";
+import DatePicker from "~/components/ui/date-picker";
 
 interface Props {
   onSuccess: () => void;
   sessionId: string;
-  quizType: QuizType;
+  testType: TestType;
 }
 
-export const CreateTest = ({onSuccess, quizType, sessionId}: Props) => {
+export const CreateTest = ({onSuccess, testType, sessionId}: Props) => {
 
     const form = useForm<CreateTestInput>({
         resolver: zodResolver(createTestInputSchema),
         defaultValues: {
             title: "",
             session_id: sessionId,
-            type: quizType
+            type: testType,
+            open_date: new Date(),
+            close_date: new Date(),
         },
     });
 
@@ -41,13 +44,36 @@ export const CreateTest = ({onSuccess, quizType, sessionId}: Props) => {
           });
         }
       };
-     
+
+      function handleChangeDate(name:string, date: Date | undefined) {
+        const realName = name as "close_date"|"open_date"
+          if (date) {
+            form.setValue(realName, date);
+          }
+        }
+      
+      function handleTimeChange(name:string,type: "hour" | "minute", value: string) {
+        const realName = name as "open_date"|"close_date"
+        const currentDate = form.getValues(realName) || new Date();
+        let newDate = new Date(currentDate);
+    
+        if (type === "hour") {
+          const hour = parseInt(value, 10);
+          newDate.setHours(hour);
+        } else if (type === "minute") {
+          newDate.setMinutes(parseInt(value, 10));
+        }
+    
+        form.setValue(realName, newDate);
+      }
 
       return (
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                 <>
                   <Field control={form.control} placeholder="Enter name" label="Name" type="text" name="title"/>
+                  <DatePicker onSelect={handleChangeDate} onTimeChange={handleTimeChange} name='open_date' control={form.control} label="Start Date" />
+                  <DatePicker onSelect={handleChangeDate} onTimeChange={handleTimeChange} name='close_date' control={form.control} label="End Date" />
                 </>
             
               <div className="flex gap-5 justify-end">

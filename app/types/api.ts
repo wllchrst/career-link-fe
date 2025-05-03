@@ -1,3 +1,5 @@
+import type { TestType } from "./enum";
+
 export type User = {
   id: string;
   nim?: string;
@@ -67,8 +69,10 @@ export type Question = {
 
 export type SessionTest = {
   id: string;
-  questions: Question[];
-  scores: Result[];
+  type: TestType;
+  title: string;
+  open_date: string;
+  close_date: string;
 };
 
 export type Session = {
