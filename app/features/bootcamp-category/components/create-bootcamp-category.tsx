@@ -5,9 +5,7 @@ import {
   type CreateCategoryInput,
 } from "~/features/bootcamp-category/api/create-bootcamp-category";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Form
-} from "~/components/ui/form";
+import { Form } from "~/components/ui/form";
 import { Button } from "~/components/ui/button";
 import toast from "react-hot-toast";
 import { getErrorMessage } from "~/lib/error";
@@ -44,10 +42,20 @@ export const CreateBootcampCategory = ({ onSuccess }: Props) => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <Field
+          control={form.control}
+          placeholder="Enter name"
+          label="Name"
+          type="text"
+          name="name"
+        />
+        <TextAreaField
+          control={form.control}
+          placeholder="Enter description"
+          label="Description"
+          name="description"
+        />
 
-        <Field control={form.control} placeholder="Enter name" label="Name" type="text" name="name"/>
-        <TextAreaField  control={form.control} placeholder="Enter description" label="Description" name="description"/>
-        
         <div className="flex justify-end">
           <Button
             type="submit"
