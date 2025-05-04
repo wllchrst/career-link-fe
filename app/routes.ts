@@ -9,7 +9,7 @@ export default [
   index("routes/home.tsx"),
   ...prefix("announcements", [
     index("routes/app/announcements/announcements.tsx"),
-    route(":announcementId", "routes/app/announcements/announcement.tsx"),
+    route(":announcement", "routes/app/announcements/announcement.tsx"),
   ]),
   ...prefix("certificates", [
     index("routes/app/certificates/certificates.tsx"),
@@ -29,9 +29,9 @@ export default [
   ]),
   ...prefix("test", [
     index("routes/app/sessions/session-test-attempt-page.tsx"),
-    route("/manage/:id", "routes/app/sessions/session-test-admin-page.tsx"),
+    route("/manage/:test", "routes/app/sessions/session-test-admin-page.tsx"),
   ]),
   ...prefix("session", [
-    route(":id", "routes/app/sessions/session-detail.tsx"),
+    route(":session", "routes/app/sessions/session-detail.tsx"),
   ]),
 ] satisfies RouteConfig;

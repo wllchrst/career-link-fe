@@ -7,7 +7,7 @@ import { useState } from "react";
 export const loader = async ({ params }: Route.LoaderArgs) => {
 
 
-    return {questions: [], id: params.id}
+    return {questions: [], id: params.test}
 };
 
 

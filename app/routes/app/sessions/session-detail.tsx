@@ -9,7 +9,7 @@ import { getSessionTest } from "~/features/quiz/api/get-session-test";
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
 
-    const { data: session } = await getBootcampSession(params.id);
+    const { data: session } = await getBootcampSession(params.session);
     const { data: tests } = await getSessionTest(session.id);
     return {
         session, 
