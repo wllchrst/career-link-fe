@@ -25,7 +25,7 @@ export default function Field<T extends FieldValues>({
           <FormItem className="w-full">
             <FormLabel>{label}</FormLabel>
             <FormControl>
-              <Input type={type} placeholder={placeholder} {...field} />
+              <Input type={type} placeholder={placeholder} {...field} checked={field.value}/>
             </FormControl>
             <FormMessage />
           </FormItem>

@@ -56,10 +56,10 @@ const TestCard = ({sessionId, testType, test}:Props) => {
                 <div className="flex gap-5 justify-start items-center">
                 
                     {role != 'admin'?
-                        <Link to={'/test'}>
+                        <Link to={`/test/${test.id}`}>
                             <Button
                                 className={'bg-[var(--accent)] text-white rounded-md p-2 w-40 hover:bg-[var(--secondary)] transition duration-200 ease-in-out'}>
-                                Attempt Test
+                                Take Test
                             </Button>
                         </Link>:
                         <>  

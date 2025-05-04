@@ -58,12 +58,15 @@ export type SessionData = {
 
 export type Option = {
   id: string;
-  name: string;
+  option: string;
+  question_id: string;
+  is_answer: boolean;
 };
 
 export type Question = {
   id: string;
-  text: string;
+  test_id: string;
+  question: string;
   options: Option[];
 };
 

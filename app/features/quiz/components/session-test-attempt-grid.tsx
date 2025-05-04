@@ -1,0 +1,77 @@
+import { useState } from "react";
+import { IoFlagSharp } from "react-icons/io5"
+import { Button } from "~/components/ui/button";
+import type { Question } from "~/types/api"
+
+interface Props {
+    questions: Question[]
+}
+
+const SessionTestAttemptGrid = ({questions}:Props) => {
+
+    const [isFlagged, setIsFlagged] = useState<boolean>(false);
+
+    const [idx, setIdx] = useState(0)
+
+    const handleClick = () => {
+        setIsFlagged(!isFlagged);
+    }
+
+    const updateQuestion = (e:Question, idx: number) => {
+        setIdx(idx)
+    }
+
+    const onPrev = () => {
+        setIdx(idx == 0? 0:idx - 1)
+    }
+
+    const onNext = () => {
+        setIdx(idx == questions.length - 1?questions.length - 1:idx + 1)
+    }
+
+    return (
+        <>
+            <div className="flex-2 flex-col bg-white shadow rounded-md p-7">
+                <div className="flex justify-between items-center mb-2">
+                    <div className="text-xl font-bold">Question {idx + 1}</div>
+                    {/* <div className={`border cursor-pointer rounded-full p-2 border-accent ${isFlagged ? 'bg-accent' : 'bg-white'}`} onClick={handleClick}>
+                        <IoFlagSharp className={`text-md ${isFlagged ? 'text-white' : 'text-accent'}`}/>
+                    </div> */}
+                </div>
+                <div>
+                    {questions[idx].question}
+                </div>
+                <form action="" className="flex flex-col gap-2 mt-2">
+                    {
+                        questions[idx].options.map(e => 
+                        <div className="flex gap-2">
+                            <input type="radio" name="option" id="a" />
+                            <label htmlFor="option">{e.option}</label>
+                        </div>
+                        )
+                    }
+                </form>
+                <div className="flex justify-between mt-5">
+                    <Button className="text-white border bg-accent rounded-md p-2 px-4" onClick={onPrev}>
+                        <div>Prev</div>
+                    </Button>
+                    <Button className="text-white border bg-accent rounded-md p-2 px-4" onClick={onNext}>
+                        <div>Next</div>
+                    </Button>
+                </div>
+            </div>
+            <div className="flex flex-1 flex-col bg-white shadow rounded-md p-7 gap-3 h-fit">
+                <div className="text-xl font-bold">Questions</div>
+                <div className="flex gap-2">
+                    {
+                        questions.map((e,idx) => <Button className="w-10 h-10 flex justify-center items-center text-white bg-accent rounded-md" onClick={() => updateQuestion(e, idx)}>{idx + 1}</Button>)
+                    }
+                    {/* <div className="w-10 h-10 flex justify-center items-center text-accent bg-white rounded-md border-3 border-accent">3</div> */}
+                </div>
+                <div>Finish Attempt</div>
+            </div>
+        </>
+    )    
+}
+
+export default SessionTestAttemptGrid

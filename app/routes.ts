@@ -28,7 +28,7 @@ export default [
     route("bootcamps/types", "routes/app/admin/bootcamps/bootcamp-types.tsx"),
   ]),
   ...prefix("test", [
-    index("routes/app/sessions/session-test-attempt-page.tsx"),
+    route(":test","routes/app/sessions/session-test-attempt-page.tsx"),
     route("/manage/:test", "routes/app/sessions/session-test-admin-page.tsx"),
   ]),
   ...prefix("session", [

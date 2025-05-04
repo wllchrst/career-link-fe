@@ -7,18 +7,20 @@ import Field from "~/components/ui/form-field";
 import { Button } from "~/components/ui/button";
 import { Form } from "~/components/ui/form";
 import { createQuestionOption } from "../api/create-question-option";
+import type { Question } from "~/types/api";
 
 
 interface Props {
     sessionTestId: string;
     number: string;
+    question?: Question | undefined;
 }
 
-const CreateQuestion = ({sessionTestId, number}:Props) => {
+const CreateQuestion = ({sessionTestId, number, question}:Props) => {
 
     const form = useForm<CreateTestQuestionInput>({
         resolver: zodResolver(createTestQuestionInputSchema),
-        defaultValues: {
+        defaultValues: question ?? {
             question: "",
             test_id: sessionTestId,
             options: [
@@ -29,7 +31,8 @@ const CreateQuestion = ({sessionTestId, number}:Props) => {
             ]
         },
     });
-
+    // console.log(form.getValues('options.0.is_answer'))
+    
     const onSubmit = async (data: CreateTestQuestionInput) => {
         
         const toastId = toast.loading(`Creating Question ${number}...`);
@@ -56,7 +59,7 @@ const CreateQuestion = ({sessionTestId, number}:Props) => {
                         <Field control={form.control} placeholder="Enter question" label={`Question ${number}`} type="text" name="question"/>
                     </>
                     <div className="grid grid-cols-2 gap-2">
-                        {form.getValues('options').map((_,idx) => <div className="flex gap-2 justify-start">
+                        {form.getValues('options').map((_,idx) => <div key={idx} className="flex gap-2 items-start justify-start">
                             <Field control={form.control} label="" type="checkbox" name={`options.${idx}.is_answer`}/>
                             <Field control={form.control} placeholder="Enter option" label="" type="text" name={`options.${idx}.option`}/>
                         </div>)}
