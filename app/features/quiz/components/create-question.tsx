@@ -11,10 +11,10 @@ import { createQuestionOption } from "../api/create-question-option";
 
 interface Props {
     sessionTestId: string;
-    onSuccess: () => void;
+    number: string;
 }
 
-const CreateQuestion = ({sessionTestId, onSuccess}:Props) => {
+const CreateQuestion = ({sessionTestId, number}:Props) => {
 
     const form = useForm<CreateTestQuestionInput>({
         resolver: zodResolver(createTestQuestionInputSchema),
@@ -32,7 +32,7 @@ const CreateQuestion = ({sessionTestId, onSuccess}:Props) => {
 
     const onSubmit = async (data: CreateTestQuestionInput) => {
         
-        const toastId = toast.loading(`Creating Question...`);
+        const toastId = toast.loading(`Creating Question ${number}...`);
         try {
           const res = await createTestQuestion({ data });
 
@@ -40,9 +40,7 @@ const CreateQuestion = ({sessionTestId, onSuccess}:Props) => {
                 data.options[i].question_id = res.data.id
                 await createQuestionOption({data: data.options[i]})
           }  
-          toast.success(res.message, { id: toastId });
-          form.reset();
-          onSuccess();
+          toast.success(res.message, { id: toastId })
         } catch (error) {
           toast.error(getErrorMessage(error), {
             id: toastId,
@@ -53,9 +51,9 @@ const CreateQuestion = ({sessionTestId, onSuccess}:Props) => {
     return (
         <>
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-1/2">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-full">
                     <>
-                        <Field control={form.control} placeholder="Enter question" label="Question" type="text" name="question"/>
+                        <Field control={form.control} placeholder="Enter question" label={`Question ${number}`} type="text" name="question"/>
                     </>
                     <div className="grid grid-cols-2 gap-2">
                         {form.getValues('options').map((_,idx) => <div className="flex gap-2 justify-start">
