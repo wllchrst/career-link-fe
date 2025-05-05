@@ -9,12 +9,17 @@ interface Props {
 
 const SessionTestAttemptGrid = ({questions}:Props) => {
 
-    const [isFlagged, setIsFlagged] = useState<boolean>(false);
+    const [isFlagged, setIsFlagged] = useState<boolean[]>(questions.map(_ => false));
 
     const [idx, setIdx] = useState(0)
 
-    const handleClick = () => {
-        setIsFlagged(!isFlagged);
+    const handleClickFlag = (flag:boolean) => {
+        setIsFlagged(
+            isFlagged.map((e, index) => {
+                if (index == idx) return !flag
+                return e
+            })
+        )
     }
 
     const updateQuestion = (e:Question, idx: number) => {
@@ -34,9 +39,9 @@ const SessionTestAttemptGrid = ({questions}:Props) => {
             <div className="flex-2 flex-col bg-white shadow rounded-md p-7">
                 <div className="flex justify-between items-center mb-2">
                     <div className="text-xl font-bold">Question {idx + 1}</div>
-                    {/* <div className={`border cursor-pointer rounded-full p-2 border-accent ${isFlagged ? 'bg-accent' : 'bg-white'}`} onClick={handleClick}>
-                        <IoFlagSharp className={`text-md ${isFlagged ? 'text-white' : 'text-accent'}`}/>
-                    </div> */}
+                    <div className={`border cursor-pointer rounded-full p-2 border-accent ${isFlagged[idx] ? 'bg-accent' : 'bg-white'}`} onClick={() => handleClickFlag(isFlagged[idx])}>
+                        <IoFlagSharp className={`text-md ${isFlagged[idx] ? 'text-white' : 'text-accent'}`}/>
+                    </div>
                 </div>
                 <div>
                     {questions[idx].question}
@@ -64,9 +69,12 @@ const SessionTestAttemptGrid = ({questions}:Props) => {
                 <div className="text-xl font-bold">Questions</div>
                 <div className="flex gap-2">
                     {
-                        questions.map((e,idx) => <Button className="w-10 h-10 flex justify-center items-center text-white bg-accent rounded-md" onClick={() => updateQuestion(e, idx)}>{idx + 1}</Button>)
+                        questions.map((e,index) => <>
+                            {index == idx ?
+                                <Button className="w-10 h-10 flex justify-center items-center text-white bg-accent rounded-md">{index + 1}</Button>:
+                                <Button className="w-10 h-10 flex justify-center items-center text-accent bg-white rounded-md border-2 border-accent hover:text-white" onClick={() => updateQuestion(e, index)}>{index + 1}</Button>}
+                        </>)
                     }
-                    {/* <div className="w-10 h-10 flex justify-center items-center text-accent bg-white rounded-md border-3 border-accent">3</div> */}
                 </div>
                 <div>Finish Attempt</div>
             </div>

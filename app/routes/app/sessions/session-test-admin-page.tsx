@@ -38,7 +38,10 @@ const SessionTestAdminPage = ({loaderData}:Route.ComponentProps) => {
     const onDelete = (idx:number, question?:Question|undefined) => {
         setIdx(idx)
         setSelectedQuestion(question)
-        setActiveModal('delete')
+        if (question)
+            setActiveModal('delete')
+        else
+            setActiveModal(null)
     }
     console.log(questions)
     
