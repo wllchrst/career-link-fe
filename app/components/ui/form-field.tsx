@@ -29,7 +29,7 @@ export default function Field<T extends FieldValues>({
             <FormLabel>{label}</FormLabel>
             <FormControl>
               {type == 'checkbox' ?
-                <Checkbox {...field} className={className} checked={!!field.value} onCheckedChange={field.onChange} />:
+                <Checkbox {...field} className={className} checked={Boolean(field.value)} onCheckedChange={field.onChange} />:
                 <Input type={type} placeholder={placeholder} {...field} className={className}/>
               }
             </FormControl>
