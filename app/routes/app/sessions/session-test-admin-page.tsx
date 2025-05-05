@@ -2,7 +2,7 @@ import CreateQuestion from "~/features/quiz/components/create-question";
 import type { Route } from "./+types/session-test-admin-page";
 import { Button } from "~/components/ui/button";
 import { useState } from "react";
-import { getSessionTestQuestions } from "~/features/quiz/api/get-test-question";
+import { getSessionTestQuestions } from "~/features/quiz/api/question/get-test-question";
 import { useRevalidator } from "react-router";
 import { Modal, type ModalType } from "~/components/modal";
 import { DeleteQuestion } from "~/features/quiz/components/delete-question";
@@ -29,10 +29,6 @@ const SessionTestAdminPage = ({loaderData}:Route.ComponentProps) => {
     
     const onSuccess = () => {
         revalidator.revalidate().then(() => setActiveModal(null));
-        // if (activeModal == 'delete') {
-        //     questions.splice(idx - 1, 1)
-        // }
-        
     };
 
     const onDelete = (idx:number, question?:Question|undefined) => {
@@ -54,7 +50,7 @@ const SessionTestAdminPage = ({loaderData}:Route.ComponentProps) => {
             >
                 <DeleteQuestion number={idx} onSuccess={onSuccess} question={selectedQuestion} onClose={() => setActiveModal(null)} />
         </Modal>
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-5 w-3/5">
             <div className="flex gap-5">
                 <Button onClick={() => setActiveModal('create')}>Add Question</Button>
             </div>

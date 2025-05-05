@@ -5,7 +5,7 @@ import { getBootcampSession } from "~/features/session/api/get-session";
 import SessionCard from "~/components/session/session-card";
 import AssignmentCard from "~/components/assignment/assignment-card";
 import { TestType } from "~/types/enum";
-import { getSessionTest } from "~/features/quiz/api/get-session-test";
+import { getSessionTest } from "~/features/quiz/api/get-test";
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
 

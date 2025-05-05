@@ -1,5 +1,5 @@
 import type { Route } from "./+types/session-test-attempt-page";
-import { getSessionTestQuestions } from "~/features/quiz/api/get-test-question";
+import { getSessionTestQuestions } from "~/features/quiz/api/question/get-test-question";
 import SessionTestAttemptGrid from "~/features/quiz/components/session-test-attempt-grid";
 
 export const loader = async ({ params }:Route.LoaderArgs) => {

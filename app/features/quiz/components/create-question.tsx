@@ -1,13 +1,15 @@
 import { useForm } from "react-hook-form"
-import { createTestQuestion, createTestQuestionInputSchema, type CreateTestQuestionInput } from "../api/create-test-question";
+import { createTestQuestion, createTestQuestionInputSchema, type CreateTestQuestionInput } from "../api/question/create-test-question";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
 import { getErrorMessage } from "~/lib/error";
 import Field from "~/components/ui/form-field";
 import { Button } from "~/components/ui/button";
 import { Form } from "~/components/ui/form";
-import { createQuestionOption } from "../api/create-question-option";
+import { createQuestionOption } from "../api/option/create-question-option";
 import type { Question } from "~/types/api";
+import { updateTestQuestion } from "../api/question/update-test-question";
+import { updateQuestionOption } from "../api/option/update-question-option";
 
 
 interface Props {
@@ -33,16 +35,19 @@ const CreateQuestion = ({sessionTestId, number, question, onDelete, onSuccess}:P
             ]
         },
     });
-    // console.log(form.getValues('options.0.is_answer'))
     
     const onSubmit = async (data: CreateTestQuestionInput) => {
         
-        const toastId = toast.loading(`Creating Question ${number}...`);
+        const toastId = toast.loading(`${question? "Updating":"Creating"} Question ${number}...`);
         try {
-          const res = await createTestQuestion({ data });
+          const res = question? 
+          await updateTestQuestion({ data, id: question.id }):
+          await createTestQuestion({ data });
 
           for (let i = 0;i < data.options.length;i++){
                 data.options[i].question_id = res.data.id
+                question ? 
+                await updateQuestionOption({data: data.options[i], id: question.options[i].id}): 
                 await createQuestionOption({data: data.options[i]})
           }  
           toast.success(res.message, { id: toastId })
@@ -62,9 +67,11 @@ const CreateQuestion = ({sessionTestId, number, question, onDelete, onSuccess}:P
                         <Field control={form.control} placeholder="Enter question" label={`Question ${number}`} type="text" name="question"/>
                     </>
                     <div className="grid grid-cols-2 gap-2">
-                        {form.getValues('options').map((e,idx) => <div key={e.question_id+idx} className="flex gap-2 items-start justify-start">
-                            <Field control={form.control} label="" type="checkbox" name={`options.${idx}.is_answer`}/>
-                            <Field control={form.control} placeholder="Enter option" label="" type="text" name={`options.${idx}.option`}/>
+                        {form.getValues('options').map((e,idx) => <div key={e.question_id+idx} className="grid grid-cols-10">
+                            <Field control={form.control} label="" type="checkbox" name={`options.${idx}.is_answer`} className="border border-black"/>
+                            <div className="col-span-9">
+                                <Field control={form.control} placeholder="Enter option" label="" type="text" name={`options.${idx}.option`} />
+                            </div>
                         </div>)}
                     </div>
                     <div className="flex gap-5 justify-end">

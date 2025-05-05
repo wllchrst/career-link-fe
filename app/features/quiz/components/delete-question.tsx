@@ -3,7 +3,7 @@ import toast from "react-hot-toast";
 import { Button } from "~/components/ui/button";
 import type { Question } from "~/types/api";
 import { getErrorMessage } from "~/lib/error";
-import { deleteQuestion } from "../api/delete-question";
+import { deleteQuestion } from "../api/question/delete-test-question";
 
 interface Props {
   onSuccess: () => void;
