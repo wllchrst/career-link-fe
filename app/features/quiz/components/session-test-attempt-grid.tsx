@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { IoFlagSharp } from "react-icons/io5"
 import { Button } from "~/components/ui/button";
+import EmptyMessage from "~/components/ui/empty-message";
 import type { Question } from "~/types/api"
 
 interface Props {
@@ -36,7 +37,9 @@ const SessionTestAttemptGrid = ({questions}:Props) => {
 
     return (
         <>
-            <div className="flex-2 flex-col bg-white shadow rounded-md p-7">
+            {questions[idx] ? 
+            <>
+                <div className="flex-2 flex-col bg-white shadow rounded-md p-7">
                 <div className="flex justify-between items-center mb-2">
                     <div className="text-xl font-bold">Question {idx + 1}</div>
                     <div className={`border cursor-pointer rounded-full p-2 border-accent ${isFlagged[idx] ? 'bg-accent' : 'bg-white'}`} onClick={() => handleClickFlag(isFlagged[idx])}>
@@ -50,7 +53,7 @@ const SessionTestAttemptGrid = ({questions}:Props) => {
                     {
                         questions[idx].options.map(e => 
                         <div className="flex gap-2">
-                            <input type="radio" name="option" id="a" />
+                            <input type="radio" name="option" id={e.id} />
                             <label htmlFor="option">{e.option}</label>
                         </div>
                         )
@@ -78,6 +81,10 @@ const SessionTestAttemptGrid = ({questions}:Props) => {
                 </div>
                 <div>Finish Attempt</div>
             </div>
+            </>:
+            <EmptyMessage title="No question yet" text="There is no question in the test! please contact your instructor to fix this issue" />
+            }
+            
         </>
     )    
 }
