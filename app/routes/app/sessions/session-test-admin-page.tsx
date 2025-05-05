@@ -11,9 +11,9 @@ import type { Question } from "~/types/api";
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
 
-    const {data: questions} = await getSessionTestQuestions(params.test)
+    const {data:questions} = await getSessionTestQuestions(params.test)
     
-    return {questions: questions, id: params.test}
+    return {questions, id: params.test}
 };
 
 
@@ -21,7 +21,6 @@ export const loader = async ({ params }: Route.LoaderArgs) => {
 const SessionTestAdminPage = ({loaderData}:Route.ComponentProps) => {
 
     const {questions, id} = loaderData
-    const [count, setCount] = useState(0)
 
     const [activeModal, setActiveModal] = useState<ModalType>(null);
     const revalidator = useRevalidator();
@@ -29,11 +28,11 @@ const SessionTestAdminPage = ({loaderData}:Route.ComponentProps) => {
     const [selectedQuestion, setSelectedQuestion] = useState<Question>();
     
     const onSuccess = () => {
-        setActiveModal(null);
-        revalidator.revalidate();
+        revalidator.revalidate().then(() => setActiveModal(null));
         // if (activeModal == 'delete') {
         //     questions.splice(idx - 1, 1)
         // }
+        
     };
 
     const onDelete = (idx:number, question?:Question|undefined) => {
@@ -54,16 +53,17 @@ const SessionTestAdminPage = ({loaderData}:Route.ComponentProps) => {
         </Modal>
         <div className="flex flex-col gap-5">
             <div className="flex gap-5">
-                <Button onClick={() => setCount(count + 1)}>Add Question</Button>
+                <Button onClick={() => setActiveModal('create')}>Add Question</Button>
             </div>
-            {questions.map((e, idx) => 
-                <CreateQuestion onSuccess={onSuccess} key={idx} question={e} sessionTestId={id} number={(idx+1) + ""} onDelete={onDelete}/>
-            )}
-            {/* {Array.from({length: count}).map((_, idx) => 
-                <CreateQuestion onSuccess={onSuccess} key={idx} sessionTestId={id} number={(questions.length + idx + 1) + ""} onDelete={onDelete}/>
-            )}   */}
+            {
+                questions.map((e, idx) => 
+                <CreateQuestion onSuccess={onSuccess} key={e.id} question={e} sessionTestId={id} number={(idx+1) + ""} onDelete={onDelete}/>)
+            }
+            {
+            activeModal == 'create' && 
+                <CreateQuestion onSuccess={onSuccess} sessionTestId={id} number={(questions.length + 1) + ""} onDelete={onDelete}/>
+            }
 
-            
         </div>
         </>
     )
