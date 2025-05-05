@@ -19,7 +19,7 @@ const Quiz = ({loaderData}:Route.ComponentProps) => {
                 <GoArrowLeft />
                 <div>Pretest Session 3</div>
             </div> */}
-            <SessionTestAttemptGrid questions={questions}/>
+            <SessionTestAttemptGrid questions={questions.sort((a,b) => a.number - b.number)}/>
         </div>
     );
 }

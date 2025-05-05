@@ -5,11 +5,12 @@ import { useRole } from "~/role-testing-provider";
 import { Button } from "../ui/button";
 import { Modal, type ModalType } from "../modal";
 import { useState } from "react";
-import { CreateTest } from "~/features/quiz/components/create-test";
+import { CreateUpdateTest } from "~/features/quiz/components/create-update-test";
 import { TestType } from "~/types/enum";
 import type { SessionTest } from "~/types/api";
 import EmptyMessage from "../ui/empty-message";
 import { format } from "date-fns";
+import { DeleteTest } from "~/features/quiz/components/delete-test";
 
 interface Props{
     sessionId: string;
@@ -21,11 +22,13 @@ const TestCard = ({sessionId, testType, test}:Props) => {
 
     const [activeModal, setActiveModal] = useState<ModalType>(null);
     const revalidator = useRevalidator();
+    const [selectedTest, setSelectedTest] = useState();
     
     const onSuccess = () => {
         setActiveModal(null);
         revalidator.revalidate();
     };
+
     
     const {role} = useRole()
 
@@ -37,9 +40,23 @@ const TestCard = ({sessionId, testType, test}:Props) => {
             isOpen={activeModal === "create"}
             onClose={() => setActiveModal(null)}
           >
-              <CreateTest testType={testType} sessionId={sessionId} onSuccess={onSuccess} />
+              <CreateUpdateTest testType={testType} sessionId={sessionId} onSuccess={onSuccess} />
         </Modal>
         {test ? <>
+            <Modal 
+            title={`Update ${testType?.replace('_', ' ')}`}
+            isOpen={activeModal === "update"}
+            onClose={() => setActiveModal(null)}
+            >
+                <CreateUpdateTest test={test} sessionId={sessionId} testType={test.type} onSuccess={onSuccess} />
+            </Modal>
+            <Modal 
+            title={`Delete ${testType?.replace('_', ' ')}`}
+            isOpen={activeModal === "delete"}
+            onClose={() => setActiveModal(null)}
+            >
+                <DeleteTest selectedCategory={test} onClose={() => setActiveModal(null)} onSuccess={onSuccess} />
+            </Modal>
             <div className={'w-full flex justify-between items-start'}>
                 <div>
                     <h2 className="font-bold text-xl my-2">{test.title}</h2>
@@ -70,11 +87,14 @@ const TestCard = ({sessionId, testType, test}:Props) => {
                                 </Button>
                             </Link>
                             <Button
-                                className={'bg-[var(--accent)] text-white rounded-md p-2 w-40 hover:bg-[var(--secondary)] transition duration-200 ease-in-out'}>
+                                className={'bg-[var(--accent)] text-white rounded-md p-2 w-40 hover:bg-[var(--secondary)] transition duration-200 ease-in-out'}
+                                onClick={() => setActiveModal('update')}>
                                 Update
                             </Button>
                             <Button
-                                className={'bg-red-500 text-white rounded-md p-2 w-40 hover:bg-red-700 transition duration-200 ease-in-out'}>
+                                className={'bg-red-500 text-white rounded-md p-2 w-40 hover:bg-red-700 transition duration-200 ease-in-out'}
+                                onClick={() => setActiveModal('delete')}
+                            >
                                 Delete
                             </Button>
                         </>

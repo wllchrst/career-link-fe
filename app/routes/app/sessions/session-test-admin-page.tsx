@@ -55,8 +55,8 @@ const SessionTestAdminPage = ({loaderData}:Route.ComponentProps) => {
                 <Button onClick={() => setActiveModal('create')}>Add Question</Button>
             </div>
             {
-                questions.map((e, idx) => 
-                <CreateQuestion onSuccess={onSuccess} key={e.id} question={e} sessionTestId={id} number={(idx+1)} onDelete={onDelete}/>)
+                questions.sort((a,b) => a.number - b.number).map((e) => 
+                <CreateQuestion onSuccess={onSuccess} key={e.id} question={e} sessionTestId={id} number={(e.number)} onDelete={onDelete}/>)
             }
             {
             activeModal == 'create' && 

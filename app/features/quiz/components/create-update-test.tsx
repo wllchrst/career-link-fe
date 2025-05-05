@@ -10,31 +10,34 @@ import Field from "~/components/ui/form-field";
 import { createTest, createTestInputSchema, type CreateTestInput } from "../api/create-test";
 import { TestType } from "~/types/enum";
 import DatePicker from "~/components/ui/date-picker";
+import type { SessionTest } from "~/types/api";
+import { updateTest } from "../api/update-test";
 
 interface Props {
   onSuccess: () => void;
   sessionId: string;
   testType: TestType;
+  test?: SessionTest | undefined;
 }
 
-export const CreateTest = ({onSuccess, testType, sessionId}: Props) => {
+export const CreateUpdateTest = ({onSuccess, testType, sessionId, test}: Props) => {
 
     const form = useForm<CreateTestInput>({
         resolver: zodResolver(createTestInputSchema),
         defaultValues: {
-            title: "",
+            title:  test? test.title:"",
             session_id: sessionId,
-            type: testType,
-            open_date: new Date(),
-            close_date: new Date(),
+            type: test? test.type:testType,
+            open_date: test? new Date(test.open_date):new Date(),
+            close_date: test? new Date(test.close_date):new Date(),
         },
     });
 
     const onSubmit = async (data: CreateTestInput) => {
         
-        const toastId = toast.loading(`Creating ${data.type.replace('_', ' ')}...`);
+        const toastId = toast.loading(`${test?"Updating":"Creating"} ${data.type.replace('_', ' ')}...`);
         try {
-          const res = await createTest({ data });
+          const res = test?await updateTest({ data, id:test.id }): await createTest({ data });
           toast.success(res.message, { id: toastId });
           form.reset();
           onSuccess();
@@ -71,7 +74,7 @@ export const CreateTest = ({onSuccess, testType, sessionId}: Props) => {
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                 <>
-                  <Field control={form.control} placeholder="Enter name" label="Name" type="text" name="title"/>
+                  <Field control={form.control} placeholder="Enter title" label="Title" type="text" name="title"/>
                   <DatePicker onSelect={handleChangeDate} onTimeChange={handleTimeChange} name='open_date' control={form.control} label="Start Date" />
                   <DatePicker onSelect={handleChangeDate} onTimeChange={handleTimeChange} name='close_date' control={form.control} label="End Date" />
                 </>
@@ -84,7 +87,7 @@ export const CreateTest = ({onSuccess, testType, sessionId}: Props) => {
                     `bg-accent ${form.formState.isSubmitting ? "opacity-70 cursor-not-allowed" : ""}`
                   }
                 >
-                  {form.formState.isSubmitting ? "Creating..." : "Create"}
+                  {form.formState.isSubmitting ? "Saving..." : "Save"}
                 </Button>
               </div>
             </form>

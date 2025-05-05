@@ -1,0 +1,30 @@
+import { z } from "zod";
+import { api } from "~/lib/api-client";
+import { TestType } from "~/types/enum";
+
+export const updateTestInputSchema = z.object({
+  title: z.string().min(1, "Title is required"),
+  open_date: z.date().min(new Date(), "Date cant be empty"),
+  close_date: z.date().min(new Date(), 'Date cant be empty'),
+  type: z.nativeEnum(TestType),
+  session_id: z.string().min(1, "Session id is required")
+}).refine((data) => {
+  if (data.close_date.getTime() < data.open_date.getTime()) {
+    return false;
+  }
+  return true;
+}, {
+  message: "End date must be after start date",
+  path: ["close_date"],
+});;
+
+export type UpdateTestInput = z.infer<typeof updateTestInputSchema>;
+
+export const updateTest = ({
+  data,id
+}: {
+  data: UpdateTestInput;
+  id: string;
+}): Promise<{ data: { id: string }; message: string }> => {
+  return api.put(`bootcamp/session_test/${id}`, data);
+};
