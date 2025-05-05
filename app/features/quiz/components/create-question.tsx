@@ -14,9 +14,11 @@ interface Props {
     sessionTestId: string;
     number: string;
     question?: Question | undefined;
+    onDelete: (idx:number, question?:Question|undefined) => void;
+    onSuccess: () => void;
 }
 
-const CreateQuestion = ({sessionTestId, number, question}:Props) => {
+const CreateQuestion = ({sessionTestId, number, question, onDelete, onSuccess}:Props) => {
 
     const form = useForm<CreateTestQuestionInput>({
         resolver: zodResolver(createTestQuestionInputSchema),
@@ -44,6 +46,7 @@ const CreateQuestion = ({sessionTestId, number, question}:Props) => {
                 await createQuestionOption({data: data.options[i]})
           }  
           toast.success(res.message, { id: toastId })
+          onSuccess()
         } catch (error) {
           toast.error(getErrorMessage(error), {
             id: toastId,
@@ -74,6 +77,7 @@ const CreateQuestion = ({sessionTestId, number, question}:Props) => {
                         >
                             {form.formState.isSubmitting ? "Saving..." : "Save"}
                         </Button>
+                        <Button variant={'destructive'} type="button" onClick={() => onDelete(parseInt(number), question)}>Delete Question</Button>
                     </div>
                 </form>
             </Form>
