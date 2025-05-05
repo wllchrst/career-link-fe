@@ -14,7 +14,7 @@ import { updateQuestionOption } from "../api/option/update-question-option";
 
 interface Props {
     sessionTestId: string;
-    number: string;
+    number: number;
     question?: Question | undefined;
     onDelete: (idx:number, question?:Question|undefined) => void;
     onSuccess: () => void;
@@ -26,6 +26,7 @@ const CreateQuestion = ({sessionTestId, number, question, onDelete, onSuccess}:P
         resolver: zodResolver(createTestQuestionInputSchema),
         defaultValues: question ?? {
             question: "",
+            number: number,
             test_id: sessionTestId,
             options: [
                 {option:"", is_answer: false, question_id: ""},
@@ -84,7 +85,7 @@ const CreateQuestion = ({sessionTestId, number, question, onDelete, onSuccess}:P
                         >
                             {form.formState.isSubmitting ? "Saving..." : "Save"}
                         </Button>
-                        <Button variant={'destructive'} type="button" onClick={() => onDelete(parseInt(number), question)}>Delete Question</Button>
+                        <Button variant={'destructive'} type="button" onClick={() => onDelete(number, question)}>Delete Question</Button>
                     </div>
                 </form>
             </Form>

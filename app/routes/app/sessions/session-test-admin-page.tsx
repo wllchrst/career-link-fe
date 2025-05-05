@@ -56,11 +56,11 @@ const SessionTestAdminPage = ({loaderData}:Route.ComponentProps) => {
             </div>
             {
                 questions.map((e, idx) => 
-                <CreateQuestion onSuccess={onSuccess} key={e.id} question={e} sessionTestId={id} number={(idx+1) + ""} onDelete={onDelete}/>)
+                <CreateQuestion onSuccess={onSuccess} key={e.id} question={e} sessionTestId={id} number={(idx+1)} onDelete={onDelete}/>)
             }
             {
             activeModal == 'create' && 
-                <CreateQuestion onSuccess={onSuccess} sessionTestId={id} number={(questions.length + 1) + ""} onDelete={onDelete}/>
+                <CreateQuestion onSuccess={onSuccess} sessionTestId={id} number={(questions.length + 1)} onDelete={onDelete}/>
             }
 
         </div>

@@ -3,6 +3,7 @@ import { api } from "~/lib/api-client";
 
 export const createTestQuestionInputSchema = z.object({
   question: z.string().min(1, "Question is required"),
+  number: z.number().min(1, 'Number is required'),
   test_id: z.string().min(1, "Session test id is required"),
   options: z.array(z.object({
     option: z.string().min(1, 'Option is required'),

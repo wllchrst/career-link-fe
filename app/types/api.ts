@@ -67,6 +67,7 @@ export type Question = {
   id: string;
   test_id: string;
   question: string;
+  number: number;
   options: Option[];
 };
 
