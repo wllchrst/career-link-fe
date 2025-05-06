@@ -99,26 +99,18 @@ const TestCard = ({ sessionId, testType, test }: Props) => {
               ) : (
                 <>
                   <Link to={`/session/test/manage/${test.id}`}>
-                    <Button
-                      className={
-                        "bg-green-500 text-white rounded-md p-2 w-40 hover:bg-green-700 transition duration-200 ease-in-out"
-                      }
-                    >
-                      View Detail
-                    </Button>
+                    <Button className={"p-2 w-40"}>View Detail</Button>
                   </Link>
                   <Button
-                    className={
-                      "bg-[var(--accent)] text-white rounded-md p-2 w-40 hover:bg-[var(--secondary)] transition duration-200 ease-in-out"
-                    }
+                    className={"p-2 w-40"}
+                    variant="outline"
                     onClick={() => setActiveModal("update")}
                   >
                     Update
                   </Button>
                   <Button
-                    className={
-                      "bg-red-500 text-white rounded-md p-2 w-40 hover:bg-red-700 transition duration-200 ease-in-out"
-                    }
+                    variant="destructive"
+                    className={"p-2 w-40"}
                     onClick={() => setActiveModal("delete")}
                   >
                     Delete
