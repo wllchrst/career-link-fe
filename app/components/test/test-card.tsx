@@ -98,7 +98,7 @@ const TestCard = ({ sessionId, testType, test }: Props) => {
                 </Link>
               ) : (
                 <>
-                  <Link to={`/session/test/manage/${test.id}`}>
+                  <Link to={`test/manage/${test.id}`}>
                     <Button className={"p-2 w-40"}>View Detail</Button>
                   </Link>
                   <Button

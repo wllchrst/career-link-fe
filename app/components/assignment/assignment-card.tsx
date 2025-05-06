@@ -3,6 +3,7 @@ import { Button } from "../ui/button"
 import { Modal, type ModalType } from "../modal"
 import { useState } from "react"
 import { useRevalidator } from "react-router"
+import CreateAssignment from "~/features/assignment/components/create-assignment"
 
 interface Props {
     sessionId: string
@@ -26,7 +27,7 @@ const AssignmentCard = ({sessionId}:Props) => {
                 isOpen={activeModal === "create"}
                 onClose={() => setActiveModal(null)}
             >
-                asd
+                <CreateAssignment onSuccess={onSuccess} sessionId={sessionId} />
             </Modal>  
             {role == 'admin' && <>
                 <div className="flex gap-5 justify-start items-center">

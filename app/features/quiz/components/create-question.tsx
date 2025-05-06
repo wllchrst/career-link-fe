@@ -63,7 +63,7 @@ const CreateQuestion = ({sessionTestId, number, question, onDelete, onSuccess}:P
     return (
         <>
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-full">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-full bg-white shadow-lg rounded-md p-5">
                     <>
                         <Field control={form.control} placeholder="Enter question" label={`Question ${number}`} type="text" name="question"/>
                     </>
