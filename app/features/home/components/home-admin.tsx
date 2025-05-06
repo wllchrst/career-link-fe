@@ -78,19 +78,19 @@ const HomeAdmin = ({ student, cur, lastPage }: StudentProps) => {
       <TableLayout
         columns={["No.", "NIM", "Name", "Email", "Phone", "Program"]}
       >
-        {student.map(
+        {student.sort((a, b) => b.name.length - a.name.length).map(
           (e, idx) => (
-            <TableRow className="shadow-md p-5 bg-white rounded-lg">
+            <TableRow className="shadow-md p-5 bg-white rounded-lg grid grid-cols-16 w-full">
               <TableCell className="font-medium text-center">
                 {idx + (cur - 1) * perPage + 1}
               </TableCell>
-              <TableCell className="">{e.nim ?? "-"}</TableCell>
-              <TableCell className="">{e.name}</TableCell>
-              <TableCell className="">{e.email}</TableCell>
-              <TableCell className="">
+              <TableCell className="col-span-2">{e.nim ?? "-"}</TableCell>
+              <TableCell className="col-span-4">{e.name}</TableCell>
+              <TableCell className="col-span-4">{e.email}</TableCell>
+              <TableCell className="col-span-2">
                 {e.phone ? e.phone.replace("+62", "0") : "-"}
               </TableCell>
-              <TableCell className="text-center">{e.major ?? "-"}</TableCell>
+              <TableCell className="col-span-3 row-span-2 text-center whitespace-normal break-words">{e.major ?? "-"}</TableCell>
             </TableRow>
           )
           // <tr key={idx} className="bg-white shadow rounded-md">
