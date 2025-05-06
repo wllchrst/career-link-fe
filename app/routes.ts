@@ -29,7 +29,13 @@ export default [
   ]),
   ...prefix("session", [
     route(":session", "routes/app/sessions/session-detail.tsx"),
-    route(":session/test/:test","routes/app/sessions/session-test-attempt-page.tsx"),
-    route("/test/manage/:test", "routes/app/sessions/session-test-admin-page.tsx"),
+    route(
+      ":session/test/:test",
+      "routes/app/sessions/session-test-attempt-page.tsx"
+    ),
+    route(
+      "test/manage/:test",
+      "routes/app/sessions/session-test-admin-page.tsx"
+    ),
   ]),
 ] satisfies RouteConfig;
