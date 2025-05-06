@@ -4,8 +4,8 @@ import { api } from "~/lib/api-client";
 export const createSessionInputSchema = z.object({
   title: z.string().min(1, "Title is required"),
   description: z.string().min(1, "Description is required"),
-  session_number: z.string().min(1, "Session number is required"),
-  bootcamp_id: z.string().min(1, 'Bootcamp ID is required')
+  session_number: z.preprocess((val) => Number(val), z.number().min(1)),
+  bootcamp_id: z.string().min(1, "Bootcamp ID is required"),
 });
 
 export type CreateSessionInput = z.infer<typeof createSessionInputSchema>;
@@ -15,6 +15,5 @@ export const createSession = ({
 }: {
   data: CreateSessionInput;
 }): Promise<{ data: { id: string }; message: string }> => {
-
   return api.post("/bootcamp/session", data);
 };
