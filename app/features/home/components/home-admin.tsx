@@ -11,6 +11,8 @@ import { exportToExcel } from "~/lib/excel";
 import { useNavigate } from "react-router";
 import { syncUser } from "../api/sync-student-data";
 import { useState } from "react";
+import TooltipLayout from "~/components/layouts/tooltip-layout";
+import { MasterDataTableHeader } from "~/components/ui/table-header";
 
 interface StudentProps {
   student: User[];
@@ -76,21 +78,40 @@ const HomeAdmin = ({ student, cur, lastPage }: StudentProps) => {
         </div>
       </div>
       <TableLayout
-        columns={["No.", "NIM", "Name", "Email", "Phone", "Program"]}
+        header = {<MasterDataTableHeader />}
       >
         {student.sort((a, b) => b.name.length - a.name.length).map(
           (e, idx) => (
-            <TableRow className="shadow-md p-5 bg-white rounded-lg grid grid-cols-16 w-full">
-              <TableCell className="font-medium text-center">
+            <TableRow className="shadow-md p-5 border-box bg-white rounded-lg flex w-full">
+              <TableCell className="w-[3%] font-medium text-center">
                 {idx + (cur - 1) * perPage + 1}
               </TableCell>
-              <TableCell className="col-span-2">{e.nim ?? "-"}</TableCell>
-              <TableCell className="col-span-4">{e.name}</TableCell>
-              <TableCell className="col-span-4">{e.email}</TableCell>
-              <TableCell className="col-span-2">
+              <TableCell className="w-[12%] text-center">
+                {e.nim ?? "-"}
+              </TableCell>
+              <TableCell className="w-[15%] text-center whitespace-normal break-words">
+                {e.name}
+              </TableCell>
+              <TableCell className="w-[22%] text-center">
+                {e.email}
+              </TableCell>
+              <TableCell className="w-[12%] text-center">
                 {e.phone ? e.phone.replace("+62", "0") : "-"}
               </TableCell>
-              <TableCell className="col-span-3 row-span-2 text-center whitespace-normal break-words">{e.major ?? "-"}</TableCell>
+              <TableCell className="w-[10%] row-span-2 text-center whitespace-normal break-words">
+                {e.major ?? "-"}
+              </TableCell>
+              <TableCell className="w-[11%] row-span-2 text-center whitespace-normal break-words">
+                <TooltipLayout text={"Artificial Intelligence"}>
+                  <p>{'Artificial Intelligence'.slice(0,10).concat('...')}</p>
+                </TooltipLayout>
+              </TableCell>
+              <TableCell className="w-[8%] row-span-2 text-center whitespace-normal break-words">
+                {"-"}
+              </TableCell>
+              <TableCell className="w-[5%] row-span-2 text-center whitespace-normal break-words">
+                <Button>Update</Button>
+              </TableCell>
             </TableRow>
           )
           // <tr key={idx} className="bg-white shadow rounded-md">
