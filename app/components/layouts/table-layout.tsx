@@ -4,7 +4,6 @@ import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "~/c
 interface Props extends HTMLProps<HTMLDivElement> {
     header: ReactNode;
     children: ReactNode;
-
 }
 
 export default function TableLayout({header, children}:Props) {

@@ -15,8 +15,7 @@ export function meta({}: Route.MetaArgs) {
 export const loader = async ({request}:{request:Request}) => {
     const url = new URL(request.url); 
     const page = parseInt(url.searchParams.get("page") ?? "1");
-    const size = parseInt(url.searchParams.get("per_page") ?? "8");
-    const { data: students, meta } = await getUsers(page,size);
+    const { data: students, meta } = await getUsers(page);
     return {students, page, meta }
 };
 

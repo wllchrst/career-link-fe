@@ -7,6 +7,8 @@ export type User = {
   email: string;
   phone: string;
   major?: string;
+  future_position:  string;
+  skill: string;
 };
 
 export type Announcement = {

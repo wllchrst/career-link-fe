@@ -13,6 +13,8 @@ import { syncUser } from "../api/sync-student-data";
 import { useState } from "react";
 import TooltipLayout from "~/components/layouts/tooltip-layout";
 import { MasterDataTableHeader } from "~/components/ui/table-header";
+import { DownloadIcon } from "lucide-react";
+import StudentRow from "./student-row";
 
 interface StudentProps {
   student: User[];
@@ -21,23 +23,23 @@ interface StudentProps {
 }
 
 const HomeAdmin = ({ student, cur, lastPage }: StudentProps) => {
-  const perPage = 8;
+
   const [isLoading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const onPrev = () => {
     if (cur == 1) return;
-    navigate(`/?page=${cur - 1}&per_page=${perPage}`);
+    navigate(`/?page=${cur - 1}`);
   };
   const onNext = () => {
     if (lastPage == cur) return;
-    navigate(`/?page=${cur + 1}&per_page=${perPage}`);
+    navigate(`/?page=${cur + 1}`);
   };
   const sync = () => {
     setLoading(true);
     syncUser().then((e) => {
       setLoading(false);
-      navigate(`/?page=${1}&per_page=${perPage}`);
+      navigate(`/?page=${1}`);
     });
   };
 
@@ -82,37 +84,7 @@ const HomeAdmin = ({ student, cur, lastPage }: StudentProps) => {
       >
         {student.sort((a, b) => b.name.length - a.name.length).map(
           (e, idx) => (
-            <TableRow className="shadow-md p-5 border-box bg-white rounded-lg flex w-full">
-              <TableCell className="w-[3%] font-medium text-center">
-                {idx + (cur - 1) * perPage + 1}
-              </TableCell>
-              <TableCell className="w-[12%] text-center">
-                {e.nim ?? "-"}
-              </TableCell>
-              <TableCell className="w-[15%] text-center whitespace-normal break-words">
-                {e.name}
-              </TableCell>
-              <TableCell className="w-[22%] text-center">
-                {e.email}
-              </TableCell>
-              <TableCell className="w-[12%] text-center">
-                {e.phone ? e.phone.replace("+62", "0") : "-"}
-              </TableCell>
-              <TableCell className="w-[10%] row-span-2 text-center whitespace-normal break-words">
-                {e.major ?? "-"}
-              </TableCell>
-              <TableCell className="w-[11%] row-span-2 text-center whitespace-normal break-words">
-                <TooltipLayout text={"Artificial Intelligence"}>
-                  <p>{'Artificial Intelligence'.slice(0,10).concat('...')}</p>
-                </TooltipLayout>
-              </TableCell>
-              <TableCell className="w-[8%] row-span-2 text-center whitespace-normal break-words">
-                {"-"}
-              </TableCell>
-              <TableCell className="w-[5%] row-span-2 text-center whitespace-normal break-words">
-                <Button>Update</Button>
-              </TableCell>
-            </TableRow>
+            <StudentRow cur={cur} idx={idx} e={e}/>
           )
           // <tr key={idx} className="bg-white shadow rounded-md">
           //     <td className="px-4 py-3 rounded-l-md">
