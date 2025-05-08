@@ -13,5 +13,5 @@ export const createStudentAttempt = ({
 }: {
   data: CreateStudentAttemptInput;
 }): Promise<{ data: { id: string }; message: string }> => {
-  return api.post("test/create_attempt", data);
+  return api.post("bootcamp/test/create_attempt", data);
 };

@@ -44,6 +44,14 @@ const SessionTestAdminPage = ({loaderData}:Route.ComponentProps) => {
     
     return (
         <div className="flex flex-col w-full gap-5">
+        
+        <Modal 
+            title={`Add Question`}
+            isOpen={activeModal === "create"}
+            onClose={() => setActiveModal(null)}
+            >
+                <CreateQuestion onSuccess={onSuccess} sessionTestId={id} number={(questions.length + 1)} onDelete={onDelete}/>
+        </Modal>
         <Modal 
             title={`Delete Question`}
             isOpen={activeModal === "delete"}
@@ -65,13 +73,9 @@ const SessionTestAdminPage = ({loaderData}:Route.ComponentProps) => {
                 questions.sort((a,b) => a.number - b.number).map((e) => 
                 <CreateQuestion onSuccess={onSuccess} key={e.id} question={e} sessionTestId={id} number={(e.number)} onDelete={onDelete}/>)
             }
-            {
-            activeModal == 'create' ?
-                <CreateQuestion onSuccess={onSuccess} sessionTestId={id} number={(questions.length + 1)} onDelete={onDelete}/>:
-                <div className="flex gap-5">
-                    <Button onClick={() => setActiveModal('create')}>Add Question</Button>
-                </div>
-            }
+        </div>
+        <div className="flex gap-5">
+            <Button onClick={() => setActiveModal('create')}>Add Question</Button>
         </div>
         </div>
     )

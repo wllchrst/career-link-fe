@@ -76,16 +76,13 @@ const CreateQuestion = ({sessionTestId, number, question, onDelete, onSuccess}:P
                         </div>)}
                     </div>
                     <div className="flex gap-5 justify-end">
-                        <Button
-                            type="submit"
-                            disabled={form.formState.isSubmitting}
+                        <Button type="submit" disabled={form.formState.isSubmitting}
                             className={
                             `bg-accent ${form.formState.isSubmitting ? "opacity-70 cursor-not-allowed" : ""}`
-                            }
-                        >
+                            }>
                             {form.formState.isSubmitting ? "Saving..." : "Save"}
                         </Button>
-                        <Button variant={'destructive'} type="button" onClick={() => onDelete(number, question)}>Delete Question</Button>
+                        {question && <Button variant={'destructive'} type="button" onClick={() => onDelete(number, question)}>Delete Question</Button>}
                     </div>
                 </form>
             </Form>

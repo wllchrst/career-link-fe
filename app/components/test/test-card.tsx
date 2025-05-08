@@ -1,5 +1,5 @@
 import TableLayout from "~/components/layouts/table-layout";
-import { Link, useRevalidator } from "react-router";
+import { Link, useNavigate, useRevalidator } from "react-router";
 import { TableCell, TableRow } from "../ui/table";
 import { useRole } from "~/role-testing-provider";
 import { Button } from "../ui/button";
@@ -11,6 +11,9 @@ import type { SessionTest } from "~/types/api";
 import EmptyMessage from "../ui/empty-message";
 import { format } from "date-fns";
 import { DeleteTest } from "~/features/quiz/components/delete-test";
+import { createStudentAttempt } from "~/features/quiz/api/attempt/create-student-attempt";
+import toast from "react-hot-toast";
+import { getErrorMessage } from "~/lib/error";
 
 interface Props {
   sessionId: string;
@@ -21,12 +24,47 @@ interface Props {
 const TestCard = ({ sessionId, testType, test }: Props) => {
   const [activeModal, setActiveModal] = useState<ModalType>(null);
   const revalidator = useRevalidator();
-  const [selectedTest, setSelectedTest] = useState();
+  const navigate = useNavigate()
 
   const onSuccess = () => {
     setActiveModal(null);
     revalidator.revalidate();
   };
+
+  const takeTest = async () => {
+    if (test){
+      const toastId = toast.loading("Attempting test...");
+      try {
+        if (new Date().getTime() < new Date(test.open_date).getTime()){
+          toast.error("The test has not started yet!", {
+            id: toastId,
+          });
+          return
+        }
+        if (new Date(test.close_date).getTime() < new Date().getTime()){
+          toast.error("The test has already ended!", {
+            id: toastId,
+          });
+          return
+        }
+        
+        await createStudentAttempt({data: {
+          user_id: 'sdf',
+          test_id: test.id
+        }})
+        toast.success("Attempt test success. you will be redirected to test page", { id: toastId });
+        const timeout = setTimeout(() => {
+          navigate(`test/${test.id}`)
+        }, 2000);
+
+      } catch (error) {
+        toast.error(getErrorMessage(error), {
+          id: toastId,
+        });
+      }
+      
+    }
+  }
 
   const { role } = useRole();
 
@@ -87,15 +125,17 @@ const TestCard = ({ sessionId, testType, test }: Props) => {
             </div>
             <div className="flex gap-5 justify-start items-center">
               {role != "admin" ? (
-                <Link to={`test/${test.id}`}>
-                  <Button
-                    className={
-                      "bg-[var(--accent)] text-white rounded-md p-2 w-40 hover:bg-[var(--secondary)] transition duration-200 ease-in-out"
-                    }
-                  >
-                    Take Test
-                  </Button>
-                </Link>
+                <Button
+                className={
+                  "bg-[var(--accent)] text-white rounded-md p-2 w-40 hover:bg-[var(--secondary)] transition duration-200 ease-in-out"
+                }
+                onClick={takeTest}
+                >
+                  Take Test
+                </Button>
+                // <Link to={`test/${test.id}`}>
+                  
+                // </Link>
               ) : (
                 <>
                   <Link to={`test/manage/${test.id}`}>

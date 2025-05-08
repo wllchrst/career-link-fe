@@ -11,6 +11,7 @@ interface Props {
 const SessionTestAttemptGrid = ({questions}:Props) => {
 
     const [isFlagged, setIsFlagged] = useState<boolean[]>(questions.map(_ => false));
+    
 
     const [idx, setIdx] = useState(0)
 
@@ -54,7 +55,7 @@ const SessionTestAttemptGrid = ({questions}:Props) => {
                         questions[idx].options.map(e => 
                         <div className="flex gap-2">
                             <input type="radio" name="option" id={e.id} />
-                            <label htmlFor="option">{e.option}</label>
+                            <label htmlFor="option" >{e.option}</label>
                         </div>
                         )
                     }
@@ -79,7 +80,7 @@ const SessionTestAttemptGrid = ({questions}:Props) => {
                         </>)
                     }
                 </div>
-                <div>Finish Attempt</div>
+                <Button className="bg-white text-black w-1/2 hover:text-white">Finish Attempt</Button>
             </div>
             </>:
             <EmptyMessage title="No question yet" text="There is no question in the test! please contact your instructor to fix this issue" />

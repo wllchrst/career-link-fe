@@ -13,7 +13,7 @@ interface Props {
 const StudentRow = ({idx, cur, e}: Props) => {
 
     return (
-        <TableRow className="shadow-md p-5 border-box bg-white rounded-lg flex w-full">
+        <TableRow className="shadow-md p-5 border-box bg-white rounded-lg items-center flex w-full">
             <TableCell className="w-[3%] font-medium text-center">
             {idx + (cur - 1) * 10 + 1}
             </TableCell>

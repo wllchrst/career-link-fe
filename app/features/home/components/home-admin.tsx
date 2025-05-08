@@ -1,19 +1,14 @@
 import { CiSearch } from "react-icons/ci";
 import { FaFilter } from "react-icons/fa";
-import { MdEdit } from "react-icons/md";
-import { MdDelete } from "react-icons/md";
 import type { User } from "~/types/api";
 import TableLayout from "~/components/layouts/table-layout";
-import { TableCell, TableRow } from "~/components/ui/table";
 import Paginator from "~/components/ui/paginator";
 import { Button } from "~/components/ui/button";
 import { exportToExcel } from "~/lib/excel";
 import { useNavigate } from "react-router";
 import { syncUser } from "../api/sync-student-data";
 import { useState } from "react";
-import TooltipLayout from "~/components/layouts/tooltip-layout";
 import { MasterDataTableHeader } from "~/components/ui/table-header";
-import { DownloadIcon } from "lucide-react";
 import StudentRow from "./student-row";
 
 interface StudentProps {
@@ -37,7 +32,7 @@ const HomeAdmin = ({ student, cur, lastPage }: StudentProps) => {
   };
   const sync = () => {
     setLoading(true);
-    syncUser().then((e) => {
+    syncUser().then(() => {
       setLoading(false);
       navigate(`/?page=${1}`);
     });
