@@ -3,12 +3,14 @@ import { IoFlagSharp } from "react-icons/io5"
 import { Button } from "~/components/ui/button";
 import EmptyMessage from "~/components/ui/empty-message";
 import type { Question } from "~/types/api"
+import { createStudentAnswer } from "../api/answer/create-student-answer";
 
 interface Props {
-    questions: Question[]
+    questions: Question[],
+    attemptId: string
 }
 
-const SessionTestAttemptGrid = ({questions}:Props) => {
+const SessionTestAttemptGrid = ({questions, attemptId}:Props) => {
 
     const [isFlagged, setIsFlagged] = useState<boolean[]>(questions.map(_ => false));
     const [answers, setAnswers] = useState<string[]>(questions.map(_ => ""))    
@@ -28,8 +30,10 @@ const SessionTestAttemptGrid = ({questions}:Props) => {
         setIdx(idx)
     }
 
-    const updateAnswer = (id:string) => {
-        setAnswers(answers.map((e,index) => (index == idx)? id:e))
+    const updateAnswer = async (id:string) => {
+        const newAns = answers.map((e,index) => (index == idx)? id:e)
+        setAnswers(newAns)
+        window.localStorage.setItem(`Attempt:${attemptId}`,newAns.join(','))
     }
 
     const onPrev = () => {

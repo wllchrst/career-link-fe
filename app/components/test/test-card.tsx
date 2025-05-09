@@ -48,13 +48,13 @@ const TestCard = ({ sessionId, testType, test }: Props) => {
           return
         }
         
-        await createStudentAttempt({data: {
+        const {data: attempt} = await createStudentAttempt({data: {
           user_id: 'sdf',
           test_id: test.id
         }})
         toast.success("You will be redirected to test page", { id: toastId });
         setTimeout(() => {
-          navigate(`test/${test.id}`)
+          navigate(`test/${test.id}/attempt/${attempt.id}`)
         }, 2000);
 
       } catch (error) {

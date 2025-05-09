@@ -8,12 +8,12 @@ export const loader = async ({ params }:Route.LoaderArgs) => {
 
     const {data: questions} = await getSessionTestQuestions(params.test)
 
-    return {questions, sessionId: params.session}
+    return {questions, sessionId: params.session, attemptId: params.attempt}
 }
 
 const Quiz = ({loaderData}:Route.ComponentProps) => {
 
-    const {questions, sessionId} = loaderData
+    const {questions, sessionId, attemptId} = loaderData
 
     return (
         <div className="flex flex-col w-full">
@@ -26,7 +26,7 @@ const Quiz = ({loaderData}:Route.ComponentProps) => {
                 </Link>
             </div>
             <div className="flex gap-2 w-full">
-                <SessionTestAttemptGrid questions={questions.sort((a,b) => a.number - b.number)}/>
+                <SessionTestAttemptGrid attemptId={attemptId} questions={questions.sort((a,b) => a.number - b.number)}/>
             </div>
         </div>
     );

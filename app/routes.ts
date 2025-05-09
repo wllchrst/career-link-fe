@@ -30,7 +30,7 @@ export default [
   ...prefix("session", [
     route(":session", "routes/app/sessions/session-detail.tsx"),
     route(
-      ":session/test/:test",
+      ":session/test/:test/attempt/:attempt",
       "routes/app/sessions/session-test-attempt-page.tsx"
     ),
     route(
