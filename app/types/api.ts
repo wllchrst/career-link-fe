@@ -81,6 +81,13 @@ export type SessionTest = {
   close_date: Date;
 };
 
+export type StudentAttempt = {
+  id: string;
+  test_id: string;
+  user_id:string;
+  done_at: Date;
+}
+
 export type Session = {
   id: string;
   bootCamp: Bootcamp;

@@ -6,15 +6,29 @@ import SessionCard from "~/components/session/session-card";
 import AssignmentCard from "~/components/assignment/assignment-card";
 import { TestType } from "~/types/enum";
 import { getSessionTest } from "~/features/quiz/api/get-test";
+import { getStudentAttemptByTest } from "~/features/quiz/api/attempt/get-student-attempt-by-test";
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
 
     const { data: session } = await getBootcampSession(params.session);
     const { data: tests } = await getSessionTest(session.id);
+    const preTest = tests.filter(e => e.type == TestType.PRE_TEST)[0]
+    // let preTest = 
+    // try{
+    // }catch(e){
+        
+    // }
+    const postTest = tests.filter(e => e.type == TestType.POST_TEST)[0]
+
+    
+    // const {data: attemptsPretest} = await getStudentAttemptByTest(preTest.id, 'sdf') ?? [];
+    // const {data: attemptsPosttest} = await getStudentAttemptByTest(postTest.id, 'sdf') ?? [];
     return {
         session, 
-        preTest: tests.filter(e => e.type == TestType.PRE_TEST)[0],
-        postTest: tests.filter(e => e.type == TestType.POST_TEST)[0],
+        preTest: preTest,
+        postTest: postTest,
+        attemptsPretest: [],
+        attemptsPosttest: []
     }
 };
 

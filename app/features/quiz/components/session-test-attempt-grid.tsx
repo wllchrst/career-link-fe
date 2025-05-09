@@ -33,7 +33,7 @@ const SessionTestAttemptGrid = ({questions, attemptId}:Props) => {
     const updateAnswer = async (id:string) => {
         const newAns = answers.map((e,index) => (index == idx)? id:e)
         setAnswers(newAns)
-        window.localStorage.setItem(`Attempt:${attemptId}`,newAns.join(','))
+        window.localStorage.setItem(`Attempt:${attemptId}`, newAns.join(','))
     }
 
     const onPrev = () => {
