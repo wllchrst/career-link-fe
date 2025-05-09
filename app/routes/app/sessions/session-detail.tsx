@@ -7,22 +7,24 @@ import AssignmentCard from "~/components/assignment/assignment-card";
 import { TestType } from "~/types/enum";
 import { getSessionTest } from "~/features/quiz/api/get-test";
 import { getStudentAttemptByTest } from "~/features/quiz/api/attempt/get-student-attempt-by-test";
+import type { StudentAttempt } from "~/types/api";
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
 
     const { data: session } = await getBootcampSession(params.session);
     const { data: tests } = await getSessionTest(session.id);
     const preTest = tests.filter(e => e.type == TestType.PRE_TEST)[0]
-    // let preTest = 
-    // try{
-    // }catch(e){
-        
-    // }
     const postTest = tests.filter(e => e.type == TestType.POST_TEST)[0]
-
+    let attemptsPretest:StudentAttempt[] = []    
+    let attemptsPosttest:StudentAttempt[] = []
     
-    // const {data: attemptsPretest} = await getStudentAttemptByTest(preTest.id, 'sdf') ?? [];
-    // const {data: attemptsPosttest} = await getStudentAttemptByTest(postTest.id, 'sdf') ?? [];
+    // try{
+    //     attemptsPretest = (await getStudentAttemptByTest(preTest.id, 'sdf')).data;
+    //     attemptsPosttest = (await getStudentAttemptByTest(postTest.id, 'sdf')).data;
+    // }catch(e){
+    //     console.log(e)
+    // }
+    
     return {
         session, 
         preTest: preTest,
@@ -35,7 +37,7 @@ export const loader = async ({ params }: Route.LoaderArgs) => {
 
 const Session = ({loaderData}:Route.ComponentProps) => {
 
-    const {session, preTest, postTest} = loaderData
+    const {session, preTest, postTest, attemptsPretest, attemptsPosttest} = loaderData
 
     return (
     <>
@@ -45,13 +47,13 @@ const Session = ({loaderData}:Route.ComponentProps) => {
             <h2 className={'font-semibold text-left text-4xl text-slate-700 py-6 w-full h-full'}>To Do List</h2>
             <div className={'flex flex-col gap-y-6 mb-8'}>
                 <AccordionLayout text={'Pretest'}>
-                    <TestCard testType={TestType.PRE_TEST} sessionId={session.id} test={preTest}/>
+                    <TestCard testType={TestType.PRE_TEST} sessionId={session.id} test={preTest} attempts={attemptsPretest}/>
                 </AccordionLayout>
                 <AccordionLayout text={'Material'}>
                     here material
                 </AccordionLayout>
                 <AccordionLayout text={'Post Test'}>
-                    <TestCard testType={TestType.POST_TEST} sessionId={session.id} test={postTest}/>
+                    <TestCard testType={TestType.POST_TEST} sessionId={session.id} test={postTest} attempts={attemptsPosttest}/>
                 </AccordionLayout>
                 <AccordionLayout text={'Assignment'}>
                     <AssignmentCard sessionId={session.id} />

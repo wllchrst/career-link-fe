@@ -4,13 +4,16 @@ import { Button } from "~/components/ui/button";
 import EmptyMessage from "~/components/ui/empty-message";
 import type { Question } from "~/types/api"
 import { createStudentAnswer } from "../api/answer/create-student-answer";
+import toast from "react-hot-toast";
+import { getErrorMessage } from "~/lib/error";
 
 interface Props {
     questions: Question[],
-    attemptId: string
+    attemptId: string,
+    onFinish: (id:string) => void
 }
 
-const SessionTestAttemptGrid = ({questions, attemptId}:Props) => {
+const SessionTestAttemptGrid = ({questions, attemptId, onFinish}:Props) => {
 
     const [isFlagged, setIsFlagged] = useState<boolean[]>(questions.map(_ => false));
     const [answers, setAnswers] = useState<string[]>(questions.map(_ => ""))    
@@ -42,6 +45,27 @@ const SessionTestAttemptGrid = ({questions, attemptId}:Props) => {
 
     const onNext = () => {
         setIdx(idx == questions.length - 1?questions.length - 1:idx + 1)
+    }
+
+    const finish = async () => {
+        //save all answers
+        
+        const toastId = toast.loading("Submitting...");
+        try{
+            await Promise.all(answers.map(async (option, idx) => await createStudentAnswer({
+                data:{
+                    attempt_id: attemptId,
+                    question_id: questions[idx].id,
+                    user_id: 'sdf',
+                    option_id: option
+                }
+            })))
+            onFinish(toastId)
+        }catch(error){
+            toast.error(getErrorMessage(error), {
+                id: toastId,
+            });
+        }
     }
 
     return (
@@ -88,7 +112,7 @@ const SessionTestAttemptGrid = ({questions, attemptId}:Props) => {
                         </>)
                     }
                 </div>
-                <Button className="bg-white text-black w-1/2 hover:text-white">Finish Attempt</Button>
+                <Button className="bg-white text-black w-1/2 hover:text-white" onClick={finish}>Finish Attempt</Button>
             </div>
             </>:
             <EmptyMessage title="No question yet" text="There is no question in the test! please contact your instructor to fix this issue" />

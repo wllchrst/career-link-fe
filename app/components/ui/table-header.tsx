@@ -19,4 +19,15 @@ const MasterDataTableHeader = () => {
     )
 }
 
-export {MasterDataTableHeader}
+const DefaultTableHeader = ({columns}:{columns:string[]}) => {
+
+    return (
+        <>
+            <TableHeader className="p items-center flex w-full border-b-1 border-gray-200">
+                {columns.map(e => <TableHead className="w-1/4 text-center">{e}</TableHead>)}
+            </TableHeader>
+        </>
+    )
+}
+
+export {MasterDataTableHeader, DefaultTableHeader}

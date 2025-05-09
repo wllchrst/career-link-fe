@@ -7,21 +7,23 @@ import { Modal, type ModalType } from "../modal";
 import { useState } from "react";
 import { CreateUpdateTest } from "~/features/quiz/components/create-update-test";
 import { TestType } from "~/types/enum";
-import type { SessionTest } from "~/types/api";
+import type { SessionTest, StudentAttempt } from "~/types/api";
 import EmptyMessage from "../ui/empty-message";
 import { format } from "date-fns";
 import { DeleteTest } from "~/features/quiz/components/delete-test";
 import { createStudentAttempt } from "~/features/quiz/api/attempt/create-student-attempt";
 import toast from "react-hot-toast";
 import { getErrorMessage } from "~/lib/error";
+import { DefaultTableHeader } from "../ui/table-header";
 
 interface Props {
   sessionId: string;
   testType: TestType;
   test: SessionTest | undefined;
+  attempts: StudentAttempt[];
 }
 
-const TestCard = ({ sessionId, testType, test }: Props) => {
+const TestCard = ({ sessionId, testType, test, attempts }: Props) => {
   const [activeModal, setActiveModal] = useState<ModalType>(null);
   const revalidator = useRevalidator();
   const navigate = useNavigate()
@@ -108,7 +110,7 @@ const TestCard = ({ sessionId, testType, test }: Props) => {
           </Modal>
           <div className={"w-full flex justify-between items-start"}>
             <div>
-              <h2 className="font-bold text-xl my-2">{test.title}</h2>
+              <h2 className="font-bold text-xl mb-2">{test.title}</h2>
               <h4>
                 Opened: {format(new Date(test.open_date), "MM/dd/yyyy HH:mm")}
               </h4>
@@ -116,8 +118,18 @@ const TestCard = ({ sessionId, testType, test }: Props) => {
                 Closed: {format(new Date(test.close_date), "MM/dd/yyyy HH:mm")}
               </h4>
             </div>
-            {/* <h2 className={'font-bold'}>Highest Grade: 95.00 / 100.00</h2> */}
+            {role == 'user' && <h4 className={'font-bold text-lg'}>Highest Grade: 95.00 / 100.00</h4>}
           </div>
+          {role == 'user' && <>
+          <h4></h4>
+            <TableLayout header={<DefaultTableHeader columns={["Attempt", "State", "Duration", "Score"]}/>}>
+              {
+                attempts.length < 1?
+                <EmptyMessage title="No Attempts" text="You haven't made any attempts yet."/>:
+                <></>
+              }
+            </TableLayout>
+          </>}
           <div className={"w-full flex justify-between items-start"}>
             <div>
               <h4>Grading Method : Highest grade</h4>
@@ -133,9 +145,6 @@ const TestCard = ({ sessionId, testType, test }: Props) => {
                 >
                   Take Test
                 </Button>
-                // <Link to={`test/${test.id}`}>
-                  
-                // </Link>
               ) : (
                 <>
                   <Link to={`test/manage/${test.id}`}>
