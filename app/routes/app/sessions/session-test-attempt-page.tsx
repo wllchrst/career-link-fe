@@ -17,7 +17,7 @@ const Quiz = ({loaderData}:Route.ComponentProps) => {
 
     return (
         <div className="flex flex-col w-full">
-            <div className={'w-full flex items-center'}>
+            <div className={'w-full flex items-center mb-5'}>
                 <Link to={`/session/${sessionId}`}>
                     <button
                         className="w-12 h-12 flex items-center justify-center bg-accent text-white rounded-full shadow-md">

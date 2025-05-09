@@ -33,7 +33,7 @@ const TestCard = ({ sessionId, testType, test }: Props) => {
 
   const takeTest = async () => {
     if (test){
-      const toastId = toast.loading("Attempting test...");
+      const toastId = toast.loading("Loading...");
       try {
         if (new Date().getTime() < new Date(test.open_date).getTime()){
           toast.error("The test has not started yet!", {
@@ -52,8 +52,8 @@ const TestCard = ({ sessionId, testType, test }: Props) => {
           user_id: 'sdf',
           test_id: test.id
         }})
-        toast.success("Attempt test success. you will be redirected to test page", { id: toastId });
-        const timeout = setTimeout(() => {
+        toast.success("You will be redirected to test page", { id: toastId });
+        setTimeout(() => {
           navigate(`test/${test.id}`)
         }, 2000);
 

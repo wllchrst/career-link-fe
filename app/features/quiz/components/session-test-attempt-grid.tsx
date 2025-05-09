@@ -11,7 +11,7 @@ interface Props {
 const SessionTestAttemptGrid = ({questions}:Props) => {
 
     const [isFlagged, setIsFlagged] = useState<boolean[]>(questions.map(_ => false));
-    
+    const [answers, setAnswers] = useState<string[]>(questions.map(_ => ""))    
 
     const [idx, setIdx] = useState(0)
 
@@ -26,6 +26,10 @@ const SessionTestAttemptGrid = ({questions}:Props) => {
 
     const updateQuestion = (e:Question, idx: number) => {
         setIdx(idx)
+    }
+
+    const updateAnswer = (id:string) => {
+        setAnswers(answers.map((e,index) => (index == idx)? id:e))
     }
 
     const onPrev = () => {
@@ -54,7 +58,7 @@ const SessionTestAttemptGrid = ({questions}:Props) => {
                     {
                         questions[idx].options.map(e => 
                         <div className="flex gap-2">
-                            <input type="radio" name="option" id={e.id} />
+                            <input type="radio" name="option" id={e.id} onClick={() => updateAnswer(e.id)} checked={e.id == answers[idx]}/>
                             <label htmlFor="option" >{e.option}</label>
                         </div>
                         )

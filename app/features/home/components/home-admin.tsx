@@ -10,6 +10,7 @@ import { syncUser } from "../api/sync-student-data";
 import { useState } from "react";
 import { MasterDataTableHeader } from "~/components/ui/table-header";
 import StudentRow from "./student-row";
+import { compare } from "~/lib/utils";
 
 interface StudentProps {
   student: User[];
@@ -77,7 +78,7 @@ const HomeAdmin = ({ student, cur, lastPage }: StudentProps) => {
       <TableLayout
         header = {<MasterDataTableHeader />}
       >
-        {student.sort((a, b) => b.name.length - a.name.length).map(
+        {student.sort((a, b) => compare(a.nim ?? '', b.nim ?? '')).map(
           (e, idx) => (
             <StudentRow cur={cur} idx={idx} e={e}/>
           )
