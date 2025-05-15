@@ -3,6 +3,7 @@ import { AiOutlineUpload } from "react-icons/ai";
 import { IoMdAdd } from "react-icons/io";
 import { MdEdit } from "react-icons/md";
 import { useRole } from "~/role-testing-provider";
+import FuturePlan from "./future-plan";
 
 export const HomeProfileCard = () => {
     const { role } = useRole();
@@ -56,6 +57,9 @@ export const HomeProfileCard = () => {
                     <div className="text-gray-500">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</div>
                 </div>
             </div>
+            <div className="px-7 text-3xl text-primary font-semibold">My Future Plan</div>
+            <FuturePlan />
+
             <div className="px-7 text-3xl text-primary font-semibold">My Thesis</div>
             <div className="flex flex-col gap-3 bg-white shadow p-10 rounded-md">
                 <div className="flex flex-col">
