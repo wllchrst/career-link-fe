@@ -1,7 +1,8 @@
-import { Button } from "react-day-picker"
+
 import AssignmentCard from "~/components/assignment/assignment-card"
 import AccordionLayout from "~/components/layouts/accordion-layout"
 import TestCard from "~/components/test/test-card"
+import { Button } from "~/components/ui/button"
 import type { Session, SessionTest } from "~/types/api"
 import { TestType } from "~/types/enum"
 
