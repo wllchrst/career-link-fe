@@ -35,7 +35,7 @@ export default [
     ),
     route(
       ":session/test/manage/:test",
-      "routes/app/sessions/session-test-admin-page.tsx"
+      "routes/app/admin/sessions/session-test-admin-page.tsx"
     ),
   ]),
 ] satisfies RouteConfig;
