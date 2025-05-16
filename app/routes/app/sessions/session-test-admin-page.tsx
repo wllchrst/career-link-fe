@@ -8,6 +8,7 @@ import { Modal, type ModalType } from "~/components/modal";
 import { DeleteQuestion } from "~/features/quiz/components/delete-question";
 import type { Question } from "~/types/api";
 import { FaArrowLeft } from "react-icons/fa";
+import { exportToExcel } from "~/lib/excel";
 
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
@@ -17,11 +18,28 @@ export const loader = async ({ params }: Route.LoaderArgs) => {
     return {questions, id: params.test, session: params.session}
 };
 
-
+interface Template {
+    number: number,
+    question: string,
+    A: string,
+    B: string,
+    C: string,
+    D: string,
+    answer: 'A' | 'B' | 'C' | 'D' | '',
+}
 
 const SessionTestAdminPage = ({loaderData}:Route.ComponentProps) => {
 
     const {questions, id, session} = loaderData
+    const template: Template[] = [{
+        number: 1,
+        question: '',
+        A: '',
+        B: '',
+        C: '',
+        D: '',
+        answer: ''
+    }]
 
     const [activeModal, setActiveModal] = useState<ModalType>(null);
     const revalidator = useRevalidator();
@@ -68,14 +86,21 @@ const SessionTestAdminPage = ({loaderData}:Route.ComponentProps) => {
                 </Link>
                 <h2 className={'font-bold text-left w-full text-4xl text-slate-700 p-6 h-full'}>Manage Test</h2>
             </div>
-        <div className="flex flex-col gap-5 w-3/5">
-            {
-                questions.sort((a,b) => a.number - b.number).map((e) => 
-                <CreateQuestion onSuccess={onSuccess} key={e.id} question={e} sessionTestId={id} number={(e.number)} onDelete={onDelete}/>)
-            }
-        </div>
-        <div className="flex gap-5">
-            <Button onClick={() => setActiveModal('create')}>Add Question</Button>
+        <div className="flex justify-between items-start gap-10">
+            <div className="w-3/5">
+                <div className="flex flex-col gap-5">
+                {
+                    questions.sort((a,b) => a.number - b.number).map((e) => 
+                    <CreateQuestion onSuccess={onSuccess} key={e.id} question={e} sessionTestId={id} number={(e.number)} onDelete={onDelete}/>)
+                }
+                </div>
+            </div>
+            <div className="flex grid grid-cols-2 gap-5 w-2/5 bg-white rounded-lg shadow-md p-5">
+                <Button onClick={() => setActiveModal('create')} className="">Add Question</Button>
+                <Button onClick={() => setActiveModal('create')} className="bg-orange-500 hover:bg-orange-400">View Result</Button>
+                <Button onClick={() => exportToExcel('template', template)} className="bg-purple-500 hover:bg-purple-400">Download Test Template</Button>
+                <Button onClick={() => setActiveModal('create')} className="bg-green-500 hover:bg-green-400">Import Test</Button>
+            </div>
         </div>
         </div>
     )
