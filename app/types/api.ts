@@ -109,6 +109,6 @@ export type Result = {
 
 export type Assignment = {
   id: string;
-  question: string;
-  answer: string;
+  question_file_path: string;
+  answer_file_path: string;
 };
