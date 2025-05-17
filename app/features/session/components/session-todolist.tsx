@@ -11,7 +11,7 @@ interface Props {
     session: Session,
     preTest: SessionTest,
     postTest: SessionTest,
-    assignment: Assignment,
+    assignment?: Assignment | undefined,
     attemptsPretest: never[],
     attemptsPosttest: never[],
 }

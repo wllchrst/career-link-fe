@@ -100,7 +100,7 @@ const AssignmentCard = ({sessionId, assignment}:Props) => {
                     {assignment ? <>
                         <Button
                             className={'bg-purple-500 text-white rounded-md p-2 w-40 hover:bg-purple-700 transition duration-200 ease-in-out'}>
-                            View Details
+                            View Submissions
                         </Button>
                         <Button
                             className={'bg-[var(--accent)] text-white rounded-md p-2 w-40 hover:bg-[var(--secondary)] transition duration-200 ease-in-out'}>

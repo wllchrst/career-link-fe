@@ -34,8 +34,12 @@ export default [
       "routes/app/sessions/session-test-attempt-page.tsx"
     ),
     route(
-      ":session/test/manage/:test",
+      ":session/test/:test/manage",
       "routes/app/admin/sessions/session-test-admin-page.tsx"
+    ),
+    route(
+      ":session/test/:test/result",
+      "routes/app/admin/sessions/session-test-results.tsx"
     ),
   ]),
 ] satisfies RouteConfig;

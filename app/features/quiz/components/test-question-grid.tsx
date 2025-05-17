@@ -6,6 +6,7 @@ import { useRevalidator } from "react-router"
 import { useState } from "react"
 import { Modal, type ModalType } from "~/components/modal"
 import { DeleteQuestion } from "./delete-question"
+import EmptyMessage from "~/components/ui/empty-message"
 
 interface Template {
     number: number,
@@ -70,15 +71,16 @@ const TestQuestionGrid = ({questions, id, activeModal, onCreate, onConfirmDelete
             <div className="flex justify-between items-start gap-10">
                 <div className="w-3/5">
                     <div className="flex flex-col gap-5">
-                    {
+                    {questions.length > 0 ?
                         questions.sort((a,b) => a.number - b.number).map((e) => 
-                        <CreateQuestion onSuccess={onSuccess} key={e.id} question={e} sessionTestId={id} number={(e.number)} onDelete={onDelete}/>)
+                        <CreateQuestion onSuccess={onSuccess} key={e.id} question={e} sessionTestId={id} number={(e.number)} onDelete={onDelete}/>):
+                        <EmptyMessage title="No Questions Yet" text="There is no question in this test. please create one or import using our test template."/>
                     }
                     </div>
                 </div>
                 <div className="flex grid grid-cols-2 gap-5 w-2/5 bg-white rounded-lg shadow-md p-5">
                     <Button onClick={onCreate} className="">Add Question</Button>
-                    <Button onClick={onCreate} className="bg-orange-500 hover:bg-orange-400">View Result</Button>
+                    <Button variant={'destructive'}>Remove all Question</Button>
                     <Button onClick={() => exportToExcel('template', template)} className="bg-purple-500 hover:bg-purple-400">Download Test Template</Button>
                     <Button onClick={onCreate} className="bg-green-500 hover:bg-green-400">Import Test</Button>
                 </div>
