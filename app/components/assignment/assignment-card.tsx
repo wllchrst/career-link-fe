@@ -1,7 +1,7 @@
 import { useRole } from "~/role-testing-provider"
 import { Button } from "../ui/button"
 import { Modal, type ModalType } from "../modal"
-import { useState } from "react"
+import { useState, type ChangeEvent } from "react"
 import { useRevalidator } from "react-router"
 import CreateAssignment from "~/features/assignment/components/create-assignment"
 import type { Assignment } from "~/types/api"
@@ -14,6 +14,8 @@ interface Props {
 }
 
 const AssignmentCard = ({sessionId, assignment}:Props) => {
+    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+    const [fileName, setFileName] = useState("");
     const [activeModal, setActiveModal] = useState<ModalType>(null);
     const revalidator = useRevalidator();
     
@@ -21,6 +23,14 @@ const AssignmentCard = ({sessionId, assignment}:Props) => {
         setActiveModal(null);
         revalidator.revalidate();
     };
+
+    const onChange = (e:ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            setFileName(file.name)
+            setPreviewUrl(URL.createObjectURL(file));
+        }
+    }
 
     const {role} = useRole()
 
@@ -60,15 +70,18 @@ const AssignmentCard = ({sessionId, assignment}:Props) => {
                         </Button>    
                     </a>
                 </>:<>
-                    <p className=" mt-10 text-red-600">{`Max file size 100MB\nSupports: .docx, .pdf`}</p>
-                    <div className="flex items-center gap-5 w-full">
-                        <Button className="w-1/5">Upload Answer</Button>
-                        <a href={`/`} download target="_blank" className="w-full">
+                    <p className=" mt-5 text-red-600">{`*Max file size 100MB\nSupports: .docx, .pdf`}</p>
+                    <div className="flex gap-5 items-center">
+                        <label htmlFor="file" className="w-1/5 bg-accent py-1 px-2 rounded-lg text-white h-10 flex items-center justify-center">
+                            <p>Upload Answer</p>
+                        </label>
+                        <input type="file" name="" id="file" hidden onChange={e => onChange(e)}/>
+                        <a href={previewUrl!} download target="_blank" className="w-full">
                             <Button variant={'outline'} className="w-full h-10">
                                 <div className="flex gap-2 items-center justify-between w-full">
                                     <div className="flex items-center gap-2">
                                         <File />
-                                        <p className="font-regular">Document Name</p>
+                                        <p className="font-regular">{previewUrl ?fileName:'Document Name'}</p>
                                     </div>
                                     <Download />
                                 </div>
