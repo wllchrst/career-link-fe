@@ -3,7 +3,7 @@ import AssignmentCard from "~/components/assignment/assignment-card"
 import AccordionLayout from "~/components/layouts/accordion-layout"
 import TestCard from "~/components/test/test-card"
 import { Button } from "~/components/ui/button"
-import type { Assignment, Session, SessionTest } from "~/types/api"
+import type { Assignment, Session, SessionTest, StudentAttempt } from "~/types/api"
 import { TestType } from "~/types/enum"
 
 interface Props {
@@ -12,8 +12,8 @@ interface Props {
     preTest: SessionTest,
     postTest: SessionTest,
     assignment?: Assignment | undefined,
-    attemptsPretest: never[],
-    attemptsPosttest: never[],
+    attemptsPretest: StudentAttempt[],
+    attemptsPosttest: StudentAttempt[],
 }
 
 const SessionTodolist = ({attendanceOnClick, session, preTest, postTest, assignment, attemptsPretest, attemptsPosttest}:Props) => {

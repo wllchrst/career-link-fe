@@ -23,23 +23,17 @@ export const loader = async ({ params }: Route.LoaderArgs) => {
     const { data: assignment } = await getAssignment(session.id).catch(() => ({data: undefined}));
     const preTest = tests.filter(e => e.type == TestType.PRE_TEST)[0]
     const postTest = tests.filter(e => e.type == TestType.POST_TEST)[0]
-    let attemptsPretest:StudentAttempt[] = []    
-    let attemptsPosttest:StudentAttempt[] = []
     
-    // try{
-    //     attemptsPretest = (await getStudentAttemptByTest(preTest.id, 'sdf')).data;
-    //     attemptsPosttest = (await getStudentAttemptByTest(postTest.id, 'sdf')).data;
-    // }catch(e){
-    //     console.log(e)
-    // }
+    const {data: attemptsPretest} = await getStudentAttemptByTest(preTest.id, 'sdf').catch(() => ({data: []}));
+    const {data: attemptsPosttest} = await getStudentAttemptByTest(postTest.id, 'sdf').catch(() => ({data: []}));
     
     return {
         session, 
         preTest,
         postTest,
         assignment,
-        attemptsPretest: [],
-        attemptsPosttest: []
+        attemptsPretest,
+        attemptsPosttest
     }
 };
 

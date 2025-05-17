@@ -148,7 +148,7 @@ const TestCard = ({ sessionId, testType, test, attempts }: Props) => {
               ) : (
                 <>
                   <Link to={`test/${test.id}/result`}>
-                    <Button className={"p-2 w-40"}>View Result</Button>
+                    <Button className={"p-2 w-40 bg-purple-600 hover:bg-purple-500"}>View Result</Button>
                   </Link>
                   <Link to={`test/${test.id}/manage`}>
                     <Button className={"p-2 w-40"}>Manage Test</Button>
