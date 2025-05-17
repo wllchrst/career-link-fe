@@ -46,7 +46,7 @@ const AssignmentCard = ({sessionId, assignment}:Props) => {
                         </div>
                     </Button>    
                 </a>
-                {role == 'admin' && <>
+                {role == 'admin' ? <>
                     <p>The assignment's answer can be downloaded from the button below</p>
                     <a href={`${import.meta.env.VITE_STORAGE_URL}/${assignment.answer_file_path}`} download target="_blank">
                         <Button variant={'outline'} className="w-1/3 h-10">
@@ -59,7 +59,24 @@ const AssignmentCard = ({sessionId, assignment}:Props) => {
                             </div>
                         </Button>    
                     </a>
-                </>}
+                </>:<>
+                    <p className=" mt-10 text-red-600">{`Max file size 100MB\nSupports: .docx, .pdf`}</p>
+                    <div className="flex items-center gap-5 w-full">
+                        <Button className="w-1/5">Upload Answer</Button>
+                        <a href={`/`} download target="_blank" className="w-full">
+                            <Button variant={'outline'} className="w-full h-10">
+                                <div className="flex gap-2 items-center justify-between w-full">
+                                    <div className="flex items-center gap-2">
+                                        <File />
+                                        <p className="font-regular">Document Name</p>
+                                    </div>
+                                    <Download />
+                                </div>
+                            </Button>    
+                        </a>
+                    </div>
+                </>
+                }
 
             </>:
             <EmptyMessage text="There is no assignment. Please contact your instructor!" title="No Assignment Yet."/>
