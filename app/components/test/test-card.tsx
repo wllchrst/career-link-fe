@@ -15,6 +15,7 @@ import { createStudentAttempt } from "~/features/quiz/api/attempt/create-student
 import toast from "react-hot-toast";
 import { getErrorMessage } from "~/lib/error";
 import { DefaultTableHeader } from "../ui/table-header";
+import TestInformationCard from "./test-information-card";
 
 interface Props {
   sessionId: string;
@@ -108,18 +109,7 @@ const TestCard = ({ sessionId, testType, test, attempts }: Props) => {
               onSuccess={onSuccess}
             />
           </Modal>
-          <div className={"w-full flex justify-between items-start"}>
-            <div>
-              <h2 className="font-bold text-xl mb-2">{test.title}</h2>
-              <h4>
-                Opened: {format(new Date(test.open_date), "MM/dd/yyyy HH:mm")}
-              </h4>
-              <h4>
-                Closed: {format(new Date(test.close_date), "MM/dd/yyyy HH:mm")}
-              </h4>
-            </div>
-            {role == 'user' && <h4 className={'font-bold text-lg'}>Highest Grade: 95.00 / 100.00</h4>}
-          </div>
+          <TestInformationCard test={test}/>
           {role == 'user' && <>
           <h4></h4>
             <TableLayout header={<DefaultTableHeader columns={["Attempt", "State", "Duration", "Score"]}/>}>

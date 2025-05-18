@@ -21,10 +21,11 @@ const MasterDataTableHeader = () => {
 
 const DefaultTableHeader = ({columns}:{columns:string[]}) => {
 
+    const style = `w-1/${columns.length} text-center`
     return (
         <>
             <TableHeader className="p items-center flex w-full border-b-1 border-gray-200">
-                {columns.map(e => <TableHead className="w-1/4 text-center">{e}</TableHead>)}
+                {columns.map(e => <TableHead style={{width:`${Math.floor(100/columns.length)}%`}} className={`text-center`}>{e}</TableHead>)}
             </TableHeader>
         </>
     )

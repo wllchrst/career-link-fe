@@ -5,7 +5,7 @@ import { getBootcampSession } from "~/features/session/api/get-session";
 import SessionCard from "~/components/session/session-card";
 import AssignmentCard from "~/components/assignment/assignment-card";
 import { TestType } from "~/types/enum";
-import { getSessionTest } from "~/features/quiz/api/get-test";
+import { getSessionTest } from "~/features/quiz/api/get-test-by-session";
 import { getStudentAttemptByTest } from "~/features/quiz/api/attempt/get-student-attempt-by-test";
 import type { StudentAttempt } from "~/types/api";
 import { Button } from "~/components/ui/button";
