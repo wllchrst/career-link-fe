@@ -11,15 +11,15 @@ const exportToExcel = (name:string, data:any) => {
     pkg.saveAs(blob, `${name}.xlsx`);
 };
 
-const importExcel = (event: ProgressEvent<FileReader>) => {
+function importExcel<T>(event: ProgressEvent<FileReader>, onSuccess:(res:T[]) => void) {
     if (event.target == null) return []
     
     const workbook = XLSX.read(event.target.result, { type: 'binary' });
     const sheetName = workbook.SheetNames[0];
     const sheet = workbook.Sheets[sheetName];
-    let sheetData = XLSX.utils.sheet_to_json<string[]>(sheet, {header: 1});
+    let sheetData = XLSX.utils.sheet_to_json<T>(sheet, {header: 1});
 
-    return sheetData
+    onSuccess(sheetData)
 }
 
 export {exportToExcel, importExcel}

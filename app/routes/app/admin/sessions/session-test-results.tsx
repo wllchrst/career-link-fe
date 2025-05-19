@@ -34,7 +34,7 @@ const SessionTestResults = ({loaderData}:Route.ComponentProps) => {
                 </Link>
                 <h2 className={'font-bold text-left w-full text-4xl text-slate-700 p-6 h-full'}>Test Result</h2>
             </div>
-            <TestInformationCard test={test!}/>
+            {test && <TestInformationCard test={test}/>}
             <TableLayout header={<DefaultTableHeader columns={["NIM", "Name", "Attempt", "Done at", "Score"]}/>}>
                 {
                 attempts.length < 1?
