@@ -10,6 +10,10 @@ import { deleteQuestion } from "../api/question/delete-test-question"
 import toast from "react-hot-toast"
 import { getErrorMessage } from "~/lib/error"
 import { DeleteAllQuestion } from "./delete-all-question"
+import { updateTestQuestion } from "../api/question/update-test-question"
+import { createTestQuestion } from "../api/question/create-test-question"
+import { updateQuestionOption } from "../api/option/update-question-option"
+import { createQuestionOption } from "../api/option/create-question-option"
 
 interface Template {
     number: number,
@@ -18,7 +22,7 @@ interface Template {
     B: string,
     C: string,
     D: string,
-    answer: 'A' | 'B' | 'C' | 'D' | '',
+    answer: 'A' | 'B' | 'C' | 'D',
 }
 
 interface Props {
@@ -42,7 +46,6 @@ const TestQuestionGrid = ({questions, id, activeModal, onCreate, onConfirmDelete
         D: 'Answer d',
         answer: 'D'
     }]
-    const [importedTest, setTest] = useState<Template[]>()
 
     const [idx, setIdx] = useState(0);
     const [selectedQuestion, setSelectedQuestion] = useState<Question>();
@@ -57,12 +60,50 @@ const TestQuestionGrid = ({questions, id, activeModal, onCreate, onConfirmDelete
             onClose()
     }
 
+    const mappingQuestion = async (res: Template[]) => {
+        const importedQuestions:Question[] = res.map(e => {
+            
+            return {
+                id: "",
+                question: e.question,
+                number: e.number,
+                test_id: id,
+                options: [
+                    { option: e.A, is_answer: e[e.answer].toUpperCase() == e.A, question_id: "", id: "" },
+                    { option: e.B, is_answer: e[e.answer].toUpperCase() == e.B, question_id: "", id: "" },
+                    { option: e.C, is_answer: e[e.answer].toUpperCase() == e.C, question_id: "", id: "" },
+                    { option: e.D, is_answer: e[e.answer].toUpperCase() == e.D, question_id: "", id: "" },
+                ]
+            } 
+        })
+        const toastId = toast.loading(`Importing Test...`);
+        try {
+            await Promise.all(questions.map(async (e) => await deleteQuestion(e.id)))
+
+            await Promise.all(importedQuestions.map(async (data) => {
+                const res = await createTestQuestion({ data });
+
+                for (let i = 0;i < data.options.length;i++){
+                    data.options[i].question_id = res.data.id
+                    await createQuestionOption({data: data.options[i]})
+                }  
+            }))
+
+            toast.success("Import Test Success!", { id: toastId })
+            onSuccess()
+        } catch (error) {
+            toast.error(getErrorMessage(error), {
+            id: toastId,
+            });
+        }
+    }
+
     const importTest = (e:ChangeEvent<HTMLInputElement>) => {
-        Promise.all(questions.map(async (e) => await deleteQuestion(e.id)))
+        
 
         const reader = new FileReader()
 
-        reader.onload = (event) => importExcel<Template>(event, (res) => setTest(res))
+        reader.onload = (event) => importExcel<Template>(event, (res) => mappingQuestion(res))
         reader.readAsArrayBuffer(e.target.files![0])
     }
 
@@ -112,7 +153,7 @@ const TestQuestionGrid = ({questions, id, activeModal, onCreate, onConfirmDelete
                     <label htmlFor="file" className="bg-green-600 hover:bg-green-500 px-2 rounded-md text-white flex items-center justify-center">
                         Import Test
                     </label>
-                    <input type="file" name="" id="file" hidden onChange={e => importTest(e)}/>
+                    <input type="file" name="" id="file" hidden onChange={importTest}/>
                 </div>
             </div>
         </>

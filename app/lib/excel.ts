@@ -17,7 +17,7 @@ function importExcel<T>(event: ProgressEvent<FileReader>, onSuccess:(res:T[]) =>
     const workbook = XLSX.read(event.target.result, { type: 'binary' });
     const sheetName = workbook.SheetNames[0];
     const sheet = workbook.Sheets[sheetName];
-    let sheetData = XLSX.utils.sheet_to_json<T>(sheet, {header: 1});
+    let sheetData = XLSX.utils.sheet_to_json<T>(sheet);
 
     onSuccess(sheetData)
 }
