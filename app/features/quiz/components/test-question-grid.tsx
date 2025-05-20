@@ -61,25 +61,21 @@ const TestQuestionGrid = ({questions, id, activeModal, onCreate, onConfirmDelete
     }
 
     const mappingQuestion = async (res: Template[]) => {
-        const importedQuestions:Question[] = res.map(e => {
-            
-            return {
+        const importedQuestions:Question[] = res.map(e => ({
                 id: "",
                 question: e.question,
                 number: e.number,
                 test_id: id,
                 options: [
-                    { option: e.A, is_answer: e[e.answer].toUpperCase() == e.A, question_id: "", id: "" },
-                    { option: e.B, is_answer: e[e.answer].toUpperCase() == e.B, question_id: "", id: "" },
-                    { option: e.C, is_answer: e[e.answer].toUpperCase() == e.C, question_id: "", id: "" },
-                    { option: e.D, is_answer: e[e.answer].toUpperCase() == e.D, question_id: "", id: "" },
+                    { option: e.A, is_answer: e[e.answer] == e.A, question_id: "", id: "" },
+                    { option: e.B, is_answer: e[e.answer] == e.B, question_id: "", id: "" },
+                    { option: e.C, is_answer: e[e.answer] == e.C, question_id: "", id: "" },
+                    { option: e.D, is_answer: e[e.answer] == e.D, question_id: "", id: "" },
                 ]
-            } 
-        })
+            }))
         const toastId = toast.loading(`Importing Test...`);
         try {
             await Promise.all(questions.map(async (e) => await deleteQuestion(e.id)))
-
             await Promise.all(importedQuestions.map(async (data) => {
                 const res = await createTestQuestion({ data });
 
@@ -88,7 +84,6 @@ const TestQuestionGrid = ({questions, id, activeModal, onCreate, onConfirmDelete
                     await createQuestionOption({data: data.options[i]})
                 }  
             }))
-
             toast.success("Import Test Success!", { id: toastId })
             onSuccess()
         } catch (error) {
@@ -99,10 +94,7 @@ const TestQuestionGrid = ({questions, id, activeModal, onCreate, onConfirmDelete
     }
 
     const importTest = (e:ChangeEvent<HTMLInputElement>) => {
-        
-
         const reader = new FileReader()
-
         reader.onload = (event) => importExcel<Template>(event, (res) => mappingQuestion(res))
         reader.readAsArrayBuffer(e.target.files![0])
     }

@@ -21,6 +21,7 @@ export const loader = async ({ params }: Route.LoaderArgs) => {
     const { data: session } = await getBootcampSession(params.session);
     const { data: tests } = await getSessionTest(session.id);
     const { data: assignment } = await getAssignment(session.id).catch(() => ({data: undefined}));
+    // const { data: assignmentAnswer } = await 
     const preTest = tests.filter(e => e.type == TestType.PRE_TEST)[0]
     const postTest = tests.filter(e => e.type == TestType.POST_TEST)[0]
     

@@ -7,6 +7,10 @@ import CreateAssignment from "~/features/assignment/components/create-assignment
 import type { Assignment } from "~/types/api"
 import EmptyMessage from "../ui/empty-message"
 import { Download, File } from "lucide-react"
+import { createAssignmentAnswer } from "~/features/assignment/api/answer/create-assignment-answer"
+import toast from "react-hot-toast"
+import { getErrorMessage } from "~/lib/error"
+import { updateAssignmentAnswer } from "~/features/assignment/api/answer/update-assignment-answer"
 
 interface Props {
     sessionId: string,
@@ -24,11 +28,36 @@ const AssignmentCard = ({sessionId, assignment}:Props) => {
         revalidator.revalidate();
     };
 
-    const onChange = (e:ChangeEvent<HTMLInputElement>) => {
+    const onChange = async (e:ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
-            setFileName(file.name)
             setPreviewUrl(URL.createObjectURL(file));
+            const toastId = toast.loading("Submitting Answer...");
+            try {
+                
+                const res = previewUrl? await updateAssignmentAnswer({
+                    data:{
+                        answer_file: file,
+                        user_id: 'sdf',
+                        assignment_id: assignment!.id,
+                        answer_file_path: file.name
+                    },
+                    id: fileName
+                }):await createAssignmentAnswer({
+                    data:{
+                        answer_file: file,
+                        user_id: 'sdf',
+                        assignment_id: assignment!.id,
+                        answer_file_path: file.name
+                    }
+                })
+                setFileName(res.data.id)
+                toast.success(res.message, { id: toastId });
+            } catch (error) {
+            toast.error(getErrorMessage(error), {
+                id: toastId,
+            });
+            }
         }
     }
 
