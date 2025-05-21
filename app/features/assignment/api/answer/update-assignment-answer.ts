@@ -19,11 +19,9 @@ export const updateAssignmentAnswer = ({
   id: string;
 }): Promise<{ data: { id: string }; message: string }> => {
   let formData = new FormData();
-  formData.append("_method", "PUT")
   for (let key in data) {
     formData.append(key, data[key]);
   }
-  console.log(formData.get('answer_file'))
   
   return api.post(`bootcamp/session_assignment_answer/${id}`, formData, {
     headers: {

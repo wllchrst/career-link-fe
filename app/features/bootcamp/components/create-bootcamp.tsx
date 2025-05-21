@@ -1,20 +1,8 @@
 import { useForm } from "react-hook-form";
-import {
-  createCategoryInputSchema,
-  createBootcampCategory,
-  type CreateCategoryInput,
-} from "~/features/bootcamp-category/api/create-bootcamp-category";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
+  Form
 } from "~/components/ui/form";
-import { Input } from "~/components/ui/input";
-import { Textarea } from "~/components/ui/textarea";
 import { Button } from "~/components/ui/button";
 import toast from "react-hot-toast";
 import { getErrorMessage } from "~/lib/error";

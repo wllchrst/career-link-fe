@@ -15,13 +15,14 @@ import { Modal, type ModalType } from "~/components/modal";
 import EmptyMessage from "~/components/ui/empty-message";
 import SessionTodolist from "~/features/session/components/session-todolist";
 import { getAssignment } from "~/features/assignment/api/get-assignment";
+import { getSessionDataBySession } from "~/features/session-data/api/session_data_by_session_id";
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
 
     const { data: session } = await getBootcampSession(params.session);
     const { data: tests } = await getSessionTest(session.id);
     const { data: assignment } = await getAssignment(session.id).catch(() => ({data: undefined}));
-    // const { data: assignmentAnswer } = await 
+    const { data: sessionData } = await getSessionDataBySession(session.id)
     const preTest = tests.filter(e => e.type == TestType.PRE_TEST)[0]
     const postTest = tests.filter(e => e.type == TestType.POST_TEST)[0]
     
@@ -30,6 +31,7 @@ export const loader = async ({ params }: Route.LoaderArgs) => {
     
     return {
         session, 
+        sessionData,
         preTest,
         postTest,
         assignment,
@@ -41,7 +43,7 @@ export const loader = async ({ params }: Route.LoaderArgs) => {
 
 const Session = ({loaderData}:Route.ComponentProps) => {
 
-    const {session, preTest, postTest, assignment, attemptsPretest, attemptsPosttest} = loaderData
+    const {session, sessionData, preTest, postTest, assignment, attemptsPretest, attemptsPosttest} = loaderData
     const [activeModal, setActiveModal] = useState<ModalType>(null);
     const revalidator = useRevalidator();
 
@@ -74,6 +76,7 @@ const Session = ({loaderData}:Route.ComponentProps) => {
             />
             <SessionTodolist 
                 session={session} 
+                sessionData={sessionData}
                 assignment={assignment}
                 attendanceOnClick={() => setActiveModal('create')} 
                 attemptsPosttest={attemptsPosttest}

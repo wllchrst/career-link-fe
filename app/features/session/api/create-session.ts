@@ -4,7 +4,7 @@ import { api } from "~/lib/api-client";
 export const createSessionInputSchema = z.object({
   title: z.string().min(1, "Title is required"),
   description: z.string().min(1, "Description is required"),
-  session_number: z.preprocess((val) => Number(val), z.number().min(1)),
+  session_number: z.number(),
   bootcamp_id: z.string().min(1, "Bootcamp ID is required"),
 });
 

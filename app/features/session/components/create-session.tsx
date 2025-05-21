@@ -24,7 +24,7 @@ export const CreateSession = ({ onSuccess, bootcamp }: Props) => {
     defaultValues: {
       title: "",
       description: "",
-      session_number: "1",
+      session_number: 1,
       bootcamp_id: bootcamp.id,
     },
   });
