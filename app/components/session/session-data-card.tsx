@@ -36,7 +36,7 @@ const SessionDataCard = ({sessionData, session}:Props) => {
             <h4 className="font-bold text-black text-xl mb-3">Material</h4>
             {sessionData.map(e => <>
                 <div className="flex gap-5 w-1/3 p-2 justify-between items-center text-xl text-accent underline">
-                    <a href={"http://" + e.link} target="_blank">
+                    <a href={e.link}>
                         <div className="flex gap-2">
                             <LinkIcon />
                             <p className="text-sm">{e.description}</p>
