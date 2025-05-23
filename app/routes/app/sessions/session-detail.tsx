@@ -17,6 +17,9 @@ import SessionTodolist from "~/features/session/components/session-todolist";
 import { getAssignment } from "~/features/assignment/api/get-assignment";
 import { getSessionDataBySession } from "~/features/session-data/api/session_data_by_session_id";
 import { getAssignmentAnswerByUserAndAssignment } from "~/features/assignment/api/answer/get-assignment-answer-by-user-and-assignment";
+import toast from "react-hot-toast";
+import { getErrorMessage } from "~/lib/error";
+import { createStudentAttendance } from "~/features/attendance/api/create-attendance";
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
 
@@ -50,11 +53,31 @@ const Session = ({loaderData}:Route.ComponentProps) => {
     const [activeModal, setActiveModal] = useState<ModalType>(null);
     const revalidator = useRevalidator();
 
+
     const onSuccess = () => {
         setActiveModal(null);
         revalidator.revalidate();
     };
 
+    const takeAttendance = async () => {
+        const toastId = toast.loading("Submitting Attendance...");
+            try {
+                
+                const res = await createStudentAttendance({
+                    data: {
+                        attendance_type: "clock_in",
+                        session_id: session.id,
+                        user_id: 'sdf'
+                    }
+                })
+                toast.success(res.message, { id: toastId });
+                onSuccess()
+            } catch (error) {
+            toast.error(getErrorMessage(error), {
+                id: toastId,
+            });
+        }
+    }
     return (
     <>
         <Modal
@@ -67,10 +90,10 @@ const Session = ({loaderData}:Route.ComponentProps) => {
                 text="You haven't clock in/out. please click button below to take attendance"
             />
             <Button 
-                onClick={onSuccess} 
                 className="w-full"
+                onClick={takeAttendance}
             >
-                Take Attendance
+                Clock in
             </Button>
         </Modal>
         <div className={'flex flex-col w-full gap-y-4'}>

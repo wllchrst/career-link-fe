@@ -33,19 +33,22 @@ const SessionDataCard = ({sessionData, session}:Props) => {
             <CreateSessionData onSuccess={onSuccess} session={session} />
         </Modal>
         <div>
+            <h4 className="font-bold text-black text-xl mb-3">Material</h4>
             {sessionData.map(e => <>
-            <a href={"http://" + e.link} className="w-1/4" target="_blank">
-                <div className="flex gap-5 w-1/3 border p-2 items-center text-xl text-accent underline">
-                    <LinkIcon />
-                    <p>{e.description}</p>
+                <div className="flex gap-5 w-1/3 p-2 justify-between items-center text-xl text-accent underline">
+                    <a href={"http://" + e.link} target="_blank">
+                        <div className="flex gap-2">
+                            <LinkIcon />
+                            <p className="text-sm">{e.description}</p>
+                        </div>
+                    </a>
                     {
-                        role == 'admin' && <>
+                        role == 'admin' && <div className="flex gap-2">
                             <Button><FaEdit /></Button>
                             <Button><FaTrash /></Button>
-                        </>
+                        </div>
                     }
                 </div>
-            </a>
             
             </>)}
         </div>
