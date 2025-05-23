@@ -20,19 +20,22 @@ import { getAssignmentAnswerByUserAndAssignment } from "~/features/assignment/ap
 import toast from "react-hot-toast";
 import { getErrorMessage } from "~/lib/error";
 import { createStudentAttendance } from "~/features/attendance/api/create-attendance";
+import { getAttendanceByUserAndSession } from "~/features/attendance/api/get-attendance-by-user-and-session";
+import { format } from "date-fns";
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
 
     const { data: session } = await getBootcampSession(params.session);
     const { data: tests } = await getSessionTest(session.id);
     const { data: assignment } = await getAssignment(session.id).catch(() => ({data: undefined}));
-    const {data: assignmentAnswer } = await getAssignmentAnswerByUserAndAssignment(assignment!.id, 'sdf').catch(() => ({data: undefined}));
+    const {data: assignmentAnswer } = await getAssignmentAnswerByUserAndAssignment(assignment? assignment.id : "", 'sdf').catch(() => ({data: undefined}));
     const { data: sessionData } = await getSessionDataBySession(session.id)
     const preTest = tests.filter(e => e.type == TestType.PRE_TEST)[0]
     const postTest = tests.filter(e => e.type == TestType.POST_TEST)[0]
     
     const {data: attemptsPretest} = await getStudentAttemptByTest(preTest.id, 'sdf').catch(() => ({data: []}));
     const {data: attemptsPosttest} = await getStudentAttemptByTest(postTest.id, 'sdf').catch(() => ({data: []}));
+    const {data: attendances} = await getAttendanceByUserAndSession(session.id, 'sdf').catch(() => ({data: []}))
     
     return {
         session, 
@@ -42,14 +45,25 @@ export const loader = async ({ params }: Route.LoaderArgs) => {
         assignment,
         assignmentAnswer,
         attemptsPretest,
-        attemptsPosttest
+        attemptsPosttest,
+        attendances
     }
 };
 
 
 const Session = ({loaderData}:Route.ComponentProps) => {
 
-    const {session, sessionData, preTest, postTest, assignment, assignmentAnswer, attemptsPretest, attemptsPosttest} = loaderData
+    const {
+        session, 
+        sessionData, 
+        preTest, 
+        postTest, 
+        assignment, 
+        assignmentAnswer, 
+        attemptsPretest, 
+        attemptsPosttest, 
+        attendances
+    } = loaderData
     const [activeModal, setActiveModal] = useState<ModalType>(null);
     const revalidator = useRevalidator();
 
@@ -65,7 +79,7 @@ const Session = ({loaderData}:Route.ComponentProps) => {
                 
                 const res = await createStudentAttendance({
                     data: {
-                        attendance_type: "clock_in",
+                        attendance_type: attendances.length < 1?'clock_in':'clock_out',
                         session_id: session.id,
                         user_id: 'sdf'
                     }
@@ -85,15 +99,19 @@ const Session = ({loaderData}:Route.ComponentProps) => {
             isOpen={activeModal === "create"}
             onClose={() => setActiveModal(null)}
         >
-            <EmptyMessage 
+            {attendances.length > 0 ? <>
+                {attendances.sort((a,b) => new Date(a.finished_at).getTime() - new Date(b.finished_at).getTime()).map(e => <div>
+                    <h4>{e.attendance_type.replace('_', ' ')} at {format(e.finished_at, "MM/dd/yyyy HH:mm:ss")}</h4>
+                </div>)}          
+            </>:<EmptyMessage 
                 title="No Clock in/out yet" 
                 text="You haven't clock in/out. please click button below to take attendance"
-            />
+            />}
             <Button 
                 className="w-full"
                 onClick={takeAttendance}
             >
-                Clock in
+                Clock {attendances.length > 0? "Out":"In"}
             </Button>
         </Modal>
         <div className={'flex flex-col w-full gap-y-4'}>

@@ -120,3 +120,11 @@ export type AssignmentAnswer = {
   assignment_id:string;
   answer_file_path: string;
 }
+
+export type Attendance = {
+  id: string;
+  user: User;
+  attendance_type: 'clock_in' | 'clock_out';
+  finished_at: Date;
+  session_id: string;
+}
