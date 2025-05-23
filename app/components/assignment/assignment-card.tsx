@@ -4,7 +4,7 @@ import { Modal, type ModalType } from "../modal"
 import { useState, type ChangeEvent } from "react"
 import { useRevalidator } from "react-router"
 import CreateAssignment from "~/features/assignment/components/create-assignment"
-import type { Assignment } from "~/types/api"
+import type { Assignment, AssignmentAnswer } from "~/types/api"
 import EmptyMessage from "../ui/empty-message"
 import { Download, File } from "lucide-react"
 import { createAssignmentAnswer } from "~/features/assignment/api/answer/create-assignment-answer"
@@ -14,10 +14,11 @@ import { updateAssignmentAnswer } from "~/features/assignment/api/answer/update-
 
 interface Props {
     sessionId: string,
-    assignment?: Assignment | undefined
+    assignment?: Assignment | undefined,
+    assignmentAnswer?: AssignmentAnswer | undefined,
 }
 
-const AssignmentCard = ({sessionId, assignment}:Props) => {
+const AssignmentCard = ({sessionId, assignment, assignmentAnswer}:Props) => {
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
     const [fileName, setFileName] = useState("");
     const [activeModal, setActiveModal] = useState<ModalType>(null);
@@ -35,14 +36,14 @@ const AssignmentCard = ({sessionId, assignment}:Props) => {
             const toastId = toast.loading("Submitting Answer...");
             try {
                 
-                const res = previewUrl? await updateAssignmentAnswer({
+                const res = assignmentAnswer? await updateAssignmentAnswer({
                     data:{
                         answer_file: file,
                         user_id: 'sdf',
                         assignment_id: assignment!.id,
                         answer_file_path: file.name
                     },
-                    id: fileName
+                    id: assignmentAnswer.id
                 }):await createAssignmentAnswer({
                     data:{
                         answer_file: file,
@@ -53,6 +54,7 @@ const AssignmentCard = ({sessionId, assignment}:Props) => {
                 })
                 setFileName(res.data.id)
                 toast.success(res.message, { id: toastId });
+                onSuccess()
             } catch (error) {
             toast.error(getErrorMessage(error), {
                 id: toastId,
@@ -62,6 +64,7 @@ const AssignmentCard = ({sessionId, assignment}:Props) => {
     }
 
     const {role} = useRole()
+    console.log(assignmentAnswer)
 
     return (
         <>
@@ -74,8 +77,8 @@ const AssignmentCard = ({sessionId, assignment}:Props) => {
             </Modal>
             {assignment? <>
                 <p>The assignment can be downloaded from the button below</p>
-                <a href={`${import.meta.env.VITE_STORAGE_URL}/${assignment.question_file_path}`} download target="_blank">
-                    <Button variant={'outline'} className="w-1/3 h-10">
+                <a href={`${import.meta.env.VITE_STORAGE_URL}/${assignment.question_file_path}`} download target="_blank" className="w-1/3">
+                    <Button variant={'outline'} className="w-full h-10">
                         <div className="flex gap-2 items-center justify-between w-full">
                             <div className="flex items-center gap-2">
                                 <File />
@@ -105,12 +108,15 @@ const AssignmentCard = ({sessionId, assignment}:Props) => {
                             <p>Upload Answer</p>
                         </label>
                         <input type="file" name="" id="file" hidden onChange={e => onChange(e)}/>
-                        <a href={previewUrl!} download target="_blank" className="w-full">
+                        <a href={
+                            assignmentAnswer ? `${import.meta.env.VITE_STORAGE_URL}/${assignmentAnswer.answer_file_path}`:
+                            previewUrl!
+                        } download target="_blank" className="w-full">
                             <Button variant={'outline'} className="w-full h-10">
                                 <div className="flex gap-2 items-center justify-between w-full">
                                     <div className="flex items-center gap-2">
                                         <File />
-                                        <p className="font-regular">{previewUrl ?fileName:'Document Name'}</p>
+                                        <p className="font-regular">{assignmentAnswer? assignmentAnswer.answer_file_path.replace('uploads/','') :'Document Name'}</p>
                                     </div>
                                     <Download />
                                 </div>

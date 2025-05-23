@@ -4,7 +4,7 @@ import AccordionLayout from "~/components/layouts/accordion-layout"
 import SessionDataCard from "~/components/session/session-data-card"
 import TestCard from "~/components/test/test-card"
 import { Button } from "~/components/ui/button"
-import type { Assignment, Session, SessionData, SessionTest, StudentAttempt } from "~/types/api"
+import type { Assignment, AssignmentAnswer, Session, SessionData, SessionTest, StudentAttempt } from "~/types/api"
 import { TestType } from "~/types/enum"
 
 interface Props {
@@ -14,11 +14,12 @@ interface Props {
     preTest: SessionTest,
     postTest: SessionTest,
     assignment?: Assignment | undefined,
+    assignmentAnswer?:AssignmentAnswer | undefined,
     attemptsPretest: StudentAttempt[],
     attemptsPosttest: StudentAttempt[],
 }
 
-const SessionTodolist = ({attendanceOnClick, session, sessionData, preTest, postTest, assignment, attemptsPretest, attemptsPosttest}:Props) => {
+const SessionTodolist = ({attendanceOnClick, session, sessionData, preTest, postTest, assignment, assignmentAnswer, attemptsPretest, attemptsPosttest}:Props) => {
     return (
         <>
             <h2 className={'font-semibold text-left text-4xl text-slate-700 py-6 w-full h-full'}>To Do List</h2>
@@ -34,7 +35,7 @@ const SessionTodolist = ({attendanceOnClick, session, sessionData, preTest, post
                     <TestCard testType={TestType.POST_TEST} sessionId={session.id} test={postTest} attempts={attemptsPosttest}/>
                 </AccordionLayout>
                 <AccordionLayout text={'Assignment'}>
-                    <AssignmentCard sessionId={session.id} assignment={assignment} />
+                    <AssignmentCard sessionId={session.id} assignment={assignment} assignmentAnswer={assignmentAnswer} />
                 </AccordionLayout>
                 <AccordionLayout text={'Evaluation'}>
                     <AssignmentCard sessionId={session.id} />

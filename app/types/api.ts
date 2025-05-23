@@ -113,3 +113,10 @@ export type Assignment = {
   question_file_path: string;
   answer_file_path: string;
 };
+
+export type AssignmentAnswer = {
+  id: string;
+  user_id: string;
+  assignment_id:string;
+  answer_file_path: string;
+}
