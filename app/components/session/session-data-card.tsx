@@ -8,6 +8,10 @@ import { Button } from "../ui/button"
 import TooltipLayout from "../layouts/tooltip-layout"
 import { LinkIcon } from "lucide-react"
 import { FaEdit, FaTrash } from "react-icons/fa"
+import toast from "react-hot-toast"
+import { getErrorMessage } from "~/lib/error"
+import { deleteSessionData } from "~/features/session-data/api/delete-session-data"
+import UpdateSessionData from "~/features/session-data/component/update-session-data"
 
 interface Props {
     sessionData: SessionData[]
@@ -17,20 +21,47 @@ interface Props {
 const SessionDataCard = ({sessionData, session}:Props) => {
     const [activeModal, setActiveModal] = useState<ModalType>(null);
     const revalidator = useRevalidator();
+    const [selectedData, setSelectedData] = useState<SessionData>();
+
+    const onUpdate = (e:SessionData) => {
+        setActiveModal('update')
+        setSelectedData(e)
+    }
     
     const onSuccess = () => {
         setActiveModal(null);
         revalidator.revalidate();
     };
+    const onDelete = async (id: string) => {
+
+        const toastId = toast.loading("Deleting material...");
+        try {
+        const res = await deleteSessionData(id);
+        toast.success("Material deleted", { id: toastId });
+        onSuccess();
+        } catch (error) {
+        toast.error(getErrorMessage(error), {
+            id: toastId,
+        });
+        }
+    }
+
     const {role} = useRole()
 
     return (<>
         <Modal 
-            title={`Add Session Data`}
+            title={`Add Material`}
             isOpen={activeModal === "create"}
             onClose={() => setActiveModal(null)}
         >
             <CreateSessionData onSuccess={onSuccess} session={session} />
+        </Modal>
+        <Modal 
+            title={`Update Material`}
+            isOpen={activeModal === "update"}
+            onClose={() => setActiveModal(null)}
+        >
+            <UpdateSessionData onSuccess={onSuccess} session={session} sessionData={selectedData!} />
         </Modal>
         <div>
             <h4 className="font-bold text-black text-xl mb-3">Material</h4>
@@ -44,8 +75,8 @@ const SessionDataCard = ({sessionData, session}:Props) => {
                     </a>
                     {
                         role == 'admin' && <div className="flex gap-2">
-                            <Button><FaEdit /></Button>
-                            <Button><FaTrash /></Button>
+                            <Button onClick={() => onUpdate(e)}><FaEdit /></Button>
+                            <Button onClick={() => onDelete(e.id)}><FaTrash /></Button>
                         </div>
                     }
                 </div>
