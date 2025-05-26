@@ -5,7 +5,16 @@ export const createAssignmentInputSchema = z.object({
   session_id: z.string().min(1, "Session ID is required"),
   answer_file_path: z.string().optional(),
   question_file_path: z.string().optional(),
-  question_file: z.instanceof(File),
+  question_file: z.instanceof(File).refine(
+      (file) =>
+        [
+          "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+          "application/pdf",
+          "text/plain",
+          "application/zip"
+        ].includes(file.type),
+      { message: "Invalid question file type" }
+    ),
   answer_file: z.instanceof(File)
 });
 

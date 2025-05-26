@@ -13,7 +13,7 @@ export default function TableLayout({header, children}:Props) {
     return (
         <Table className="mt-5">
             {header}
-            <TableBody className="grid gap-y-4">
+            <TableBody className="grid">
                 {children}
             </TableBody>
         </Table>

@@ -3,7 +3,7 @@ import { Link } from "react-router"
 import type { Session } from "~/types/api"
 
 type Props = {
-    session: Session
+    session: Session,
 }
 
 const SessionCard = ({session}:Props) => {

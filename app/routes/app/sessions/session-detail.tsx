@@ -33,8 +33,8 @@ export const loader = async ({ params }: Route.LoaderArgs) => {
     const preTest = tests.filter(e => e.type == TestType.PRE_TEST)[0]
     const postTest = tests.filter(e => e.type == TestType.POST_TEST)[0]
     
-    const {data: attemptsPretest} = await getStudentAttemptByTest(preTest.id, 'sdf').catch(() => ({data: []}));
-    const {data: attemptsPosttest} = await getStudentAttemptByTest(postTest.id, 'sdf').catch(() => ({data: []}));
+    const {data: attemptsPretest} = await getStudentAttemptByTest(preTest ? preTest.id:"", 'sdf').catch(() => ({data: []}));
+    const {data: attemptsPosttest} = await getStudentAttemptByTest(postTest ? postTest.id:"", 'sdf').catch(() => ({data: []}));
     const {data: attendances} = await getAttendanceByUserAndSession(session.id, 'sdf').catch(() => ({data: []}))
     
     return {
@@ -66,7 +66,6 @@ const Session = ({loaderData}:Route.ComponentProps) => {
     } = loaderData
     const [activeModal, setActiveModal] = useState<ModalType>(null);
     const revalidator = useRevalidator();
-
 
     const onSuccess = () => {
         setActiveModal(null);
