@@ -41,5 +41,9 @@ export default [
       ":session/test/:test/result",
       "routes/app/admin/sessions/session-test-results.tsx"
     ),
+    route(
+      ":session/assignment/:assignment/answer",
+      "routes/app/admin/assignments/assignment-answers.tsx"
+    ),
   ]),
 ] satisfies RouteConfig;

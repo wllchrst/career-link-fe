@@ -2,7 +2,7 @@ import { useRole } from "~/role-testing-provider"
 import { Button } from "../ui/button"
 import { Modal, type ModalType } from "../modal"
 import { useState, type ChangeEvent } from "react"
-import { useRevalidator } from "react-router"
+import { Link, useRevalidator } from "react-router"
 import CreateAssignment from "~/features/assignment/components/create-assignment"
 import type { Assignment, AssignmentAnswer } from "~/types/api"
 import EmptyMessage from "../ui/empty-message"
@@ -133,10 +133,12 @@ const AssignmentCard = ({sessionId, assignment, assignmentAnswer}:Props) => {
                 <div className="flex gap-5 justify-start items-center">
                     
                     {assignment ? <>
-                        <Button
-                            className={'bg-purple-500 text-white rounded-md p-2 w-40 hover:bg-purple-700 transition duration-200 ease-in-out'}>
-                            View Submissions
-                        </Button>
+                        <Link to={`assignment/${assignment.id}/answer`}>
+                            <Button
+                                className={'bg-purple-500 text-white rounded-md p-2 w-40 hover:bg-purple-700 transition duration-200 ease-in-out'}>
+                                View Submissions
+                            </Button>
+                        </Link>
                         <Button
                             className={'bg-[var(--accent)] text-white rounded-md p-2 w-40 hover:bg-[var(--secondary)] transition duration-200 ease-in-out'}>
                             Update

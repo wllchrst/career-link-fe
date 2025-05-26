@@ -9,6 +9,8 @@ import TestInformationCard from "~/components/test/test-information-card"
 import { Link } from "react-router"
 import { TableCell, TableRow } from "~/components/ui/table"
 import { format } from "date-fns"
+import { Button } from "~/components/ui/button"
+import { exportToExcel } from "~/lib/excel"
 
 
 
@@ -23,6 +25,10 @@ export const loader = async ({ params }: Route.LoaderArgs) => {
 const SessionTestResults = ({loaderData}:Route.ComponentProps) => {
 
     const {attempts, test, session} = loaderData
+
+    const exportResult = () => {
+        exportToExcel(`${test?.title}-result`, attempts)
+    }
     return (
     <div className="flex flex-col w-full gap-y-4 bg-white rounded-lg shadow-md p-5">
             <div className={'w-full flex items-center'}>
@@ -35,6 +41,7 @@ const SessionTestResults = ({loaderData}:Route.ComponentProps) => {
                 <h2 className={'font-bold text-left w-full text-4xl text-slate-700 p-6 h-full'}>Test Result</h2>
             </div>
             {test && <TestInformationCard test={test}/>}
+            <Button onClick={exportResult} className="w-1/6">Export</Button>
             <TableLayout header={<DefaultTableHeader columns={["NIM", "Name", "Attempt", "Done at", "Score"]}/>}>
                 {
                 attempts.length < 1?
