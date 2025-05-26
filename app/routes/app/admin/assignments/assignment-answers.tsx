@@ -8,6 +8,8 @@ import { DefaultTableHeader } from "~/components/ui/table-header";
 import TableLayout from "~/components/layouts/table-layout";
 import EmptyMessage from "~/components/ui/empty-message";
 import { Download } from "lucide-react";
+import { Button } from "~/components/ui/button";
+import { exportToExcel } from "~/lib/excel";
 
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
@@ -21,8 +23,18 @@ export const loader = async ({ params }: Route.LoaderArgs) => {
 
 const AssignmentAnswers = ({loaderData}:Route.ComponentProps) => {
 
-
     const {answers, assignment, session} = loaderData
+    
+    const exportResult = () => {
+        exportToExcel(`${assignment?.id}-result`, answers.map(e => (
+            {
+                nim: e.user.nim,
+                name: e.user.name,
+                status: 'passed',
+                score: 100
+            }
+        )))
+    }
     return (
     <div className="flex flex-col w-full gap-y-4 bg-white rounded-lg shadow-md p-5">
             <div className={'w-full flex items-center'}>
@@ -34,6 +46,7 @@ const AssignmentAnswers = ({loaderData}:Route.ComponentProps) => {
                 </Link>
                 <h2 className={'font-bold text-left w-full text-4xl text-slate-700 p-6 h-full'}>Assignment Answers</h2>
             </div>
+            <Button onClick={exportResult} className="w-1/6">Export</Button>
             
             <TableLayout header={<DefaultTableHeader columns={["NIM", "Name", "Answer", "Score"]}/>}>
                 {

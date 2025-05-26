@@ -119,6 +119,7 @@ export type AssignmentAnswer = {
   user_id: string;
   assignment_id:string;
   answer_file_path: string;
+  user: User;
 }
 
 export type Attendance = {

@@ -27,7 +27,15 @@ const SessionTestResults = ({loaderData}:Route.ComponentProps) => {
     const {attempts, test, session} = loaderData
 
     const exportResult = () => {
-        exportToExcel(`${test?.title}-result`, attempts)
+        exportToExcel(`${test?.title}-result`, attempts.map(e => (
+            {
+                nim: e.user.nim,
+                name: e.user.name,
+                doneAt: e.done_at,
+                attempt: 1,
+                score: 100
+            }
+        )))
     }
     return (
     <div className="flex flex-col w-full gap-y-4 bg-white rounded-lg shadow-md p-5">

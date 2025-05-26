@@ -45,5 +45,9 @@ export default [
       ":session/assignment/:assignment/answer",
       "routes/app/admin/assignments/assignment-answers.tsx"
     ),
+    route(
+      ":session/attendance",
+      "routes/app/admin/attendances/attendances.tsx"
+    ),
   ]),
 ] satisfies RouteConfig;
