@@ -46,7 +46,7 @@ const BootcampDetail = ({ loaderData }: Route.ComponentProps) => {
           image={bootcamp.image_path}
           onClick={() => setActiveModal("create")}
         />
-        <SessionsGrid sessions={bootcamp.sessions ?? []} />
+        <SessionsGrid bootcampId={bootcamp.id} sessions={bootcamp.sessions ?? []} />
       </div>
     </>
   );
