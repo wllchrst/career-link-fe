@@ -3,6 +3,7 @@ import { BootcampTypeTag } from "./bootcamp-type-tag";
 import { Button } from "~/components/ui/button";
 import type { BootcampCategory, BootcampType } from "~/types/api";
 import { useRole } from "~/role-testing-provider";
+import { Link } from "react-router";
 
 type BootcampDetailCardProps = {
   name: string;
@@ -40,11 +41,18 @@ const BootcampDetailCard = ({
             </div>
             <p className={"text-justify"}>{description}</p>
           </div>
-          <div className="flex justify-end">
+          <div className="flex justify-end gap-5">
             {role == "admin" ? (
+              <>
               <Button className="w-fit p-5" onClick={onClick}>
                 Add Session
               </Button>
+              <Link to={`enrollment`}>
+                <Button className="w-fit p-5 bg-purple-500 hover:bg-purple-400" onClick={onClick}>
+                  View Enrolled Students
+                </Button>
+              </Link>
+              </>
             ) : (
               <Button className="w-fit p-5">Enroll Now</Button>
             )}

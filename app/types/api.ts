@@ -133,3 +133,11 @@ export type Attendance = {
   finished_at: Date;
   session_id: string;
 }
+
+export type Enrollment = {
+  id: string;
+  user: User;
+  bootcamp: Bootcamp;
+  user_id: string;
+  bootcamp_id: string;
+}

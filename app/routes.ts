@@ -18,6 +18,7 @@ export default [
   ...prefix("bootcamps", [
     index("routes/app/bootcamps/bootcamps.tsx"),
     route(":bootcamp", "routes/app/bootcamps/bootcamp-detail.tsx"),
+    route(":bootcamp/enrollment", "routes/app/admin/enrollments/enrollments.tsx"),
   ]),
   ...prefix("admin", [
     route("bootcamps", "routes/app/admin/bootcamps/bootcamps.tsx"),
