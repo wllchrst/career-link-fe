@@ -9,7 +9,7 @@ import { CreateUpdateTest } from "~/features/quiz/components/create-update-test"
 import { TestType } from "~/types/enum";
 import type { SessionTest, StudentAttempt } from "~/types/api";
 import EmptyMessage from "../ui/empty-message";
-import { format } from "date-fns";
+import { format, formatDate } from "date-fns";
 import { DeleteTest } from "~/features/quiz/components/delete-test";
 import { createStudentAttempt } from "~/features/quiz/api/attempt/create-student-attempt";
 import toast from "react-hot-toast";
@@ -112,15 +112,15 @@ const TestCard = ({ sessionId, testType, test, attempts }: Props) => {
           <TestInformationCard test={test}/>
           {role == 'user' && <>
           <h4></h4>
-            <TableLayout header={<DefaultTableHeader columns={["Attempt", "State", "Finished At", "Score"]}/>}>
+            <TableLayout header={<DefaultTableHeader columns={["Attempt", "State", "Duration", "Score"]}/>}>
               {
                 attempts.length < 1?
                 <EmptyMessage title="No Attempts" text="You haven't made any attempts yet."/>:
                 attempts.sort((a,b) => new Date(a.done_at).getTime() - new Date(b.done_at).getTime()).map((e, idx) => 
                 <TableRow className="flex w-full border-b-1 border-gray-200">
                     <TableCell className="w-1/4 text-center">{idx + 1}</TableCell>
-                    <TableCell className="w-1/4 text-center">{test.type == TestType.PRE_TEST?'Passed':'-'}</TableCell>
-                    <TableCell className="w-1/4 text-center">{format(new Date(e.done_at), "MM/dd/yyyy HH:mm")}</TableCell>
+                    <TableCell className="w-1/4 text-center">{`Submitted at ${formatDate(new Date(e.done_at), 'MM/dd/yyyy HH:mm:ss')}`}</TableCell>
+                    <TableCell className="w-1/4 text-center">{Math.ceil((new Date(e.done_at).getTime() - new Date(e.created_at).getTime()) /1000 / 60)} Minutes</TableCell>
                     <TableCell className="w-1/4 text-center">100</TableCell>
                 </TableRow>
                 )

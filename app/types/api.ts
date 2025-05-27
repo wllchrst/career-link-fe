@@ -86,6 +86,7 @@ export type StudentAttempt = {
   id: string;
   test_id: string;
   user_id:string;
+  created_at: Date;
   done_at: Date;
   user: User;
 }
