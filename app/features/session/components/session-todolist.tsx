@@ -6,12 +6,13 @@ import SessionDataCard from "~/components/session/session-data-card"
 import TestCard from "~/components/test/test-card"
 import { Button } from "~/components/ui/button"
 import { useRole } from "~/role-testing-provider"
-import type { Assignment, AssignmentAnswer, Session, SessionData, SessionTest, StudentAttempt } from "~/types/api"
+import type { Assignment, AssignmentAnswer, Attendance, Session, SessionData, SessionTest, StudentAttempt } from "~/types/api"
 import { TestType } from "~/types/enum"
 
 interface Props {
     attendanceOnClick: () => void,
     session: Session,
+    attendances: Attendance[],
     sessionData: SessionData[],
     preTest: SessionTest,
     postTest: SessionTest,
@@ -21,7 +22,7 @@ interface Props {
     attemptsPosttest: StudentAttempt[],
 }
 
-const SessionTodolist = ({attendanceOnClick, session, sessionData, preTest, postTest, assignment, assignmentAnswer, attemptsPretest, attemptsPosttest}:Props) => {
+const SessionTodolist = ({attendanceOnClick, attendances, session, sessionData, preTest, postTest, assignment, assignmentAnswer, attemptsPretest, attemptsPosttest}:Props) => {
     const {role} = useRole()
     return (
         <>
@@ -39,7 +40,7 @@ const SessionTodolist = ({attendanceOnClick, session, sessionData, preTest, post
                 <AccordionLayout text={'Material'} isLocked={role == 'user' && attemptsPretest.length < 1}>
                     <SessionDataCard sessionData={sessionData} session={session}/>
                 </AccordionLayout>
-                <AccordionLayout text={'Post Test'} isLocked={role == 'user' && attemptsPretest.length < 1}>
+                <AccordionLayout text={'Post Test'} isLocked={role == 'user' && (attemptsPretest.length < 1 || attendances.length < 1)}>
                     <TestCard testType={TestType.POST_TEST} sessionId={session.id} test={postTest} attempts={attemptsPosttest}/>
                 </AccordionLayout>
                 <AccordionLayout text={'Assignment'}  isLocked={role == 'user' && attemptsPosttest.length < 1}>

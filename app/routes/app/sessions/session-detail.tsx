@@ -118,6 +118,7 @@ const Session = ({loaderData}:Route.ComponentProps) => {
                 session={session}
             />
             <SessionTodolist 
+                attendances={attendances}
                 session={session} 
                 sessionData={sessionData}
                 assignment={assignment}

@@ -79,6 +79,7 @@ export type SessionTest = {
   title: string;
   open_date: Date;
   close_date: Date;
+  attempt_count: string;
 };
 
 export type StudentAttempt = {

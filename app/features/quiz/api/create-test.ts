@@ -7,7 +7,8 @@ export const createTestInputSchema = z.object({
   open_date: z.date().min(new Date(), "Date cant be empty"),
   close_date: z.date().min(new Date(), 'Date cant be empty'),
   type: z.nativeEnum(TestType),
-  session_id: z.string().min(1, "Session id is required")
+  session_id: z.string().min(1, "Session id is required"),
+  attempt_count: z.string().min(1, "Attempt must be more than zero")
 }).refine((data) => {
   if (data.close_date.getTime() < data.open_date.getTime()) {
     return false;

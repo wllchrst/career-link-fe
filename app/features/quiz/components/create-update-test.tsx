@@ -30,6 +30,7 @@ export const CreateUpdateTest = ({onSuccess, testType, sessionId, test}: Props) 
             type: test? test.type:testType,
             open_date: test? new Date(test.open_date):new Date(),
             close_date: test? new Date(test.close_date):new Date(),
+            attempt_count: test? test.attempt_count: "0",
         },
     });
 
@@ -77,6 +78,7 @@ export const CreateUpdateTest = ({onSuccess, testType, sessionId, test}: Props) 
                   <Field control={form.control} placeholder="Enter title" label="Title" type="text" name="title"/>
                   <DatePicker onSelect={handleChangeDate} onTimeChange={handleTimeChange} name='open_date' control={form.control} label="Start Date" />
                   <DatePicker onSelect={handleChangeDate} onTimeChange={handleTimeChange} name='close_date' control={form.control} label="End Date" />
+                  <Field control={form.control} placeholder="Enter attempt count" label="Attempt Count" type="number" name="attempt_count" />
                 </>
             
               <div className="flex gap-5 justify-end">

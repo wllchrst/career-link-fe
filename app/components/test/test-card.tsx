@@ -112,21 +112,28 @@ const TestCard = ({ sessionId, testType, test, attempts }: Props) => {
           <TestInformationCard test={test}/>
           {role == 'user' && <>
           <h4></h4>
-            <TableLayout header={<DefaultTableHeader columns={["Attempt", "State", "Duration", "Score"]}/>}>
+            <TableLayout header={<DefaultTableHeader columns={["Attempt", "State", "Finished At", "Score"]}/>}>
               {
                 attempts.length < 1?
                 <EmptyMessage title="No Attempts" text="You haven't made any attempts yet."/>:
-                <></>
+                attempts.sort((a,b) => new Date(a.done_at).getTime() - new Date(b.done_at).getTime()).map((e, idx) => 
+                <TableRow className="flex w-full border-b-1 border-gray-200">
+                    <TableCell className="w-1/4 text-center">{idx + 1}</TableCell>
+                    <TableCell className="w-1/4 text-center">{test.type == TestType.PRE_TEST?'Passed':'-'}</TableCell>
+                    <TableCell className="w-1/4 text-center">{format(new Date(e.done_at), "MM/dd/yyyy HH:mm")}</TableCell>
+                    <TableCell className="w-1/4 text-center">100</TableCell>
+                </TableRow>
+                )
               }
             </TableLayout>
           </>}
           <div className={"w-full flex justify-between items-start"}>
             <div>
               <h4>Grading Method : Highest grade</h4>
-              <h4>Attempts Allowed: 2</h4>
+              <h4>Attempts Allowed: {test.attempt_count}</h4>
             </div>
             <div className="flex gap-5 justify-start items-center">
-              {role != "admin" ? (
+              {role != "admin" ? (attempts.length < parseInt(test.attempt_count) && new Date(test.close_date).getTime() > new Date().getTime()) && (
                 <Button
                 className={
                   "bg-[var(--accent)] text-white rounded-md p-2 w-40 hover:bg-[var(--secondary)] transition duration-200 ease-in-out"
