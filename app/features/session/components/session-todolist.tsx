@@ -36,16 +36,16 @@ const SessionTodolist = ({attendanceOnClick, session, sessionData, preTest, post
                 <AccordionLayout text={'Pretest'}>
                     <TestCard testType={TestType.PRE_TEST} sessionId={session.id} test={preTest} attempts={attemptsPretest}/>
                 </AccordionLayout>
-                <AccordionLayout text={'Material'}>
+                <AccordionLayout text={'Material'} isLocked={role == 'user' && attemptsPretest.length < 1}>
                     <SessionDataCard sessionData={sessionData} session={session}/>
                 </AccordionLayout>
-                <AccordionLayout text={'Post Test'}>
+                <AccordionLayout text={'Post Test'} isLocked={role == 'user' && attemptsPretest.length < 1}>
                     <TestCard testType={TestType.POST_TEST} sessionId={session.id} test={postTest} attempts={attemptsPosttest}/>
                 </AccordionLayout>
-                <AccordionLayout text={'Assignment'}>
+                <AccordionLayout text={'Assignment'}  isLocked={role == 'user' && attemptsPosttest.length < 1}>
                     <AssignmentCard sessionId={session.id} assignment={assignment} assignmentAnswer={assignmentAnswer} />
                 </AccordionLayout>
-                <AccordionLayout text={'Evaluation'}>
+                <AccordionLayout text={'Evaluation'} isLocked={role == 'user' && assignmentAnswer == undefined}>
                     <AssignmentCard sessionId={session.id} />
                 </AccordionLayout>
             </div>

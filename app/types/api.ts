@@ -91,7 +91,7 @@ export type StudentAttempt = {
 
 export type Session = {
   id: string;
-  bootCamp: Bootcamp;
+  bootcamp: Bootcamp;
   session_number: number;
   title: string;
   description: string;
