@@ -97,6 +97,8 @@ export type Session = {
   session_number: number;
   title: string;
   description: string;
+  duration: string;
+  start_attendance_date: Date;
   materials: SessionData[];
   preTest: SessionTest;
   postTest: SessionTest;
