@@ -1,5 +1,5 @@
 import { FaArrowLeft } from "react-icons/fa"
-import { Link } from "react-router"
+import { Link, useRevalidator } from "react-router"
 import type { Session } from "~/types/api"
 import { Button } from "../ui/button"
 import { useRole } from "~/role-testing-provider"
@@ -11,12 +11,15 @@ import DatePicker from "../ui/date-picker"
 import Field from "../ui/form-field"
 import toast from "react-hot-toast"
 import { getErrorMessage } from "~/lib/error"
+import { formatDate } from "date-fns"
 
 type Props = {
     session: Session,
 }
 
 const SessionCard = ({session}:Props) => {
+
+    const revalidator = useRevalidator()
 
     const form = useForm<UpdateSessionInput>({
         resolver: zodResolver(updateSessionInputSchema),
@@ -61,6 +64,7 @@ const SessionCard = ({session}:Props) => {
             const res = await updateSession({data, id: session.id})
             toast.success(res.message, { id: toastId });
             form.reset();
+            revalidator.revalidate();
         } catch (error) {
             toast.error(getErrorMessage(error), {
                 id: toastId,
@@ -78,10 +82,28 @@ const SessionCard = ({session}:Props) => {
                     </button>
                 </Link>
                 <h2 className={'font-bold text-left w-full text-4xl text-slate-700 p-6 h-full'}>{session.bootcamp.name}</h2>
-            </div>
+            </div>  
             <div className={"bg-white w-full h-50 shadow-md h-auto rounded-lg flex flex-col gap-y-5 p-6"}>
                 <h2 className={'text-slate-700 text-2xl font-semibold'}>{session.session_number}. {session.title}</h2>
                 <p className={'text-justify text-sm'}>{session.description}</p>
+                {
+                    new Date().getTime() < new Date(session.start_attendance_date).getTime() && 
+                    <p className="text-lg font-bold text-red-500">
+                        Absent start at {formatDate(new Date(session.start_attendance_date), 'MM/dd/yyyy hh:mm a')}
+                    </p>
+                }
+                {
+                    (
+                        new Date().getTime() >= new Date(session.start_attendance_date).getTime() && 
+                        new Date().getTime() <= new Date(session.start_attendance_date).getTime() + 60000 * parseInt(session.duration)
+                    ) ? 
+                    <p className="text-lg font-bold text-green-500">
+                        Absent ended at {formatDate(new Date(session.start_attendance_date).getTime() + 60000 * parseInt(session.duration), 'MM/dd/yyyy hh:mm a')}
+                    </p>:
+                    <p className="text-lg font-bold text-red-500">
+                        Absent already ended
+                    </p>
+                }
                 {
                     role != 'user' && <>
                         <Form {...form}>

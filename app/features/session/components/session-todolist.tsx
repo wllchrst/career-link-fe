@@ -28,7 +28,10 @@ const SessionTodolist = ({attendanceOnClick, attendances, session, sessionData, 
         <>
             <h2 className={'font-semibold text-left text-4xl text-slate-700 py-6 w-full h-full'}>To Do List</h2>
             <div className={'flex flex-col gap-y-6 mb-8'}>
-                {role == 'user' ?  new Date().getTime() >= new Date(session.start_attendance_date).getTime() &&
+                {role == 'user' ?  
+                (new Date().getTime() >= new Date(session.start_attendance_date).getTime() && 
+                new Date().getTime() <= new Date(session.start_attendance_date).getTime() + parseInt(session.duration) * 60000
+                ) &&
                     <Button onClick={attendanceOnClick} className="w-1/6">Session Clock in/out</Button>:
                     <Link to={`attendance`}>
                         <Button className="w-1/6">View Attendances</Button> 
