@@ -42,7 +42,7 @@ const BootcampDetailCard = ({
             <p className={"text-justify"}>{description}</p>
           </div>
           <div className="flex justify-end gap-5">
-            {role == "admin" ? (
+            {role == "admin" && (
               <>
               <Button className="w-fit p-5" onClick={onClick}>
                 Add Session
@@ -53,8 +53,6 @@ const BootcampDetailCard = ({
                 </Button>
               </Link>
               </>
-            ) : (
-              <Button className="w-fit p-5">Enroll Now</Button>
             )}
           </div>
         </div>

@@ -6,7 +6,7 @@ export const updateSessionInputSchema = z.object({
   description: z.string().min(1, "Description is required"),
   session_number: z.string().min(1, "Session number is required"),
   bootcamp_id: z.string().min(1, 'Bootcamp ID is required'),
-  start_attendance_date: z.date().min(new Date(), "Date cant be empty"),
+  start_attendance_date: z.date().min(new Date(), "Date must not current date or before"),
   duration: z.string().min(1, "Duration is required")
 });
 

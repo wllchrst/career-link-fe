@@ -6,8 +6,10 @@ import { getBootcampType } from "~/features/bootcamp-type/api/get-bootcamp-type"
 import { Modal, type ModalType } from "~/components/modal";
 import { useRevalidator } from "react-router";
 import { useState } from "react";
-import { CreateSession } from "~/features/session/components/create-session";
+import { CreateUpdateSession } from "~/features/session/components/create-session";
 import SessionsGrid from "~/features/session/components/sessions-grid";
+import type { Session } from "~/types/api";
+import { DeleteSession } from "~/features/session/components/delete-session";
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
   const { data: bootcamp } = await getBootcamp(params.bootcamp);
@@ -20,6 +22,17 @@ export const loader = async ({ params }: Route.LoaderArgs) => {
 const BootcampDetail = ({ loaderData }: Route.ComponentProps) => {
   const [activeModal, setActiveModal] = useState<ModalType>(null);
   const revalidator = useRevalidator();
+  const [selectedSession, setSelectedSession] = useState<Session>()
+
+  const onUpdateSession = (session:Session) => {
+    setSelectedSession(session)
+    setActiveModal('update')
+  }
+
+  const onDeleteSession = (session:Session) => {
+    setSelectedSession(session)
+    setActiveModal('delete')
+  }
 
   const onSuccess = () => {
     setActiveModal(null);
@@ -35,7 +48,21 @@ const BootcampDetail = ({ loaderData }: Route.ComponentProps) => {
         isOpen={activeModal === "create"}
         onClose={() => setActiveModal(null)}
       >
-        <CreateSession bootcamp={bootcamp} onSuccess={onSuccess} />
+        <CreateUpdateSession bootcamp={bootcamp} onSuccess={onSuccess} />
+      </Modal>
+      <Modal
+        title="Update Bootcamp's Session"
+        isOpen={activeModal === "update"}
+        onClose={() => setActiveModal(null)}
+      >
+        <CreateUpdateSession bootcamp={bootcamp} onSuccess={onSuccess} session={selectedSession} />
+      </Modal>
+      <Modal
+        title="Delete Bootcamp's Session"
+        isOpen={activeModal === "delete"}
+        onClose={() => setActiveModal(null)}
+      >
+        <DeleteSession onSuccess={onSuccess} question={selectedSession}/>
       </Modal>
       <div className={"container flex flex-col gap-8"}>
         <BootcampDetailCard
@@ -46,7 +73,7 @@ const BootcampDetail = ({ loaderData }: Route.ComponentProps) => {
           image={bootcamp.image_path}
           onClick={() => setActiveModal("create")}
         />
-        <SessionsGrid bootcampId={bootcamp.id} sessions={bootcamp.sessions ?? []} />
+        <SessionsGrid onDeleteSession={onDeleteSession} onUpdateSession={onUpdateSession} bootcampId={bootcamp.id} sessions={bootcamp.sessions ?? []} />
       </div>
     </>
   );
