@@ -1,5 +1,5 @@
 import { format } from "date-fns"
-import { useRole } from "~/role-testing-provider"
+import { useRole } from "~/provider/role-testing-provider"
 import type { SessionTest } from "~/types/api"
 
 interface Props {

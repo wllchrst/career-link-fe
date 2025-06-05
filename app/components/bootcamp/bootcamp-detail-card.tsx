@@ -2,7 +2,7 @@ import { BootcampMethodTag } from "~/components/bootcamp/bootcamp-method-tag";
 import { BootcampTypeTag } from "./bootcamp-type-tag";
 import { Button } from "~/components/ui/button";
 import type { BootcampCategory, BootcampType } from "~/types/api";
-import { useRole } from "~/role-testing-provider";
+import { useRole } from "~/provider/role-testing-provider";
 import { Link } from "react-router";
 
 type BootcampDetailCardProps = {
@@ -48,7 +48,7 @@ const BootcampDetailCard = ({
                 Add Session
               </Button>
               <Link to={`enrollment`}>
-                <Button className="w-fit p-5 bg-purple-500 hover:bg-purple-400" onClick={onClick}>
+                <Button className="w-fit p-5 bg-purple-500 hover:bg-purple-400">
                   View Enrolled Students
                 </Button>
               </Link>

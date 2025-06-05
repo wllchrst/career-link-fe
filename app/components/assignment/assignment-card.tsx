@@ -1,4 +1,4 @@
-import { useRole } from "~/role-testing-provider"
+import { useRole } from "~/provider/role-testing-provider"
 import { Button } from "../ui/button"
 import { Modal, type ModalType } from "../modal"
 import { useState, type ChangeEvent } from "react"

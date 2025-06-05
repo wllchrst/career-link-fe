@@ -6,7 +6,7 @@ import type { Session } from "~/types/api";
 import { createSession } from "../api/create-session";
 import toast from "react-hot-toast";
 import { getErrorMessage } from "~/lib/error";
-import { useRole } from "~/role-testing-provider";
+import { useRole } from "~/provider/role-testing-provider";
 
 type Props = {
     sessions: Session[]

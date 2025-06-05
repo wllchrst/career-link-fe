@@ -1,7 +1,7 @@
 import { AnnouncementLists } from "~/features/announcements/components/announcements-list";
 import type { Announcement } from "~/types/api";
 import { announcementsData } from "~/services/announcement-service";
-import { useRole } from "~/role-testing-provider";
+import { useRole } from "~/provider/role-testing-provider";
 import { IoMdAdd } from "react-icons/io";
 import type { Route } from "./+types/announcements";
 

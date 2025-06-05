@@ -1,5 +1,5 @@
 import type { ChangeEvent } from "react";
-import { useRole } from "~/role-testing-provider";
+import { useRole } from "~/provider/role-testing-provider";
 
 const RoleSwitcher = () => {
   const { role, setRole } = useRole();

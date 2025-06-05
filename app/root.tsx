@@ -11,7 +11,7 @@ import {
 import type { Route } from "./+types/root";
 import "./app.css";
 import { NavbarLayout } from "./components/layouts/navbar-layout";
-import { AppProvider } from "./provider";
+import { AppProvider } from "./provider/provider";
 import GlobalSpinner from "./components/ui/global-spinner";
 
 export const links: Route.LinksFunction = () => [

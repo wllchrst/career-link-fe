@@ -1,5 +1,5 @@
 import * as React from "react";
-import { SidebarProvider } from "./components/ui/sidebar";
+import { SidebarProvider } from "../components/ui/sidebar";
 import { RoleTestingProvider } from "./role-testing-provider";
 import { Toaster } from "react-hot-toast";
 

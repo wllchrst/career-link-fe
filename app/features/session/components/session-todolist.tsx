@@ -5,7 +5,7 @@ import AccordionLayout from "~/components/layouts/accordion-layout"
 import SessionDataCard from "~/components/session/session-data-card"
 import TestCard from "~/components/test/test-card"
 import { Button } from "~/components/ui/button"
-import { useRole } from "~/role-testing-provider"
+import { useRole } from "~/provider/role-testing-provider"
 import type { Assignment, AssignmentAnswer, Attendance, Session, SessionData, SessionTest, StudentAttempt } from "~/types/api"
 import { TestType } from "~/types/enum"
 

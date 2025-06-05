@@ -2,7 +2,7 @@ import type { Bootcamp } from "~/types/api";
 import { BootcampMethodTag } from "./bootcamp-method-tag";
 import { BootcampTypeTag } from "./bootcamp-type-tag";
 import { NavLink } from "react-router";
-import { useRole } from "~/role-testing-provider";
+import { useRole } from "~/provider/role-testing-provider";
 import { Button } from "../ui/button";
 
 interface Props {

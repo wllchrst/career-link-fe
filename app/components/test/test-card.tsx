@@ -1,7 +1,7 @@
 import TableLayout from "~/components/layouts/table-layout";
 import { Link, useNavigate, useRevalidator } from "react-router";
 import { TableCell, TableRow } from "../ui/table";
-import { useRole } from "~/role-testing-provider";
+import { useRole } from "~/provider/role-testing-provider";
 import { Button } from "../ui/button";
 import { Modal, type ModalType } from "../modal";
 import { useState } from "react";

@@ -2,7 +2,7 @@ import type { Announcement } from "~/types/api";
 import { Badge } from "~/components/ui/badge";
 import { NavLink } from "react-router";
 import { AnnouncementTag } from "~/components/announcement/announcement-tag";
-import { useRole } from "~/role-testing-provider";
+import { useRole } from "~/provider/role-testing-provider";
 import { Button } from "~/components/ui/button";
 import { MdEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";

@@ -1,7 +1,7 @@
 import { SidebarTrigger } from "~/components/ui/sidebar";
 import { NavLink } from "react-router";
 import RoleSwitcher from "./role-switcher";
-import { useRole } from "~/role-testing-provider";
+import { useRole } from "~/provider/role-testing-provider";
 import { NavItem } from "./ui/nav-item";
 
 export default function Navbar() {

@@ -1,6 +1,6 @@
 import HomeAdmin from "~/features/home/components/home-admin";
 import { HomeProfileCard } from "~/features/home/components/home-profile-card";
-import { useRole } from "~/role-testing-provider";
+import { useRole } from "~/provider/role-testing-provider";
 import type { Route } from "./+types/home";
 import { getUsers } from "~/features/home/api/get-student-data";
 import { useNavigate } from "react-router";
