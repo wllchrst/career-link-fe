@@ -22,7 +22,12 @@ const SessionsGrid = ({sessions, bootcampId, onUpdateSession, onDeleteSession}:P
     const copySession = async (session:Session) => {
         const toastId = toast.loading("Copying session...");
         try {
-            await createSession({data: {...session, session_number: `${sessions.length + 1}`, bootcamp_id: bootcampId}})   
+            await createSession({data: {
+                ...session, 
+                session_number: `${sessions.length + 1}`, 
+                start_attendance_date: new Date(session.start_attendance_date), 
+                bootcamp_id: bootcampId
+            }})   
             toast.success("Session copied", { id: toastId });
             revalidator.revalidate()
         } catch (error) {
