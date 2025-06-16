@@ -19,12 +19,12 @@ export const loader = async ({ params }: Route.LoaderArgs) => {
     const {data: attempts} = await getAllStudentAttemptByTest(params.test).catch(() => ({data: []}))
     const {data: test} = await getTest(params.test).catch(() => ({data: null}))
 
-    return {attempts, test, session: params.session}
+    return {attempts, test, session: params.session, bootcamp: params.bootcamp}
 }
 
 const SessionTestResults = ({loaderData}:Route.ComponentProps) => {
 
-    const {attempts, test, session} = loaderData
+    const {attempts, test, session, bootcamp} = loaderData
 
     const exportResult = () => {
         exportToExcel(`${test?.title}-result`, attempts.map(e => (
@@ -40,7 +40,7 @@ const SessionTestResults = ({loaderData}:Route.ComponentProps) => {
     return (
     <div className="flex flex-col w-full gap-y-4 bg-white rounded-lg shadow-md p-5">
             <div className={'w-full flex items-center'}>
-                <Link to={`/session/${session}`}>
+                <Link to={`/bootcamps/${bootcamp}/session/${session}`}>
                     <button
                         className="w-12 h-12 flex items-center justify-center bg-accent text-white rounded-full shadow-md">
                         <FaArrowLeft/>

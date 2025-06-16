@@ -62,7 +62,7 @@ const Attendances = ({loaderData}:Route.ComponentProps) => {
     return (
     <div className="flex flex-col w-full gap-y-4 bg-white rounded-lg shadow-md p-5">
             <div className={'w-full flex items-center'}>
-                <Link to={`/session/${session.id}`}>
+                <Link to={`/bootcamps/${session.bootcamp.id}/session/${session.id}`}>
                     <button
                         className="w-12 h-12 flex items-center justify-center bg-accent text-white rounded-full shadow-md">
                         <FaArrowLeft/>

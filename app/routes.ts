@@ -20,6 +20,32 @@ export default [
     route(":bootcamp", "routes/app/bootcamps/bootcamp-detail.tsx"),
     route(":bootcamp/enrollment", "routes/app/admin/enrollments/enrollments.tsx"),
   ]),
+  ...prefix("bootcamps/:bootcamp",[
+    route(
+      "session/:session", 
+      "routes/app/sessions/session-detail.tsx"
+    ),
+    route(
+      "session/:session/test/:test/attempt/:attempt",
+      "routes/app/sessions/session-test-attempt-page.tsx"
+    ),
+    route(
+      "session/:session/test/:test/manage",
+      "routes/app/admin/sessions/session-test-admin-page.tsx"
+    ),
+    route(
+      "session/:session/test/:test/result",
+      "routes/app/admin/sessions/session-test-results.tsx"
+    ),
+    route(
+      "session/:session/assignment/:assignment/answer",
+      "routes/app/admin/assignments/assignment-answers.tsx"
+    ),
+    route(
+      "session/:session/attendance",
+      "routes/app/admin/attendances/attendances.tsx"
+    ),
+  ]),
   ...prefix("admin", [
     route("bootcamps", "routes/app/admin/bootcamps/bootcamps.tsx"),
     route(
@@ -27,28 +53,5 @@ export default [
       "routes/app/admin/bootcamps/bootcamp-categories.tsx"
     ),
     route("bootcamps/types", "routes/app/admin/bootcamps/bootcamp-types.tsx"),
-  ]),
-  ...prefix("session", [
-    route(":session", "routes/app/sessions/session-detail.tsx"),
-    route(
-      ":session/test/:test/attempt/:attempt",
-      "routes/app/sessions/session-test-attempt-page.tsx"
-    ),
-    route(
-      ":session/test/:test/manage",
-      "routes/app/admin/sessions/session-test-admin-page.tsx"
-    ),
-    route(
-      ":session/test/:test/result",
-      "routes/app/admin/sessions/session-test-results.tsx"
-    ),
-    route(
-      ":session/assignment/:assignment/answer",
-      "routes/app/admin/assignments/assignment-answers.tsx"
-    ),
-    route(
-      ":session/attendance",
-      "routes/app/admin/attendances/attendances.tsx"
-    ),
   ]),
 ] satisfies RouteConfig;

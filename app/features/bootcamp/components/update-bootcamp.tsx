@@ -109,7 +109,7 @@ export const UpdateBootcamp = ({bootcamp, onSuccess, categories, types, speakers
                   <SelectField control={form.control} name="speaker_id" label="Speaker" values={
                     speakers.map(e => ( {
                       value: e.id,
-                      text: e.full_name
+                      text: e.name
                     }))
                   }/>
                 </>

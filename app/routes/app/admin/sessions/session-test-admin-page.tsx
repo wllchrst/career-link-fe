@@ -11,12 +11,12 @@ export const loader = async ({ params }: Route.LoaderArgs) => {
 
     const {data:questions} = await getSessionTestQuestions(params.test)
     
-    return {questions, id: params.test, session: params.session}
+    return {questions, id: params.test, session: params.session, bootcamp: params.bootcamp}
 };
 
 const SessionTestAdminPage = ({loaderData}:Route.ComponentProps) => {
 
-    const {questions, id, session} = loaderData
+    const {questions, id, session, bootcamp} = loaderData
     
     const [activeModal, setActiveModal] = useState<ModalType>(null);
     const revalidator = useRevalidator();
@@ -27,7 +27,7 @@ const SessionTestAdminPage = ({loaderData}:Route.ComponentProps) => {
     return (
         <div className="flex flex-col w-full gap-5">
             <div className={'w-full flex items-center'}>
-                <Link to={`/session/${session}`}>
+                <Link to={`/bootcamps/${bootcamp}/session/${session}`}>
                     <button
                         className="w-12 h-12 flex items-center justify-center bg-accent text-white rounded-full shadow-md">
                         <FaArrowLeft/>
