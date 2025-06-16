@@ -12,6 +12,7 @@ import Field from "../ui/form-field"
 import toast from "react-hot-toast"
 import { getErrorMessage } from "~/lib/error"
 import { formatDate } from "date-fns"
+import { AlertCircle } from "lucide-react"
 
 type Props = {
     session: Session,
@@ -24,12 +25,12 @@ const SessionCard = ({session}:Props) => {
     const form = useForm<UpdateSessionInput>({
         resolver: zodResolver(updateSessionInputSchema),
         defaultValues: {
-          title: session.title,
-          description: session.description,
-          session_number: ""+session.session_number,
-          bootcamp_id: session.bootcamp.id,
-          start_attendance_date: session.start_attendance_date,
-          duration: session.duration
+            title: session.title,
+            description: session.description,
+            session_number: ""+session.session_number,
+            bootcamp_id: session.bootcamp.id,
+            start_attendance_date: session.start_attendance_date,
+            end_date: session.end_date,
         },
       })
 
@@ -41,7 +42,7 @@ const SessionCard = ({session}:Props) => {
         }
       
     function handleTimeChange(name:string,type: "hour" | "minute", value: string) {
-    const realName = name as "start_attendance_date"
+    const realName = name as "start_attendance_date" | "end_date";
     const currentDate = form.getValues(realName) || new Date();
     let newDate = new Date(currentDate);
 
@@ -87,24 +88,32 @@ const SessionCard = ({session}:Props) => {
                 <h2 className={'text-slate-700 text-2xl font-semibold'}>{session.session_number}. {session.title}</h2>
                 <p className={'text-justify text-sm'}>{session.description}</p>
                 {
-                    role =='user' && <>
+                    role == 'user' && <>
+                    
                     {
                     new Date().getTime() < new Date(session.start_attendance_date).getTime() && 
-                    <p className="text-md font-bold text-red-500">
-                        Absent start at {formatDate(new Date(session.start_attendance_date), 'MM/dd/yyyy hh:mm a')}
-                    </p>
+                    <div className="bg-red-200 border-red-700 border-1 p-3 rounded-md flex items-center gap-3 w-2/5">
+                        <AlertCircle className="text-red-700" />
+                        <p className="text-md font-medium text-red-700">
+                            Clock-in open at {formatDate(new Date(session.start_attendance_date), 'dd/MM/yyyy hh:mm a')}
+                        </p>
+                    </div>
                     }
                     {
                         (
                             new Date().getTime() >= new Date(session.start_attendance_date).getTime() && 
-                            new Date().getTime() <= new Date(session.start_attendance_date).getTime() + 60000 * parseInt(session.duration)
+                            new Date().getTime() <= new Date(session.start_attendance_date).getTime() + 1000 * 60 * 30
                         ) &&
-                        <p className="text-md font-bold text-green-500">
-                            Absent ended at {formatDate(new Date(session.start_attendance_date).getTime() + 60000 * parseInt(session.duration), 'MM/dd/yyyy hh:mm a')}
-                        </p> 
+                        <div className="bg-green-200 border-green-700 border-1 p-3 rounded-md flex items-center gap-3 w-2/5">
+                        <AlertCircle className="text-green-700" />
+                            <p className="text-md font-bold text-green-700">
+                                Clock-in is open until {formatDate(new Date( new Date(session.start_attendance_date).getTime() + 1000 * 60 * 30), 'dd/MM/yyyy hh:mm a')}
+                            </p> 
+                        </div>
+                       
                     }
                     {
-                        new Date().getTime() > new Date(session.start_attendance_date).getTime() + 60000 * parseInt(session.duration) &&
+                        new Date().getTime() > new Date(session.end_date).getTime() &&
                         <p className="text-md font-bold text-red-500">
                             Absent already ended
                         </p>
@@ -115,8 +124,8 @@ const SessionCard = ({session}:Props) => {
                     role != 'user' && <>
                         <Form {...form}>
                             <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-5 w-1/3 items-end">
-                                <DatePicker onSelect={handleChangeDate} onTimeChange={handleTimeChange} name='start_attendance_date' control={form.control} label="End Date" />
-                                <Field control={form.control} placeholder="Enter duration" label="Duration" type="number" name="duration" />
+                                <DatePicker onSelect={handleChangeDate} onTimeChange={handleTimeChange} name='start_attendance_date' control={form.control} label="Start" />
+                                <DatePicker onSelect={handleChangeDate} onTimeChange={handleTimeChange} name='end_date' control={form.control} label="End" />
                                 <div className="flex gap-5 justify-end">
                                     <Button
                                     type="submit"

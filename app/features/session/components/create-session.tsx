@@ -29,6 +29,8 @@ export const CreateUpdateSession = ({ onSuccess, session, bootcamp }: Props) => 
       description: session? session.description:"",
       session_number: session? ""+session.session_number:"1",
       bootcamp_id: bootcamp.id,
+      start_attendance_date: session? new Date(session.start_attendance_date):new Date(),
+      end_date: session? new Date(session.end_date):new Date(),
     },
   });
 
@@ -48,25 +50,25 @@ export const CreateUpdateSession = ({ onSuccess, session, bootcamp }: Props) => 
 
   
     function handleChangeDate(name:string, date: Date | undefined) {
-          const realName = name as "start_attendance_date"
-            if (date) {
-              form.setValue(realName, date);
-            }
-          }
+        const realName = name as "start_attendance_date" | "end_date";
+        if (date) {
+          form.setValue(realName, date);
+        }
+    }
         
     function handleTimeChange(name:string,type: "hour" | "minute", value: string) {
-      const realName = name as "start_attendance_date"
-      const currentDate = form.getValues(realName) || new Date();
-      let newDate = new Date(currentDate);
-  
-      if (type === "hour") {
-          const hour = parseInt(value, 10);
-          newDate.setHours(hour);
-      } else if (type === "minute") {
-          newDate.setMinutes(parseInt(value, 10));
-      }
-  
-      form.setValue(realName, newDate);
+        const realName = name as "start_attendance_date" | "end_date";
+        const currentDate = form.getValues(realName) || new Date();
+        let newDate = new Date(currentDate);
+    
+        if (type === "hour") {
+            const hour = parseInt(value, 10);
+            newDate.setHours(hour);
+        } else if (type === "minute") {
+            newDate.setMinutes(parseInt(value, 10));
+        }
+    
+        form.setValue(realName, newDate);
     }
 
   return (
@@ -97,16 +99,16 @@ export const CreateUpdateSession = ({ onSuccess, session, bootcamp }: Props) => 
           onTimeChange={handleTimeChange} 
           name='start_attendance_date' 
           control={form.control} 
-          label="End Date" 
+          label="Start" 
         />
-        <Field 
+        <DatePicker 
+          onSelect={handleChangeDate} 
+          onTimeChange={handleTimeChange} 
+          name='end_date' 
           control={form.control} 
-          placeholder="Enter duration" 
-          label="Duration" 
-          type="number" 
-          name="duration" 
+          label="End" 
         />
-
+        
         <div className="flex gap-10 justify-end">
           <Button
             type="submit"

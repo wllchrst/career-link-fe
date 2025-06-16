@@ -97,7 +97,7 @@ export type Session = {
   session_number: number;
   title: string;
   description: string;
-  duration: string;
+  end_date: Date;
   start_attendance_date: Date;
   materials: SessionData[];
   preTest: SessionTest;
@@ -116,6 +116,7 @@ export type Assignment = {
   id: string;
   question_file_path: string;
   answer_file_path: string;
+  is_shared: boolean;
 };
 
 export type AssignmentAnswer = {

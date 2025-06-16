@@ -4,7 +4,7 @@ import { Modal, type ModalType } from "../modal"
 import { useState, type ChangeEvent } from "react"
 import { Link, useRevalidator } from "react-router"
 import CreateAssignment from "~/features/assignment/components/create-assignment"
-import type { Assignment, AssignmentAnswer } from "~/types/api"
+import type { Assignment, AssignmentAnswer, Session } from "~/types/api"
 import EmptyMessage from "../ui/empty-message"
 import { Download, File } from "lucide-react"
 import { createAssignmentAnswer } from "~/features/assignment/api/answer/create-assignment-answer"
@@ -13,12 +13,12 @@ import { getErrorMessage } from "~/lib/error"
 import { updateAssignmentAnswer } from "~/features/assignment/api/answer/update-assignment-answer"
 
 interface Props {
-    sessionId: string,
+    session: Session,
     assignment?: Assignment | undefined,
     assignmentAnswer?: AssignmentAnswer | undefined,
 }
 
-const AssignmentCard = ({sessionId, assignment, assignmentAnswer}:Props) => {
+const AssignmentCard = ({session, assignment, assignmentAnswer}:Props) => {
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
     const [fileName, setFileName] = useState("");
     const [activeModal, setActiveModal] = useState<ModalType>(null);
@@ -73,7 +73,7 @@ const AssignmentCard = ({sessionId, assignment, assignmentAnswer}:Props) => {
                 isOpen={activeModal === "create"}
                 onClose={() => setActiveModal(null)}
             >
-                <CreateAssignment onSuccess={onSuccess} sessionId={sessionId} />
+                <CreateAssignment onSuccess={onSuccess} sessionId={session.id} />
             </Modal>
             {assignment? <>
                 <p>The assignment can be downloaded from the button below</p>
@@ -88,7 +88,7 @@ const AssignmentCard = ({sessionId, assignment, assignmentAnswer}:Props) => {
                         </div>
                     </Button>    
                 </a>
-                {role == 'admin' ? <>
+                {(role == 'admin' || (assignment.is_shared && new Date().getTime() > new Date(session.end_date).getTime())) ? <>
                     <p>The assignment's answer can be downloaded from the button below</p>
                     <a href={`${import.meta.env.VITE_STORAGE_URL}/${assignment.answer_file_path}`} download target="_blank">
                         <Button variant={'outline'} className="w-1/3 h-10">

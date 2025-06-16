@@ -29,8 +29,7 @@ const SessionTodolist = ({attendanceOnClick, attendances, session, sessionData, 
             <h2 className={'font-semibold text-left text-4xl text-slate-700 py-6 w-full h-full'}>To Do List</h2>
             <div className={'flex flex-col gap-y-6 mb-8'}>
                 {role == 'user' ?  
-                (new Date().getTime() >= new Date(session.start_attendance_date).getTime() && 
-                new Date().getTime() <= new Date(session.start_attendance_date).getTime() + parseInt(session.duration) * 60000
+                (new Date().getTime() >= new Date(session.start_attendance_date).getTime() && new Date().getTime() <= new Date(session.start_attendance_date).getTime() + 1000 * 60 * 30
                 ) &&
                     <Button onClick={attendanceOnClick} className="w-1/6">Session Clock in/out</Button>:
                     <Link to={`attendance`}>
@@ -47,10 +46,10 @@ const SessionTodolist = ({attendanceOnClick, attendances, session, sessionData, 
                     <TestCard testType={TestType.POST_TEST} sessionId={session.id} test={postTest} attempts={attemptsPosttest}/>
                 </AccordionLayout>
                 <AccordionLayout text={'Assignment'}  isLocked={role == 'user' && attemptsPosttest.length < 1}>
-                    <AssignmentCard sessionId={session.id} assignment={assignment} assignmentAnswer={assignmentAnswer} />
+                    <AssignmentCard session={session} assignment={assignment} assignmentAnswer={assignmentAnswer} />
                 </AccordionLayout>
                 <AccordionLayout text={'Evaluation'} isLocked={role == 'user' && assignmentAnswer == undefined}>
-                    <AssignmentCard sessionId={session.id} />
+                    <AssignmentCard session={session} />
                 </AccordionLayout>
             </div>
         </>
