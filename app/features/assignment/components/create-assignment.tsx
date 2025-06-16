@@ -6,6 +6,7 @@ import { getErrorMessage } from "~/lib/error";
 import { Form } from "~/components/ui/form";
 import { Button } from "~/components/ui/button";
 import FileField from "~/components/ui/file-field";
+import Field from "~/components/ui/form-field";
 
 interface Props {
   onSuccess: () => void;
@@ -17,7 +18,8 @@ const CreateAssignment = ( {sessionId, onSuccess}:Props ) => {
         defaultValues: {
             session_id: sessionId,
             answer_file_path: "",
-            question_file_path: ""
+            question_file_path: "",
+            is_shared: false,
         },
       });
     
@@ -47,6 +49,12 @@ const CreateAssignment = ( {sessionId, onSuccess}:Props ) => {
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FileField control={form.control} handlePreview={(e) => {handleFile(e, "question_file_path")}} label="Question File" name="question_file"/>
             <FileField control={form.control} handlePreview={(e) => {handleFile(e, "answer_file_path")}} label="Answer File" name="answer_file"/>
+            <Field
+                control={form.control}
+                name="is_shared"
+                type="checkbox"
+                label="Shared"
+            />
 
             <div className="flex gap-5 justify-end">
             <Button
