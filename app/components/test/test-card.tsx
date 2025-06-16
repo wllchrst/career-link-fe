@@ -116,7 +116,7 @@ const TestCard = ({ sessionId, testType, test, attempts }: Props) => {
               {
                 attempts.length < 1?
                 <EmptyMessage title="No Attempts" text="You haven't made any attempts yet."/>:
-                attempts.sort((a,b) => new Date(a.done_at).getTime() - new Date(b.done_at).getTime()).map((e, idx) => 
+                attempts.filter(e => e.done_at != null).sort((a,b) => new Date(a.done_at).getTime() - new Date(b.done_at).getTime()).map((e, idx) => 
                 <TableRow className="flex w-full border-b-1 border-gray-200">
                     <TableCell className="w-1/4 text-center">{idx + 1}</TableCell>
                     <TableCell className="w-1/4 text-center">{`Submitted at ${formatDate(new Date(e.done_at), 'MM/dd/yyyy HH:mm:ss')}`}</TableCell>
@@ -134,14 +134,22 @@ const TestCard = ({ sessionId, testType, test, attempts }: Props) => {
             </div>
             <div className="flex gap-5 justify-start items-center">
               {role != "admin" ? (attempts.length < parseInt(test.attempt_count) && new Date(test.close_date).getTime() > new Date().getTime()) && (
-                <Button
-                className={
-                  "bg-[var(--accent)] text-white rounded-md p-2 w-40 hover:bg-[var(--secondary)] transition duration-200 ease-in-out"
-                }
-                onClick={takeTest}
-                >
-                  Take Test
-                </Button>
+                <>
+                  {
+                    attempts[attempts.length - 1]?.done_at ? 
+                    <Button className={
+                      "bg-[var(--accent)] text-white rounded-md p-2 w-40 hover:bg-[var(--secondary)] transition duration-200 ease-in-out"
+                    }
+                    onClick={takeTest}
+                    >
+                      Take Test
+                    </Button>
+                    :
+                    <Link to={`test/${test.id}/attempt/${attempts[attempts.length - 1]?.id}`}>
+                      <Button className={"p-2 w-40 bg-purple-600 hover:bg-purple-500"}>Continue Test</Button>
+                    </Link>
+                  }
+                </>
               ) : (
                 <>
                   <Link to={`test/${test.id}/result`}>
