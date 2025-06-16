@@ -24,7 +24,7 @@ const CreateAssignment = ( {sessionId, onSuccess}:Props ) => {
       });
     
       const onSubmit = async (data: CreateAssignmentInput) => {
-        const toastId = toast.loading("Creating bootcamp...");
+        const toastId = toast.loading("Creating assignment...");
         try {
           const res = await createAssignment({ data });
           toast.success(res.message, { id: toastId });
@@ -38,10 +38,10 @@ const CreateAssignment = ( {sessionId, onSuccess}:Props ) => {
       };
 
     const handleFile = (e: React.ChangeEvent<HTMLInputElement>, name:"question_file_path"|"answer_file_path") => {
-    const file = e.target.files?.[0];
-    if (file) {
-        form.setValue(name, file.name);
-    }
+      const file = e.target.files?.[0];
+      if (file) {
+          form.setValue(name, file.name);
+      }
     };
 
     return (

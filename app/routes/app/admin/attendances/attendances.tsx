@@ -10,6 +10,7 @@ import { getAttendanceBySession } from "~/features/attendance/api/get-attendance
 import { format } from "date-fns"
 import { getBootcampSession } from "~/features/session/api/get-session"
 import { exportToExcel } from "~/lib/excel"
+import type { Attendance } from "~/types/api"
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
 
@@ -19,19 +20,43 @@ export const loader = async ({ params }: Route.LoaderArgs) => {
     return {attendances, session}
     
 }
-const Attendances = ({loaderData}:Route.ComponentProps) => {
 
+interface AttendanceRow {
+    nim: string,
+    name: string,
+    clock_in: string,
+    clock_out: string
+}
+
+
+const Attendances = ({loaderData}:Route.ComponentProps) => {
+    
     const {attendances, session} = loaderData
+    
+    function transform(attendances: Attendance[]): AttendanceRow[] {
+        return attendances.sort((a,b) => a.user.nim!.localeCompare(b.user.nim!)).reduce((acc, curr) => {
+            let record = acc.find(e => e.nim === curr.user.nim)
+
+            if (!record) {
+                record = {
+                    nim: curr.user.nim ?? "-",
+                    name: curr.user.name,
+                    clock_in: "",
+                    clock_out: ""
+                }
+                acc.push(record)
+            }
+            if (curr.attendance_type === "clock_in") {
+                record.clock_in = format(curr.finished_at, 'MM/dd/yyyy HH:mm:ss')
+            } else if (curr.attendance_type === "clock_out") {
+                record.clock_out = format(curr.finished_at, 'MM/dd/yyyy HH:mm:ss')
+            }
+            return acc
+        }, [] as AttendanceRow[])
+    }
 
     const exportResult = () => {
-        exportToExcel(`${session.title}-result`, attendances.map(e => (
-            {
-                nim: e.user.nim,
-                name: e.user.name,
-                type: e.attendance_type,
-                attendAt: format(e.finished_at, 'MM/dd/yyyy HH:mm:ss')
-            }
-        )))
+        exportToExcel(`${session.title}-attendance`, transform(attendances))
     }
 
     return (
@@ -47,16 +72,16 @@ const Attendances = ({loaderData}:Route.ComponentProps) => {
             </div>
             <Button onClick={exportResult} className="w-1/6">Export</Button>
             
-            <TableLayout header={<DefaultTableHeader columns={["NIM", "Name", "Type", "Attend at"]}/>}>
+            <TableLayout header={<DefaultTableHeader columns={["NIM", "Name", "Clock in", "Clock out"]}/>}>
                 {
                 attendances.length < 1?
                 <EmptyMessage title="No Attendances" text="The students hasn't attend yet."/>:
-                attendances.map(e => 
+                transform(attendances).map(e => 
                     <TableRow className="flex w-full border-b-1 border-gray-200">
-                        <TableCell className="w-1/4 text-center">{e.user.nim ?? "-"}</TableCell>
-                        <TableCell className="w-1/4 text-center">{e.user.name}</TableCell>
-                        <TableCell className="w-1/4 text-center">{e.attendance_type}</TableCell>
-                        <TableCell className="w-1/4 text-center">{format(e.finished_at, 'MM/dd/yyyy HH:mm:ss')}</TableCell>
+                        <TableCell className="w-1/4 text-center">{e.nim ?? "-"}</TableCell>
+                        <TableCell className="w-1/4 text-center">{e.name}</TableCell>
+                        <TableCell className="w-1/4 text-center">{format(e.clock_in, 'MM/dd/yyyy HH:mm:ss')}</TableCell>
+                        <TableCell className="w-1/4 text-center">{format(e.clock_out, 'MM/dd/yyyy HH:mm:ss')}</TableCell>
                     </TableRow>
                 )
                 }
