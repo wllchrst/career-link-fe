@@ -39,7 +39,7 @@ const EnrollmentGrid = ({enrollments, bootcampId}:Props) => {
     try {
         for (let i = 0; i < res.length; i++){
             await createEnrollment(res[i].email, bootcampId)
-            setProgress(progress + 100 / res.length);
+            setProgress(prev => prev + 100 / res.length);
         }
         toast.success("Student imported", { id: toastId });
         setTimeout(() => {

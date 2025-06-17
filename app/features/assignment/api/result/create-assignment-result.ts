@@ -12,5 +12,5 @@ export const createAssignmentResultInputSchema = z.object({
 export type CreateAssignmentResultInput = z.infer<typeof createAssignmentResultInputSchema>;
 
 export const createAssignmentResult = ({data}:{data:CreateAssignmentResultInput}): Promise<{ data: { id: string }; message: string }> => {
-  return api.post(`bootcamp/session_assignment_result`, data);
+  return api.post(`bootcamp/session_assignment_result`, {...data, result: data.result.replace(' ', '_').toLowerCase() });
 };
