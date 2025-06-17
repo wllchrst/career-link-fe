@@ -19,25 +19,29 @@ export const loader = async ({ params }:Route.LoaderArgs) => {
 const Quiz = ({loaderData}:Route.ComponentProps) => {
 
     let {sessionId, bootcampId, attemptId, testId} = loaderData
-    const [questions, setQuestions] = useState<Question[]>(loaderData.questions);
-
+    
+    const [questions, setQuestions] = useState<Question[]>([]);
+    
     useEffect(() => {
-        let savedQuestions = window.localStorage.getItem('quiz_questions');
+        let savedQuestions = window.localStorage.getItem(`test_questions-${attemptId}`);
         if (!savedQuestions) {
             let randomNumbers:number[] = []
-            const count = Math.min(questions.length, 5);
-            
-            if (randomNumbers.length < count) {
+            const count = Math.min(loaderData.questions.length, 5);
+            if (loaderData.questions.length >= count) {
                 while (randomNumbers.length < count) {
-                    const randomNumber = Math.floor(Math.random() * questions.length);
+                    const randomNumber = Math.floor(Math.random() * loaderData.questions.length);
                     if (!randomNumbers.includes(randomNumber)) {
                         randomNumbers.push(randomNumber);
                     }
                 }
+                setQuestions(loaderData.questions.filter((_, index) => randomNumbers.includes(index)));    
+                window.localStorage.setItem(`test_questions-${attemptId}`, JSON.stringify(loaderData.questions.filter((_, index) => randomNumbers.includes(index))));
+            }else{
+                setQuestions(loaderData.questions);
+                window.localStorage.setItem(`test_questions-${attemptId}`, JSON.stringify(loaderData.questions));
             }
-            setQuestions(questions.filter((_, index) => randomNumbers.includes(index)));    
-            window.localStorage.setItem('quiz_questions', JSON.stringify(questions));
         }else{
+            console.log("Using saved questions")
             setQuestions(JSON.parse(savedQuestions));
         }
     }, []);
@@ -54,7 +58,7 @@ const Quiz = ({loaderData}:Route.ComponentProps) => {
             })
             toast.success("Your test has been successfully submitted!", {id: id})
             setTimeout(() => {
-                navigate(`bootcamps/${bootcampId}/session/${sessionId}`)
+                navigate(`/bootcamps/${bootcampId}/session/${sessionId}`)
             }, 2000);
         }catch(error){
             toast.error(getErrorMessage(error), {
@@ -74,7 +78,10 @@ const Quiz = ({loaderData}:Route.ComponentProps) => {
                 </Link>
             </div>
             <div className="flex gap-2 w-full">
-                <SessionTestAttemptGrid onFinish={finish} attemptId={attemptId} questions={questions.sort((a,b) => a.number - b.number)}/>
+               {
+               questions.length > 1 && 
+               <SessionTestAttemptGrid onFinish={finish} attemptId={attemptId} questions={questions.sort((a,b) => a.number - b.number)}/>
+               }
             </div>
         </div>
     );

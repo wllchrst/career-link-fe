@@ -34,7 +34,9 @@ const SessionTestAttemptGrid = ({questions, attemptId, onFinish}:Props) => {
     }
 
     const updateAnswer = async (id:string) => {
+        
         const newAns = answers.map((e,index) => (index == idx)? id:e)
+        
         setAnswers(newAns)
         window.localStorage.setItem(`Attempt:${attemptId}`, newAns.join(','))
     }
@@ -49,7 +51,7 @@ const SessionTestAttemptGrid = ({questions, attemptId, onFinish}:Props) => {
 
     const finish = async () => {
         //save all answers
-        
+        console.log(questions)
         const toastId = toast.loading("Submitting...");
         try{
             await Promise.all(answers.map(async (option, idx) => await createStudentAnswer({
@@ -85,9 +87,15 @@ const SessionTestAttemptGrid = ({questions, attemptId, onFinish}:Props) => {
                 <form action="" className="flex flex-col gap-2 mt-2">
                     {
                         questions[idx].options.map(e => 
-                        <div className="flex gap-2">
-                            <input type="radio" name="option" id={e.id} onClick={() => updateAnswer(e.id)} checked={e.id == answers[idx]}/>
-                            <label htmlFor="option" >{e.option}</label>
+                        <div className="flex gap-2" key={e.id}>
+                            <input
+                                type="radio"
+                                name={`option-${idx}`}
+                                id={e.id}
+                                onChange={() => updateAnswer(e.id)}
+                                checked={e.id === answers[idx]}
+                            />
+                            <label htmlFor={e.id}>{e.option}</label>
                         </div>
                         )
                     }

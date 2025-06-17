@@ -76,14 +76,7 @@ const AssignmentAnswerGrid = ({assignment, enrollments, results, answers}:Props)
         reader.readAsArrayBuffer(e.target.files![0])
     }
     
-    const exportResult = () => {
-        exportToExcel(`${assignment}-grading-result`, enrollments.map(e => ({
-            nim: e.user.nim ?? "-",
-            name: e.user.name,
-            result: results[e.user_id] ? results[e.user_id].result : "No file",
-        })))
-    }
-    const exportTemplate = () => {
+    const exportGrading = (type: "result" | "template") => {
         exportToExcel(`${assignment}-grading-template`, enrollments.map(e => ({
             nim: e.user.nim ?? "-",
             name: e.user.name,
@@ -94,8 +87,8 @@ const AssignmentAnswerGrid = ({assignment, enrollments, results, answers}:Props)
     return (
         <>
             <div className="flex gap-3">
-                <Button onClick={exportResult} className="w-1/5 bg-slate-600 hover:bg-slate-500">Export</Button>
-                <Button className="w-1/5 bg-orange-600 hover:bg-orange-500" onClick={exportTemplate}>Download Grading Template</Button>
+                <Button onClick={() => exportGrading('result')} className="w-1/5 bg-slate-600 hover:bg-slate-500">Export</Button>
+                <Button className="w-1/5 bg-orange-600 hover:bg-orange-500" onClick={() => exportGrading('template')}>Download Grading Template</Button>
                 <label htmlFor="file" className="bg-green-600 hover:bg-green-500 px-2 w-1/5 rounded-md text-white text-sm font-medium flex items-center justify-center">
                     Import Excel
                 </label>
