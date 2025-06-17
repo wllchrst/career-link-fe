@@ -6,33 +6,42 @@ import { Link, useNavigate } from "react-router";
 import { finalizeStudentAttempt } from "~/features/quiz/api/attempt/finalize-student-attempt";
 import toast from "react-hot-toast";
 import { getErrorMessage } from "~/lib/error";
+import { useEffect, useState } from "react";
+import type { Question } from "~/types/api";
 
 export const loader = async ({ params }:Route.LoaderArgs) => {
 
-    let {data: questions} = await getSessionTestQuestions(params.test).catch(() => ({data: []}))
-    if (questions.length > 0) {
+    let {data: questions}:{data: Question[]} = await getSessionTestQuestions(params.test).catch(() => ({data: []}))
     
-        let randomNumbers:number[] = []
-        const count = Math.min(questions.length, 5);
-        
-        if (randomNumbers.length < count) {
-            while (randomNumbers.length < count) {
-                const randomNumber = Math.floor(Math.random() * questions.length);
-                if (!randomNumbers.includes(randomNumber)) {
-                    randomNumbers.push(randomNumber);
-                }
-            }
-        }
-
-        questions = questions.filter((_, index) => randomNumbers.includes(index));
-    }
-
     return {questions, bootcampId: params.bootcamp, sessionId: params.session, testId: params.test, attemptId: params.attempt}
 }
 
 const Quiz = ({loaderData}:Route.ComponentProps) => {
 
-    const {questions, sessionId, bootcampId, attemptId, testId} = loaderData
+    let {sessionId, bootcampId, attemptId, testId} = loaderData
+    const [questions, setQuestions] = useState<Question[]>(loaderData.questions);
+
+    useEffect(() => {
+        let savedQuestions = window.localStorage.getItem('quiz_questions');
+        if (!savedQuestions) {
+            let randomNumbers:number[] = []
+            const count = Math.min(questions.length, 5);
+            
+            if (randomNumbers.length < count) {
+                while (randomNumbers.length < count) {
+                    const randomNumber = Math.floor(Math.random() * questions.length);
+                    if (!randomNumbers.includes(randomNumber)) {
+                        randomNumbers.push(randomNumber);
+                    }
+                }
+            }
+            setQuestions(questions.filter((_, index) => randomNumbers.includes(index)));    
+            window.localStorage.setItem('quiz_questions', JSON.stringify(questions));
+        }else{
+            setQuestions(JSON.parse(savedQuestions));
+        }
+    }, []);
+
     const navigate = useNavigate()
 
     const finish = async (id:string) => {

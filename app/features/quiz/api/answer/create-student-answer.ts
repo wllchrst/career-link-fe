@@ -4,7 +4,7 @@ import { api } from "~/lib/api-client";
 export const createStudentAnswerInputSchema = z.object({
     user_id: z.string().min(1, 'User Id is required'),
     question_id: z.string().min(1, 'Question Id is required'),
-    option_id: z.string().min(1, 'Option Id is required'),
+    option_id: z.string().optional(),
     attempt_id: z.string().min(1, 'Attempt Id is required'),
 });
 

@@ -136,7 +136,7 @@ const TestCard = ({ sessionId, testType, test, attempts }: Props) => {
               {role != "admin" ? (attempts.length < parseInt(test.attempt_count) && new Date(test.close_date).getTime() > new Date().getTime()) && (
                 <>
                   {
-                    attempts[attempts.length - 1]?.done_at ? 
+                    attempts.sort((a,b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())[attempts.length - 1].done_at? 
                     <Button className={
                       "bg-[var(--accent)] text-white rounded-md p-2 w-40 hover:bg-[var(--secondary)] transition duration-200 ease-in-out"
                     }
