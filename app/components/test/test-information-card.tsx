@@ -5,9 +5,10 @@ import type { SessionTest } from "~/types/api"
 interface Props {
     test: SessionTest,
     score?: number,
+    minimum_score?:number
 }
 
-const TestInformationCard = ({test, score=0}:Props) => {
+const TestInformationCard = ({test, score=0, minimum_score=0}:Props) => {
 
     const {role} = useRole()
 
@@ -22,7 +23,7 @@ const TestInformationCard = ({test, score=0}:Props) => {
                 Closed: {format(new Date(test.close_date), "MM/dd/yyyy HH:mm")}
                 </h4>
             </div>
-            {role == 'user' && <h4 className={'font-bold text-lg'}>{`Highest Grade: ${score} / 100.00`}</h4>}
+            {role == 'user' && <h4 className={'font-bold text-lg'}>{`Highest Grade: ${score} / 100.00 (${score >= minimum_score ? "Passed":"Not Passed"})`}</h4>}
         </div>
     )
 }

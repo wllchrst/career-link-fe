@@ -80,6 +80,7 @@ export type SessionTest = {
   open_date: Date;
   close_date: Date;
   attempt_count: string;
+  minimum_score: number;
 };
 
 export type StudentAttempt = {
@@ -88,7 +89,15 @@ export type StudentAttempt = {
   user_id:string;
   created_at: Date;
   done_at: Date;
+}
+
+export type StudentScore = {
+  id: string;
+  user_id: string;
+  attempt_id: string;
+  score: number;
   user: User;
+  attempt: StudentAttempt;
 }
 
 export type Session = {

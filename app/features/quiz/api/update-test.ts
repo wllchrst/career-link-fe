@@ -4,10 +4,16 @@ import { TestType } from "~/types/enum";
 
 export const updateTestInputSchema = z.object({
   title: z.string().min(1, "Title is required"),
-  open_date: z.date().min(new Date(), "Date cant be empty"),
-  close_date: z.date().min(new Date(), 'Date cant be empty'),
+  open_date: z.date(),
+  close_date: z.date(),
   type: z.nativeEnum(TestType),
-  session_id: z.string().min(1, "Session id is required")
+  session_id: z.string().min(1, "Session id is required"),
+  minimum_score: z.string().refine((val) => !Number.isNaN(parseInt(val, 10)), {
+    message: "Expected number, received a string"
+  }),
+  attempt_count: z.string().refine((val) => !Number.isNaN(parseInt(val, 10)), {
+    message: "Expected number, received a string"
+  })
 }).refine((data) => {
   if (data.close_date.getTime() < data.open_date.getTime()) {
     return false;

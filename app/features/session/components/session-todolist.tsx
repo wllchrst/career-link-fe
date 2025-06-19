@@ -6,7 +6,7 @@ import SessionDataCard from "~/components/session/session-data-card"
 import TestCard from "~/components/test/test-card"
 import { Button } from "~/components/ui/button"
 import { useRole } from "~/provider/role-testing-provider"
-import type { Assignment, AssignmentAnswer, Attendance, Session, SessionData, SessionTest, StudentAttempt } from "~/types/api"
+import type { Assignment, AssignmentAnswer, Attendance, Session, SessionData, SessionTest, StudentAttempt, StudentScore } from "~/types/api"
 import { TestType } from "~/types/enum"
 
 interface Props {
@@ -18,8 +18,8 @@ interface Props {
     postTest: SessionTest,
     assignment?: Assignment | undefined,
     assignmentAnswer?:AssignmentAnswer | undefined,
-    attemptsPretest: StudentAttempt[],
-    attemptsPosttest: StudentAttempt[],
+    attemptsPretest: StudentScore[],
+    attemptsPosttest: StudentScore[],
 }
 
 const SessionTodolist = ({attendanceOnClick, attendances, session, sessionData, preTest, postTest, assignment, assignmentAnswer, attemptsPretest, attemptsPosttest}:Props) => {

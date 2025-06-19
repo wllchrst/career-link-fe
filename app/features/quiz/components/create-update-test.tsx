@@ -30,10 +30,10 @@ export const CreateUpdateTest = ({onSuccess, testType, sessionId, test}: Props) 
             type: test? test.type:testType,
             open_date: test? new Date(test.open_date):new Date(),
             close_date: test? new Date(test.close_date):new Date(),
-            attempt_count: test? test.attempt_count: "0",
+            attempt_count: `${test? test.attempt_count : 0}`,
+            minimum_score: `${test? test.minimum_score : 0}`,
         },
     });
-
     const onSubmit = async (data: CreateTestInput) => {
         
         const toastId = toast.loading(`${test?"Updating":"Creating"} ${data.type.replace('_', ' ')}...`);
@@ -76,9 +76,10 @@ export const CreateUpdateTest = ({onSuccess, testType, sessionId, test}: Props) 
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                 <>
                   <Field control={form.control} placeholder="Enter title" label="Title" type="text" name="title"/>
-                  <DatePicker onSelect={handleChangeDate} onTimeChange={handleTimeChange} name='open_date' control={form.control} label="Start Date" />
-                  <DatePicker onSelect={handleChangeDate} onTimeChange={handleTimeChange} name='close_date' control={form.control} label="End Date" />
+                  <DatePicker onSelect={handleChangeDate} onTimeChange={handleTimeChange} name='open_date' control={form.control} label="Open Date" />
+                  <DatePicker onSelect={handleChangeDate} onTimeChange={handleTimeChange} name='close_date' control={form.control} label="Close Date" />
                   <Field control={form.control} placeholder="Enter attempt count" label="Attempt Count" type="number" name="attempt_count" />
+                  <Field control={form.control} placeholder="Enter minimum score" label="Minimum Score" type="number" name="minimum_score" />
                 </>
             
               <div className="flex gap-5 justify-end">

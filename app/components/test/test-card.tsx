@@ -7,7 +7,7 @@ import { Modal, type ModalType } from "../modal";
 import { useState } from "react";
 import { CreateUpdateTest } from "~/features/quiz/components/create-update-test";
 import { TestType } from "~/types/enum";
-import type { SessionTest, StudentAttempt } from "~/types/api";
+import type { SessionTest, StudentAttempt, StudentScore } from "~/types/api";
 import EmptyMessage from "../ui/empty-message";
 import { format, formatDate } from "date-fns";
 import { DeleteTest } from "~/features/quiz/components/delete-test";
@@ -21,7 +21,7 @@ interface Props {
   sessionId: string;
   testType: TestType;
   test: SessionTest | undefined;
-  attempts: StudentAttempt[];
+  attempts: StudentScore[];
 }
 
 const TestCard = ({ sessionId, testType, test, attempts }: Props) => {
@@ -109,34 +109,35 @@ const TestCard = ({ sessionId, testType, test, attempts }: Props) => {
               onSuccess={onSuccess}
             />
           </Modal>
-          <TestInformationCard test={test}/>
+          <TestInformationCard test={test} minimum_score={test.minimum_score} score={attempts.length > 0 ? Math.max(...attempts.map(e => Math.round(e.score))):0}/>
           {role == 'user' && <>
           <h4></h4>
             <TableLayout header={<DefaultTableHeader columns={["Attempt", "State", "Duration", "Score"]}/>}>
               {
                 attempts.length < 1?
                 <EmptyMessage title="No Attempts" text="You haven't made any attempts yet."/>:
-                attempts.filter(e => e.done_at != null).sort((a,b) => new Date(a.done_at).getTime() - new Date(b.done_at).getTime()).map((e, idx) => 
+                attempts.filter(e => e.attempt.done_at != null).sort((a,b) => new Date(a.attempt.done_at).getTime() - new Date(b.attempt.done_at).getTime()).map((e, idx) => 
                 <TableRow className="flex w-full border-b-1 border-gray-200">
                     <TableCell className="w-1/4 text-center">{idx + 1}</TableCell>
-                    <TableCell className="w-1/4 text-center">{`Submitted at ${formatDate(new Date(e.done_at), 'MM/dd/yyyy HH:mm:ss')}`}</TableCell>
-                    <TableCell className="w-1/4 text-center">{Math.ceil((new Date(e.done_at).getTime() - new Date(e.created_at).getTime()) /1000 / 60)} Minutes</TableCell>
-                    <TableCell className="w-1/4 text-center">100</TableCell>
+                    <TableCell className="w-1/4 text-center">{`Submitted at ${formatDate(new Date(e.attempt.done_at), 'MM/dd/yyyy HH:mm:ss')}`}</TableCell>
+                    <TableCell className="w-1/4 text-center">{Math.ceil((new Date(e.attempt.done_at).getTime() - new Date(e.attempt.created_at).getTime()) /1000 / 60)} Minutes</TableCell>
+                    <TableCell className="w-1/4 text-center">{Math.round(e.score)}</TableCell>
                 </TableRow>
                 )
               }
             </TableLayout>
           </>}
-          <div className={"w-full flex justify-between items-start"}>
+          <div className={"w-full flex justify-between items-end"}>
             <div>
               <h4>Grading Method : Highest grade</h4>
               <h4>Attempts Allowed: {test.attempt_count}</h4>
+              <h4>Minimum passing score: {test.minimum_score}</h4>
             </div>
             <div className="flex gap-5 justify-start items-center">
               {role != "admin" ? (attempts.length < parseInt(test.attempt_count) && new Date(test.close_date).getTime() > new Date().getTime()) && (
                 <>
                   {
-                    (attempts.length < 1 || attempts.sort((a,b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())[attempts.length - 1].done_at)? 
+                    (attempts.length < 1 || attempts.sort((a,b) => new Date(a.attempt.created_at).getTime() - new Date(b.attempt.created_at).getTime())[attempts.length - 1].attempt.done_at)?  
                     <Button className={
                       "bg-[var(--accent)] text-white rounded-md p-2 w-40 hover:bg-[var(--secondary)] transition duration-200 ease-in-out"
                     }
