@@ -12,6 +12,7 @@ import { format } from "date-fns"
 import { Button } from "~/components/ui/button"
 import { exportToExcel } from "~/lib/excel"
 import type { StudentScore } from "~/types/api"
+import { getEnrollmentByBootcamp } from "~/features/enrollments/api/get-enrollment-by-bootcamp"
 
 
 
@@ -19,17 +20,30 @@ export const loader = async ({ params }: Route.LoaderArgs) => {
     
     const {data: attempts} = await getAllStudentAttemptByTest(params.test).catch(() => ({data: []}))
     const {data: test} = await getTest(params.test).catch(() => ({data: null}))
+    const {data: enrollments} = await getEnrollmentByBootcamp(params.bootcamp).catch(() => ({data: []}))
 
-    return {attempts: attempts.sort((a,b) => a.user_id.localeCompare(b.user_id)).reduce((acc, item) => {
-        if (acc.find(e => e.user_id == item.user_id) == undefined){
-            let studentAttempts = attempts.filter(e => e.user_id == item.user_id)
-            let maxScore = Math.max(...studentAttempts.map(e => e.score))
-            let studentBestAttempt = studentAttempts.filter(e => e.score == maxScore)[0]
+    // return {attempts: attempts.sort((a,b) => a.user_id.localeCompare(b.user_id)).reduce((acc, item) => {
+    //     if (acc.find(e => e.user_id == item.user_id) == undefined){
+    //         let studentAttempts = attempts.filter(e => e.user_id == item.user_id)
+    //         let maxScore = Math.max(...studentAttempts.map(e => e.score))
+    //         let studentBestAttempt = studentAttempts.filter(e => e.score == maxScore)[0]
     
-            acc.push(studentBestAttempt)
-        }
-        return acc
-    }, [] as StudentScore[]), 
+    //         acc.push(studentBestAttempt)
+    //     }
+    //     return acc
+    // }, [] as StudentScore[]), 
+    return {
+        attempts: enrollments.map(enroll => {
+            let studentAttempts = attempts.filter(e => e.user_id == enroll.user_id)
+            let maxScore = Math.max(...studentAttempts.map(e => e.score), 0)
+            let studentBestAttempt = studentAttempts.filter(e => e.score == maxScore)[0]
+            
+            return studentBestAttempt?studentBestAttempt:{
+                user: enroll.user,
+                score: 0,
+                attempt: undefined,
+            }
+        }),
     test, session: params.session, bootcamp: params.bootcamp}
 }
 
@@ -42,7 +56,7 @@ const SessionTestResults = ({loaderData}:Route.ComponentProps) => {
             {
                 nim: e.user.nim,
                 name: e.user.name,
-                doneAt: e.attempt.done_at,
+                doneAt: e.attempt? e.attempt.done_at: "-",
                 score: Math.ceil(e.score),
                 status: (e.score >= test!.minimum_score)? "Passed":"Not passed",
             }
@@ -69,7 +83,9 @@ const SessionTestResults = ({loaderData}:Route.ComponentProps) => {
                     <TableRow className="flex w-full border-b-1 border-gray-200">
                         <TableCell className="w-1/5 text-center">{e.user.nim ?? "-"}</TableCell>
                         <TableCell className="w-1/5 text-center">{e.user.name}</TableCell>
-                        <TableCell className="w-1/5 text-center">{format(new Date(e.attempt.done_at), "MM/dd/yyyy HH:mm:ss")}</TableCell>
+                        <TableCell className="w-1/5 text-center">{
+                            e.attempt? format(new Date(e.attempt.done_at), "MM/dd/yyyy HH:mm:ss"):'-'
+                        }</TableCell>
                         <TableCell className="w-1/5 text-center">{Math.ceil(e.score)}</TableCell>
                         <TableCell className="w-1/5 text-center">{(e.score >= test!.minimum_score)?"Passed":"Not passed"}</TableCell>
                     </TableRow>
