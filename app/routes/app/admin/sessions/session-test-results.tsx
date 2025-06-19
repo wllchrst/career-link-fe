@@ -11,6 +11,7 @@ import { TableCell, TableRow } from "~/components/ui/table"
 import { format } from "date-fns"
 import { Button } from "~/components/ui/button"
 import { exportToExcel } from "~/lib/excel"
+import type { StudentScore } from "~/types/api"
 
 
 
@@ -19,7 +20,17 @@ export const loader = async ({ params }: Route.LoaderArgs) => {
     const {data: attempts} = await getAllStudentAttemptByTest(params.test).catch(() => ({data: []}))
     const {data: test} = await getTest(params.test).catch(() => ({data: null}))
 
-    return {attempts, test, session: params.session, bootcamp: params.bootcamp}
+    return {attempts: attempts.sort((a,b) => a.user_id.localeCompare(b.user_id)).reduce((acc, item) => {
+        if (acc.find(e => e.user_id == item.user_id) == undefined){
+            let studentAttempts = attempts.filter(e => e.user_id == item.user_id)
+            let maxScore = Math.max(...studentAttempts.map(e => e.score))
+            let studentBestAttempt = studentAttempts.filter(e => e.score == maxScore)[0]
+    
+            acc.push(studentBestAttempt)
+        }
+        return acc
+    }, [] as StudentScore[]), 
+    test, session: params.session, bootcamp: params.bootcamp}
 }
 
 const SessionTestResults = ({loaderData}:Route.ComponentProps) => {
@@ -31,9 +42,9 @@ const SessionTestResults = ({loaderData}:Route.ComponentProps) => {
             {
                 nim: e.user.nim,
                 name: e.user.name,
-                doneAt: e.done_at,
-                attempt: 1,
-                score: 100
+                doneAt: e.attempt.done_at,
+                score: Math.ceil(e.score),
+                status: (e.score >= test!.minimum_score)? "Passed":"Not passed",
             }
         )))
     }
@@ -50,7 +61,7 @@ const SessionTestResults = ({loaderData}:Route.ComponentProps) => {
             </div>
             {test && <TestInformationCard test={test}/>}
             <Button onClick={exportResult} className="w-1/6">Export</Button>
-            <TableLayout header={<DefaultTableHeader columns={["NIM", "Name", "Attempt", "Done at", "Score"]}/>}>
+            <TableLayout header={<DefaultTableHeader columns={["NIM", "Name", "Done at", "Score", "Status"]}/>}>
                 {
                 attempts.length < 1?
                 <EmptyMessage title="No Attempts" text="The students hasn't made any attempts yet."/>:
@@ -58,9 +69,9 @@ const SessionTestResults = ({loaderData}:Route.ComponentProps) => {
                     <TableRow className="flex w-full border-b-1 border-gray-200">
                         <TableCell className="w-1/5 text-center">{e.user.nim ?? "-"}</TableCell>
                         <TableCell className="w-1/5 text-center">{e.user.name}</TableCell>
-                        <TableCell className="w-1/5 text-center">1</TableCell>
-                        <TableCell className="w-1/5 text-center">{format(new Date(e.done_at), "MM/dd/yyyy HH:mm:ss")}</TableCell>
-                        <TableCell className="w-1/5 text-center">100</TableCell>
+                        <TableCell className="w-1/5 text-center">{format(new Date(e.attempt.done_at), "MM/dd/yyyy HH:mm:ss")}</TableCell>
+                        <TableCell className="w-1/5 text-center">{Math.ceil(e.score)}</TableCell>
+                        <TableCell className="w-1/5 text-center">{(e.score >= test!.minimum_score)?"Passed":"Not passed"}</TableCell>
                     </TableRow>
                 )
                 }

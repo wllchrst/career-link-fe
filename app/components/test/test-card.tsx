@@ -109,7 +109,7 @@ const TestCard = ({ sessionId, testType, test, attempts }: Props) => {
               onSuccess={onSuccess}
             />
           </Modal>
-          <TestInformationCard test={test} minimum_score={test.minimum_score} score={attempts.length > 0 ? Math.max(...attempts.map(e => Math.round(e.score))):0}/>
+          <TestInformationCard test={test} minimum_score={test.minimum_score} score={attempts.length > 0 ? Math.max(...attempts.map(e => Math.ceil(e.score))):0}/>
           {role == 'user' && <>
           <h4></h4>
             <TableLayout header={<DefaultTableHeader columns={["Attempt", "State", "Duration", "Score"]}/>}>
@@ -121,7 +121,7 @@ const TestCard = ({ sessionId, testType, test, attempts }: Props) => {
                     <TableCell className="w-1/4 text-center">{idx + 1}</TableCell>
                     <TableCell className="w-1/4 text-center">{`Submitted at ${formatDate(new Date(e.attempt.done_at), 'MM/dd/yyyy HH:mm:ss')}`}</TableCell>
                     <TableCell className="w-1/4 text-center">{Math.ceil((new Date(e.attempt.done_at).getTime() - new Date(e.attempt.created_at).getTime()) /1000 / 60)} Minutes</TableCell>
-                    <TableCell className="w-1/4 text-center">{Math.round(e.score)}</TableCell>
+                    <TableCell className="w-1/4 text-center">{Math.ceil(e.score)}</TableCell>
                 </TableRow>
                 )
               }
