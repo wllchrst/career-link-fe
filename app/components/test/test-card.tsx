@@ -136,6 +136,7 @@ const TestCard = ({ sessionId, testType, test, attempts }: Props) => {
             <div className="flex gap-5 justify-start items-center">
               {role != "admin" ? (attempts.length < parseInt(test.attempt_count) && new Date(test.close_date).getTime() > new Date().getTime()) && (
                 <>
+                {/* TODO: attempts.sort ganti ke yang lain / fetch semua attempt */}
                   {
                     (attempts.length < 1 || attempts.sort((a,b) => new Date(a.attempt.created_at).getTime() - new Date(b.attempt.created_at).getTime())[attempts.length - 1].attempt.done_at)?  
                     <Button className={

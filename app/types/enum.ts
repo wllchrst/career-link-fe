@@ -5,6 +5,6 @@ export enum TestType {
 
 export enum AssignmentResultType {
     NO_FILE= 'no file',
-    PASSED= 'passed',
-    NOT_PASSED= 'not passed',
+    AVERAGE= 'average',
+    GOOD= 'good',
 }
