@@ -4,9 +4,9 @@ import { Modal, type ModalType } from "../modal"
 import { useState, type ChangeEvent } from "react"
 import { Link, useRevalidator } from "react-router"
 import CreateAssignment from "~/features/assignment/components/create-assignment"
-import type { Assignment, AssignmentAnswer, Session } from "~/types/api"
+import type { Assignment, AssignmentAnswer, AssignmentResult, Session } from "~/types/api"
 import EmptyMessage from "../ui/empty-message"
-import { Download, File } from "lucide-react"
+import { AlertCircle, Download, File } from "lucide-react"
 import { createAssignmentAnswer } from "~/features/assignment/api/answer/create-assignment-answer"
 import toast from "react-hot-toast"
 import { getErrorMessage } from "~/lib/error"
@@ -16,9 +16,10 @@ interface Props {
     session: Session,
     assignment?: Assignment | undefined,
     assignmentAnswer?: AssignmentAnswer | undefined,
+    result?: AssignmentResult | undefined, 
 }
 
-const AssignmentCard = ({session, assignment, assignmentAnswer}:Props) => {
+const AssignmentCard = ({session, assignment, assignmentAnswer, result}:Props) => {
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
     const [fileName, setFileName] = useState("");
     const [activeModal, setActiveModal] = useState<ModalType>(null);
@@ -123,9 +124,15 @@ const AssignmentCard = ({session, assignment, assignmentAnswer}:Props) => {
                             </Button>    
                         </a>
                     </div>
+                    
                 </>
                 }
-
+                <div className="bg-green-200 border-green-700 border-1 p-3 rounded-md flex items-center gap-3 w-2/5">
+                    <AlertCircle className="text-green-700" />
+                    <p className="text-md font-bold text-green-700">
+                        Your grade: {result?.result}
+                    </p> 
+                </div>
             </>:
             <EmptyMessage text="There is no assignment. Please contact your instructor!" title="No Assignment Yet."/>
             }  
