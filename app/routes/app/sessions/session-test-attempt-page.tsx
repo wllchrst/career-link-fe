@@ -72,7 +72,7 @@ const Quiz = ({loaderData}:Route.ComponentProps) => {
             <div className="flex gap-2 w-full">
                {
                questions.length > 1 && 
-               <SessionTestAttemptGrid onFinish={finish} attemptId={attemptId} questions={questions.sort((a,b) => a.number - b.number)}/>
+               <SessionTestAttemptGrid onFinish={finish} attemptId={attemptId} questions={questions}/>
                }
             </div>
         </div>
