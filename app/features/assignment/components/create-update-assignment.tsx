@@ -7,11 +7,15 @@ import { Form } from "~/components/ui/form";
 import { Button } from "~/components/ui/button";
 import FileField from "~/components/ui/file-field";
 import Field from "~/components/ui/form-field";
+import DatePicker from "~/components/ui/date-picker";
+import type { Assignment } from "~/types/api";
 
 interface Props {
   onSuccess: () => void;
   sessionId: string;
+  assignment: Assignment;
 }
+
 const CreateAssignment = ( {sessionId, onSuccess}:Props ) => {
     const form = useForm<CreateAssignmentInput>({
         resolver: zodResolver(createAssignmentInputSchema),
@@ -20,6 +24,8 @@ const CreateAssignment = ( {sessionId, onSuccess}:Props ) => {
             answer_file_path: "",
             question_file_path: "",
             is_shared: false,
+            open_date: new Date(),
+            close_date: new Date(),
         },
       });
     
@@ -44,6 +50,27 @@ const CreateAssignment = ( {sessionId, onSuccess}:Props ) => {
       }
     };
 
+    function handleChangeDate(name:string, date: Date | undefined) {
+      const realName = name as "close_date"|"open_date"
+        if (date) {
+          form.setValue(realName, date);
+        }
+      }
+    
+    function handleTimeChange(name:string,type: "hour" | "minute", value: string) {
+      const realName = name as "open_date"|"close_date"
+      const currentDate = form.getValues(realName) || new Date();
+      let newDate = new Date(currentDate);
+  
+      if (type === "hour") {
+        const hour = parseInt(value, 10);
+        newDate.setHours(hour);
+      } else if (type === "minute") {
+        newDate.setMinutes(parseInt(value, 10));
+      }
+  
+      form.setValue(realName, newDate);
+    }
     return (
         <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -55,7 +82,8 @@ const CreateAssignment = ( {sessionId, onSuccess}:Props ) => {
                 type="checkbox"
                 label="Shared"
             />
-
+            <DatePicker onSelect={handleChangeDate} onTimeChange={handleTimeChange} name='open_date' control={form.control} label="Open Date" />
+            <DatePicker onSelect={handleChangeDate} onTimeChange={handleTimeChange} name='close_date' control={form.control} label="Close Date" />
             <div className="flex gap-5 justify-end">
             <Button
                 type="submit"

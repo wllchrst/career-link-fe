@@ -5,6 +5,8 @@ export const createAssignmentInputSchema = z.object({
   session_id: z.string().min(1, "Session ID is required"),
   answer_file_path: z.string().optional(),
   is_shared: z.boolean(),
+  open_date: z.date(),
+  close_date: z.date(),
   question_file_path: z.string().optional(),
   question_file: z.instanceof(File).refine(
       (file) =>

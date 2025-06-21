@@ -25,21 +25,13 @@ const Quiz = ({loaderData}:Route.ComponentProps) => {
     useEffect(() => {
         let savedQuestions = window.localStorage.getItem(`test_questions-${attemptId}`);
         if (!savedQuestions) {
-            let randomNumbers:number[] = []
-            const count = Math.min(loaderData.questions.length, 5);
-            if (loaderData.questions.length >= count) {
-                while (randomNumbers.length < count) {
-                    const randomNumber = Math.floor(Math.random() * loaderData.questions.length);
-                    if (!randomNumbers.includes(randomNumber)) {
-                        randomNumbers.push(randomNumber);
-                    }
-                }
-                setQuestions(loaderData.questions.filter((_, index) => randomNumbers.includes(index)));    
-                window.localStorage.setItem(`test_questions-${attemptId}`, JSON.stringify(loaderData.questions.filter((_, index) => randomNumbers.includes(index))));
-            }else{
-                setQuestions(loaderData.questions);
-                window.localStorage.setItem(`test_questions-${attemptId}`, JSON.stringify(loaderData.questions));
+            let data = loaderData.questions
+            for (let i = data.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [data[i], data[j]] = [data[j], data[i]];
             }
+            setQuestions(data);
+            window.localStorage.setItem(`test_questions-${attemptId}`, JSON.stringify(data));
         }else{
             console.log("Using saved questions")
             setQuestions(JSON.parse(savedQuestions));
