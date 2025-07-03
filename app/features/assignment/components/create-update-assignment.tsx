@@ -13,26 +13,26 @@ import type { Assignment } from "~/types/api";
 interface Props {
   onSuccess: () => void;
   sessionId: string;
-  assignment: Assignment;
+  assignment?: Assignment;
 }
 
-const CreateAssignment = ( {sessionId, onSuccess}:Props ) => {
+const CreateAssignment = ( {sessionId, assignment, onSuccess}:Props ) => {
     const form = useForm<CreateAssignmentInput>({
         resolver: zodResolver(createAssignmentInputSchema),
         defaultValues: {
             session_id: sessionId,
-            answer_file_path: "",
-            question_file_path: "",
-            is_shared: false,
-            open_date: new Date(),
-            close_date: new Date(),
+            answer_file_path:  assignment? assignment.answer_file_path : "",
+            question_file_path: assignment? assignment.question_file_path :  "",
+            is_shared:  assignment? assignment.is_shared : false,
+            open_date: assignment? new Date(assignment.open_date) : new Date(),
+            close_date:  assignment? new Date(assignment.close_date) : new Date(),
         },
       });
     
       const onSubmit = async (data: CreateAssignmentInput) => {
         const toastId = toast.loading("Creating assignment...");
         try {
-          const res = await createAssignment({ data });
+          const res = await createAssignment({ data, id: assignment?.id });
           toast.success(res.message, { id: toastId });
           form.reset();
           onSuccess();
@@ -92,7 +92,7 @@ const CreateAssignment = ( {sessionId, onSuccess}:Props ) => {
                 form.formState.isSubmitting ? "opacity-70 cursor-not-allowed" : ""
                 }`}
             >
-                {form.formState.isSubmitting ? "Creating..." : "Create"}
+                {form.formState.isSubmitting ? "Saving..." : "Save"}
             </Button>
             </div>
         </form>
