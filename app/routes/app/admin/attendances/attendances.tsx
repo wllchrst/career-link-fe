@@ -80,8 +80,8 @@ const Attendances = ({loaderData}:Route.ComponentProps) => {
                     <TableRow className="flex w-full border-b-1 border-gray-200">
                         <TableCell className="w-1/4 text-center">{e.nim ?? "-"}</TableCell>
                         <TableCell className="w-1/4 text-center">{e.name}</TableCell>
-                        <TableCell className="w-1/4 text-center">{format(e.clock_in, 'MM/dd/yyyy HH:mm:ss')}</TableCell>
-                        <TableCell className="w-1/4 text-center">{format(e.clock_out, 'MM/dd/yyyy HH:mm:ss')}</TableCell>
+                        <TableCell className="w-1/4 text-center">{e.clock_in ? format(e.clock_in, 'MM/dd/yyyy HH:mm:ss'): "-"}</TableCell>
+                        <TableCell className="w-1/4 text-center">{e.clock_out ? format(e.clock_out, 'MM/dd/yyyy HH:mm:ss'): "-"}</TableCell>
                     </TableRow>
                 )
                 }
