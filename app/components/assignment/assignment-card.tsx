@@ -97,7 +97,7 @@ const AssignmentCard = ({session, assignment, assignmentAnswer, result}:Props) =
                         </div>
                     </Button>    
                 </a>
-                {(role == 'admin' || (assignment.is_shared && new Date().getTime() > new Date(session.end_date).getTime())) ? <>
+                {(role == 'admin' || (assignment.is_shared && new Date().getTime() > new Date(assignment.close_date).getTime())) ? <>
                     <p>The assignment's answer can be downloaded from the button below</p>
                     <a href={`${import.meta.env.VITE_STORAGE_URL}/${assignment.answer_file_path}`} download target="_blank">
                         <Button variant={'outline'} className="w-1/3 h-10">
