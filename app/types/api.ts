@@ -126,6 +126,8 @@ export type Assignment = {
   question_file_path: string;
   answer_file_path: string;
   is_shared: boolean;
+  open_date: Date;
+  close_date: Date;
 };
 
 export type AssignmentAnswer = {

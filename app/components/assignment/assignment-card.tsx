@@ -11,6 +11,7 @@ import { createAssignmentAnswer } from "~/features/assignment/api/answer/create-
 import toast from "react-hot-toast"
 import { getErrorMessage } from "~/lib/error"
 import { updateAssignmentAnswer } from "~/features/assignment/api/answer/update-assignment-answer"
+import { DeleteAssignment } from "~/features/assignment/components/delete-assignment"
 
 interface Props {
     session: Session,
@@ -70,11 +71,18 @@ const AssignmentCard = ({session, assignment, assignmentAnswer, result}:Props) =
     return (
         <>
             <Modal 
-                title={`Add Assignment`}
-                isOpen={activeModal === "create"}
+                title={`${activeModal} Assignment`}
+                isOpen={activeModal === "create" || activeModal === "update"}
                 onClose={() => setActiveModal(null)}
             >
-                <CreateAssignment onSuccess={onSuccess} sessionId={session.id} />
+                <CreateAssignment assignment={assignment} onSuccess={onSuccess} sessionId={session.id} />
+            </Modal>
+            <Modal 
+                title={`Delete Assignment`}
+                isOpen={activeModal === "delete"}
+                onClose={() => setActiveModal(null)}
+            >
+                <DeleteAssignment onSuccess={onSuccess} selectedCategory={assignment!} onClose={() => setActiveModal(null)} />
             </Modal>
             {assignment? <>
                 <p>The assignment can be downloaded from the button below</p>
@@ -127,12 +135,14 @@ const AssignmentCard = ({session, assignment, assignmentAnswer, result}:Props) =
                     
                 </>
                 }
-                <div className="bg-green-200 border-green-700 border-1 p-3 rounded-md flex items-center gap-3 w-2/5">
+                {
+                role == "user" && <div className="bg-green-200 border-green-700 border-1 p-3 rounded-md flex items-center gap-3 w-2/5">
                     <AlertCircle className="text-green-700" />
                     <p className="text-md font-bold text-green-700">
                         Your grade: {result?.result}
                     </p> 
                 </div>
+                }
             </>:
             <EmptyMessage text="There is no assignment. Please contact your instructor!" title="No Assignment Yet."/>
             }  
@@ -147,10 +157,12 @@ const AssignmentCard = ({session, assignment, assignmentAnswer, result}:Props) =
                             </Button>
                         </Link>
                         <Button
+                        onClick={() => setActiveModal('update')}
                             className={'bg-[var(--accent)] text-white rounded-md p-2 w-40 hover:bg-[var(--secondary)] transition duration-200 ease-in-out'}>
                             Update
                         </Button>
                         <Button
+                            onClick={() => setActiveModal('delete')}
                             className={'bg-red-500 text-white rounded-md p-2 w-40 hover:bg-red-700 transition duration-200 ease-in-out'}>
                             Delete
                         </Button>

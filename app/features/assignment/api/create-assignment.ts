@@ -34,8 +34,10 @@ export type CreateAssignmentInput = z.infer<typeof createAssignmentInputSchema>;
 
 export const createAssignment = ({
   data,
+  id
 }: {
   data: CreateAssignmentInput;
+  id?:string
 }): Promise<{ data: { id: string }; message: string }> => {
   let formData = new FormData();
 
@@ -43,13 +45,28 @@ export const createAssignment = ({
     if (key === 'is_shared') {
       formData.append(key, data[key] == true ? "1" : "0");
     }else{
-      formData.append(key, data[key]);
+      if (key.includes('date')){
+        let newKey = key as 'open_date' | 'close_date'
+        let date = data[newKey]
+        formData.append(key, date.toISOString())
+      }else{
+        formData.append(key, data[key]);
+      }
     }
   }
-  console.log("Form Data:", formData.get("is_shared"));
-  return api.post("/bootcamp/session_assignment", formData, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  });
+  console.log("Form Data:", formData.get("open_date"));
+  if (id){
+    return api.post(`/bootcamp/session_assignment/${id}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  }else{
+    return api.post(`/bootcamp/session_assignment`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+  }
 };
