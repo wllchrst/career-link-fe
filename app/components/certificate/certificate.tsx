@@ -26,7 +26,7 @@ const CertificateCard = () => {
                 <p className="font-serif text-sm">April 4th 2025</p>
                 <p className="font-serif text-sm">Bina Nusantara University</p>
                 <img src={sign} alt="sign" className="h-20"/>
-                <p className="font-serif text-sm">Daniel Kurniawan</p>
+                <p className="font-serif text-sm">Axel Kurniawan</p>
                 <p className="font-serif text-sm">Instructor</p>
             </div>
             

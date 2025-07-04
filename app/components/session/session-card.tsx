@@ -13,6 +13,7 @@ import toast from "react-hot-toast"
 import { getErrorMessage } from "~/lib/error"
 import { formatDate } from "date-fns"
 import { AlertCircle } from "lucide-react"
+import { isClockInOpen, isClockInRange, isClockOutOpen } from "~/lib/validation"
 
 type Props = {
     session: Session,
@@ -70,8 +71,10 @@ const SessionCard = ({session}:Props) => {
             toast.error(getErrorMessage(error), {
                 id: toastId,
             });
+        
         }
     }
+
 
     return (
         <>
@@ -91,32 +94,31 @@ const SessionCard = ({session}:Props) => {
                     role == 'user' && <>
                     
                     {
-                    new Date().getTime() < new Date(session.start_attendance_date).getTime() && 
-                    <div className="bg-red-200 border-red-700 border-1 p-3 rounded-md flex items-center gap-3 w-2/5">
-                        <AlertCircle className="text-red-700" />
-                        <p className="text-md font-medium text-red-700">
-                            Clock-in open at {formatDate(new Date(session.start_attendance_date), 'dd/MM/yyyy hh:mm a')}
-                        </p>
-                    </div>
+                        !isClockInOpen(session) && 
+                        <div className="bg-red-200 border-red-700 border-1 p-3 rounded-md flex items-center gap-3 w-2/5">
+                            <AlertCircle className="text-red-700" />
+                            <p className="text-md font-medium text-red-700">
+                                Clock-in open at {formatDate(new Date(session.start_attendance_date), 'dd/MM/yyyy hh:mm a')}
+                            </p>
+                        </div>
                     }
                     {
-                        (
-                            new Date().getTime() >= new Date(session.start_attendance_date).getTime() && 
-                            new Date().getTime() <= new Date(session.start_attendance_date).getTime() + 1000 * 60 * 30
-                        ) &&
+                        (isClockInOpen(session) && isClockInRange(session)) &&
                         <div className="bg-green-200 border-green-700 border-1 p-3 rounded-md flex items-center gap-3 w-2/5">
                         <AlertCircle className="text-green-700" />
                             <p className="text-md font-bold text-green-700">
                                 Clock-in is open until {formatDate(new Date( new Date(session.start_attendance_date).getTime() + 1000 * 60 * 30), 'dd/MM/yyyy hh:mm a')}
                             </p> 
-                        </div>
-                       
+                        </div> 
                     }
                     {
-                        new Date().getTime() > new Date(session.end_date).getTime() &&
-                        <p className="text-md font-bold text-red-500">
-                            Absent already ended
-                        </p>
+                        isClockOutOpen(session) &&
+                        <div className="bg-green-200 border-green-700 border-1 p-3 rounded-md flex items-center gap-3 w-2/5">
+                        <AlertCircle className="text-green-700" />
+                            <p className="text-md font-bold text-green-700">
+                                Clock-out is open
+                            </p> 
+                        </div>
                     }
                     </>
                 }

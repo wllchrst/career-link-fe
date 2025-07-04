@@ -5,6 +5,7 @@ import AccordionLayout from "~/components/layouts/accordion-layout"
 import SessionDataCard from "~/components/session/session-data-card"
 import TestCard from "~/components/test/test-card"
 import { Button } from "~/components/ui/button"
+import { isClockInOpen, isClockInRange, isClockOutOpen } from "~/lib/validation"
 import { useRole } from "~/provider/role-testing-provider"
 import type { Assignment, AssignmentAnswer, Attendance, Session, SessionData, SessionTest, StudentAttempt, StudentScore } from "~/types/api"
 import { TestType } from "~/types/enum"
@@ -22,16 +23,25 @@ interface Props {
     attemptsPosttest: StudentScore[],
 }
 
-const SessionTodolist = ({attendanceOnClick, attendances, session, sessionData, preTest, postTest, assignment, assignmentAnswer, attemptsPretest, attemptsPosttest}:Props) => {
+const SessionTodolist = ({
+    attendanceOnClick, 
+    attendances, 
+    session, 
+    sessionData, 
+    preTest, 
+    postTest, 
+    assignment, 
+    assignmentAnswer, 
+    attemptsPretest, 
+    attemptsPosttest
+}:Props) => {
     const {role} = useRole()
     return (
         <>
             <h2 className={'font-semibold text-left text-4xl text-slate-700 py-6 w-full h-full'}>To Do List</h2>
             <div className={'flex flex-col gap-y-6 mb-8'}>
                 {role == 'user' ?  
-                (new Date().getTime() >= new Date(session.start_attendance_date).getTime() && new Date().getTime() <= new Date(session.start_attendance_date).getTime() + 1000 * 60 * 30
-                ) &&
-                    <Button onClick={attendanceOnClick} className="w-1/6">Session Clock in/out</Button>:
+                    ((isClockInOpen(session) && isClockInRange(session)) || isClockOutOpen(session)) && <Button onClick={attendanceOnClick} className="w-1/6">Session Clock in/out</Button>:
                     <Link to={`attendance`}>
                         <Button className="w-1/6">View Attendances</Button> 
                     </Link>

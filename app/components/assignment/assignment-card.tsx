@@ -136,12 +136,20 @@ const AssignmentCard = ({session, assignment, assignmentAnswer, result}:Props) =
                 </>
                 }
                 {
-                role == "user" && <div className="bg-green-200 border-green-700 border-1 p-3 rounded-md flex items-center gap-3 w-2/5">
+                role == "user" && result ?
+                <div className="bg-green-200 border-green-700 border-1 p-3 rounded-md flex items-center gap-3 w-2/5">
                     <AlertCircle className="text-green-700" />
                     <p className="text-md font-bold text-green-700">
-                        Your grade: {result?.result}
+                        Your result: {result.result}
+                    </p> 
+                </div>:
+                <div className="bg-red-200 border-red-700 border-1 p-3 rounded-md flex items-center gap-3 w-2/5">
+                    <AlertCircle className="text-red-700" />
+                    <p className="text-md font-bold text-red-700">
+                        You haven't made any submission yet
                     </p> 
                 </div>
+                
                 }
             </>:
             <EmptyMessage text="There is no assignment. Please contact your instructor!" title="No Assignment Yet."/>
