@@ -1,22 +1,10 @@
-import type { HTMLProps, ReactNode } from "react";
 import Navbar from "../navbar";
-import {
-  Sidebar,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarProvider,
-} from "~/components/ui/sidebar";
-import { NavLink } from "react-router";
-import SidebarLink from "~/components/sidebar/sidebar-link";
+import { Sidebar } from "~/components/ui/sidebar";
+import { Outlet } from "react-router";
 import SidebarContent from "~/components/sidebar/sidebar-content";
 import CenterLayout from "~/components/layouts/center-layout";
 
-interface Props extends HTMLProps<HTMLDivElement> {
-  children: ReactNode;
-}
-
-export const NavbarLayout = ({ children }: Props) => {
+const NavbarLayout = () => {
   return (
     <div className="flex flex-col min-h-screen w-full box-border bg-[var(--background)]">
       <Navbar />
@@ -25,9 +13,13 @@ export const NavbarLayout = ({ children }: Props) => {
           <SidebarContent />
         </Sidebar>
         <div className="mx-auto max-w-[1200px] w-full h-full">
-          <CenterLayout>{children}</CenterLayout>
+          <CenterLayout>
+            <Outlet />
+          </CenterLayout>
         </div>
       </div>
     </div>
   );
 };
+
+export default NavbarLayout;

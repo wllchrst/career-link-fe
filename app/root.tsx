@@ -10,7 +10,6 @@ import {
 
 import type { Route } from "./+types/root";
 import "./app.css";
-import { NavbarLayout } from "./components/layouts/navbar-layout";
 import { AppProvider } from "./provider/provider";
 import GlobalSpinner from "./components/ui/global-spinner";
 
@@ -51,10 +50,8 @@ export default function App() {
 
   return (
     <AppProvider>
-      <NavbarLayout>
-        {isNavigating && <GlobalSpinner />}
-        <Outlet />
-      </NavbarLayout>
+      {isNavigating && <GlobalSpinner />}
+      <Outlet />
     </AppProvider>
   );
 }
