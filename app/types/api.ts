@@ -1,5 +1,10 @@
 import type { TestType } from "./enum";
 
+export type ApiResponse<T> = {
+  message: string;
+  data: T;
+};
+
 export type User = {
   id: string;
   nim?: string;
@@ -7,7 +12,7 @@ export type User = {
   email: string;
   phone: string;
   major?: string;
-  future_position:  string;
+  future_position: string;
   skill: string;
 };
 
@@ -86,10 +91,10 @@ export type SessionTest = {
 export type StudentAttempt = {
   id: string;
   test_id: string;
-  user_id:string;
+  user_id: string;
   created_at: Date;
   done_at: Date;
-}
+};
 
 export type StudentScore = {
   id: string;
@@ -98,7 +103,7 @@ export type StudentScore = {
   score: number;
   user: User;
   attempt: StudentAttempt;
-}
+};
 
 export type Session = {
   id: string;
@@ -133,25 +138,25 @@ export type Assignment = {
 export type AssignmentAnswer = {
   id: string;
   user_id: string;
-  assignment_id:string;
+  assignment_id: string;
   answer_file_path: string;
   user: User;
-}
+};
 export type AssignmentResult = {
   id: string;
   user_id: string;
-  assignment_id:string;
+  assignment_id: string;
   result: string;
   user: User;
-}
+};
 
 export type Attendance = {
   id: string;
   user: User;
-  attendance_type: 'clock_in' | 'clock_out';
+  attendance_type: "clock_in" | "clock_out";
   finished_at: Date;
   session_id: string;
-}
+};
 
 export type Enrollment = {
   id: string;
@@ -159,4 +164,9 @@ export type Enrollment = {
   bootcamp: Bootcamp;
   user_id: string;
   bootcamp_id: string;
-}
+};
+
+export type AuthResponse = {
+  access_token: string;
+  token_type: string;
+};
