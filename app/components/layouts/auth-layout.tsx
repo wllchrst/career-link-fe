@@ -1,14 +1,23 @@
 import { useEffect } from "react";
 import { Outlet, useNavigate, useSearchParams } from "react-router";
+import { useAuth } from "~/lib/auth";
+import GlobalSpinner from "../ui/global-spinner";
 
 const AuthLayout = () => {
+  const { user, loading } = useAuth();
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get("redirectTo");
   const navigate = useNavigate();
 
   useEffect(() => {
-    //TODO: cek apakah use sekarang udah login, kalau belum maka redirect ke redirectTo atau default ke homepage
-  }, []);
+    if (!loading && user) {
+      navigate(redirectTo ? redirectTo : "/", {
+        replace: true,
+      });
+    }
+  }, [loading, user]);
+
+  if (loading) return null;
 
   return (
     <div className="flex min-h-screen min-w-screen flex-col justify-center">
