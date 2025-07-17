@@ -3,6 +3,7 @@ import { api } from "~/lib/api-client";
 
 export const createBootcampInputSchema = z.object({
   name: z.string().min(1, "Name is required"),
+  shortName: z.string().min(1, "Short name is required"),
   description: z.string().min(1, "Description is required"),
   category_id: z.string().min(1, "Category ID is required"),
   type_id: z.string().min(1, "Type ID is required"),

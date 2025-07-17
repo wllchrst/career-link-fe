@@ -37,6 +37,7 @@ export type Certificate = {
 export type Bootcamp = {
   id: string;
   name: string;
+  shortName: string;
   type_id: string;
   types: BootcampType;
   category_id: string;

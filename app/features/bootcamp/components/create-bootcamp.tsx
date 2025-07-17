@@ -38,6 +38,7 @@ export const CreateBootcamp = ({
     resolver: zodResolver(createBootcampInputSchema),
     defaultValues: {
       name: "",
+      shortName: "",
       description: "",
       category_id: "",
       image_path: "",
@@ -80,6 +81,13 @@ export const CreateBootcamp = ({
               label="Name"
               type="text"
               name="name"
+            />
+            <Field
+              control={form.control}
+              placeholder="Enter short name"
+              label="Short name"
+              type="text"
+              name="shortName"
             />
             <TextAreaField
               control={form.control}
