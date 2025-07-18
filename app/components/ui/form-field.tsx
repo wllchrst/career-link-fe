@@ -26,7 +26,7 @@ export default function Field<T extends FieldValues>({
         name={name}
         render={({ field }) => (
           <FormItem className="w-full">
-            <FormLabel>{label}</FormLabel>
+            {label && <FormLabel>{label}</FormLabel>}
             <FormControl>
               {type == 'checkbox' ?
                 <Checkbox {...field} className={className} checked={Boolean(field.value)} onCheckedChange={field.onChange} />:

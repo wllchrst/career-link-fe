@@ -27,8 +27,8 @@ export default function SelectField<T extends FieldValues>({
         control={control}
         name={name}
         render={({ field }) => (
-          <FormItem className="h-20 w-full">
-            <FormLabel>{label}</FormLabel>
+          <FormItem className="w-full">
+            {label && <FormLabel>{label}</FormLabel>}
             <Select onValueChange={field.onChange} defaultValue={field.value}>
               <FormControl>
                 <SelectTrigger className="bg-white text-black border border-gray-300 focus:ring-2 w-full focus:ring-ring focus:ring-offset-2">

@@ -4,6 +4,7 @@ import { api } from "~/lib/api-client";
 export const createEvalQuestionInputSchema = z.object({
   question: z.string().min(1, "Question is required"),
   session_id: z.string().min(1, "Session id is required"),
+  type:  z.string().min(1, "Type is required"),
 });
 
 export type CreateEvalQuestionInput = z.infer<typeof createEvalQuestionInputSchema>;

@@ -171,3 +171,8 @@ export type AuthResponse = {
   access_token: string;
   token_type: string;
 };
+
+export type EvaluationQuestion = {
+  question: string;
+  type: string;
+}

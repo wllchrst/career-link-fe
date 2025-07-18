@@ -16,7 +16,7 @@ export default function FileField<T extends FieldValues>({control, name, label, 
           name={name}
           render={({ field: { onChange, value, ...fieldProps } }) => (
             <FormItem>
-              <FormLabel>{label}</FormLabel>
+              {label && <FormLabel>{label}</FormLabel>}
               <FormControl>
                 <Input
                   type="file"
