@@ -1,13 +1,15 @@
 
 import { Link } from "react-router"
 import AssignmentCard from "~/components/assignment/assignment-card"
+import EvaluationCard from "~/components/evaluation/question-user-card"
 import AccordionLayout from "~/components/layouts/accordion-layout"
 import SessionDataCard from "~/components/session/session-data-card"
 import TestCard from "~/components/test/test-card"
 import { Button } from "~/components/ui/button"
+import { Form } from "~/components/ui/form"
 import { isClockInOpen, isClockInRange, isClockOutOpen } from "~/lib/validation"
 import { useRole } from "~/provider/role-testing-provider"
-import type { Assignment, AssignmentAnswer, Attendance, Session, SessionData, SessionTest, StudentAttempt, StudentScore } from "~/types/api"
+import type { Assignment, AssignmentAnswer, Attendance, EvaluationQuestion, Session, SessionData, SessionTest, StudentAttempt, StudentScore } from "~/types/api"
 import { TestType } from "~/types/enum"
 
 interface Props {
@@ -36,6 +38,16 @@ const SessionTodolist = ({
     attemptsPosttest
 }:Props) => {
     const {role} = useRole()
+    let dummyEvaluationQuestion:EvaluationQuestion[] = [
+        {
+            question: "Rate your satisfaction on this session",
+            type: "ratio"
+        },
+        {
+            question: "What can be improved in this session",
+            type: "text"
+        },
+    ]
     return (
         <>
             <h2 className={'font-semibold text-left text-4xl text-slate-700 py-6 w-full h-full'}>To Do List</h2>
@@ -59,10 +71,19 @@ const SessionTodolist = ({
                     <AssignmentCard session={session} assignment={assignment} assignmentAnswer={assignmentAnswer} />
                 </AccordionLayout>
                 <AccordionLayout text={'Evaluation'} isLocked={role == 'user' && assignmentAnswer == undefined}>
-                    {role == 'admin' && 
+                    {
+                        role == 'admin' ? 
                         <Button className={"p-2 w-40 bg-purple-600 hover:bg-purple-500"}>
                             <Link to={"evaluation"}>Manage Evaluation</Link>
                         </Button>
+                        :
+                        <>
+                            {/* TODO: Form */}
+                            {dummyEvaluationQuestion.map((e, idx) => 
+                                <EvaluationCard idx={idx} question={e}/>
+                            )}
+                            <Button>Submit</Button>
+                        </>
                     }
                 </AccordionLayout>
             </div>
