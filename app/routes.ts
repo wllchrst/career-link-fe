@@ -31,6 +31,7 @@ export default [
     ]),
     ...prefix("bootcamps/:bootcamp", [
       route("session/:session", "routes/app/sessions/session-detail.tsx"),
+      route("session/:session/evaluation", "routes/app/admin/sessions/session-evaluation-admin-page.tsx"),
       route(
         "session/:session/test/:test/attempt/:attempt",
         "routes/app/sessions/session-test-attempt-page.tsx"

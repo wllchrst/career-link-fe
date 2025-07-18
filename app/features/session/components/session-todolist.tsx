@@ -59,7 +59,11 @@ const SessionTodolist = ({
                     <AssignmentCard session={session} assignment={assignment} assignmentAnswer={assignmentAnswer} />
                 </AccordionLayout>
                 <AccordionLayout text={'Evaluation'} isLocked={role == 'user' && assignmentAnswer == undefined}>
-                    <AssignmentCard session={session} />
+                    {role == 'admin' && 
+                        <Button className={"p-2 w-40 bg-purple-600 hover:bg-purple-500"}>
+                            <Link to={"evaluation"}>Manage Evaluation</Link>
+                        </Button>
+                    }
                 </AccordionLayout>
             </div>
         </>
