@@ -3,18 +3,21 @@ import { Card } from "../ui/card"
 import Field from "../ui/form-field"
 import { Form } from "../ui/form"
 import { useForm } from "react-hook-form"
-import type { CreateEvalQuestionInput } from "~/features/evaluation/api/create-evaluation-question"
 import SelectField from "../ui/select-field"
 import { Button } from "../ui/button"
+import toast from "react-hot-toast"
+import { getErrorMessage } from "~/lib/error"
+import { updateEvalQuestion, type UpdateEvalQuestionInput } from "~/features/evaluation/api/update-evaluation-question"
 
 interface Props {
     idx: number,
     question: EvaluationQuestion
+    onSuccess: () => void
 }
 
-const EvaluationCard = ({idx, question}:Props) => {
+const EvaluationCard = ({idx, question, onSuccess}:Props) => {
 
-    let form = useForm<CreateEvalQuestionInput>({
+    let form = useForm<UpdateEvalQuestionInput>({
         defaultValues: question
     })
 
@@ -29,12 +32,30 @@ const EvaluationCard = ({idx, question}:Props) => {
         }
     ]
 
+    const handleSubmit = async (data: UpdateEvalQuestionInput) => {
+        const toastId = toast.loading(`Updating evaluation question...`);
+        try {
+
+            await updateEvalQuestion({
+                data,
+                id: question.id,
+            })
+
+            toast.success("Update evaluation question success", { id: toastId })
+            onSuccess()
+        } catch (error) {
+            toast.error(getErrorMessage(error), {
+            id: toastId,
+            });
+        }
+    }
+
 
     return (
         <Card className="flex flex-row p-4 gap-2 w-full">
             <div className="w-full">
                 <Form {...form}>
-                    <form className="flex flex-col gap-5">
+                    <form className="flex flex-col gap-5" onSubmit={form.handleSubmit(handleSubmit)}>
                         <div className="flex justify-between w-full items-center gap-5 border-b-1 pb-5">
                             <h4 className="text-slate-700 text-xl font-bold p-0 m-0">{idx+1}.</h4>
                             

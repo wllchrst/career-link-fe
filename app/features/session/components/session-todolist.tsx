@@ -41,9 +41,11 @@ const SessionTodolist = ({
     let dummyEvaluationQuestion:EvaluationQuestion[] = [
         {
             question: "Rate your satisfaction on this session",
-            type: "ratio"
+            type: "ratio",
+            id: "1",
         },
         {
+            id: "2",
             question: "What can be improved in this session",
             type: "text"
         },

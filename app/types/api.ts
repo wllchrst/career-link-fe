@@ -173,6 +173,7 @@ export type AuthResponse = {
 };
 
 export type EvaluationQuestion = {
+  id: string;
   question: string;
   type: string;
 }
