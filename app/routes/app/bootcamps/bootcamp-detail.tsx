@@ -66,6 +66,7 @@ const BootcampDetail = ({ loaderData }: Route.ComponentProps) => {
       </Modal>
       <div className={"container flex flex-col gap-8"}>
         <BootcampDetailCard
+          id={bootcamp.id}
           name={bootcamp.name}
           description={bootcamp.description}
           category={category}

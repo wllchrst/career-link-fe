@@ -6,6 +6,7 @@ import { useRole } from "~/provider/role-testing-provider";
 import { Link } from "react-router";
 
 type BootcampDetailCardProps = {
+  id: string;
   name: string;
   description: string;
   image: string;
@@ -15,6 +16,7 @@ type BootcampDetailCardProps = {
 };
 
 const BootcampDetailCard = ({
+  id,
   name,
   description,
   image,
@@ -47,6 +49,11 @@ const BootcampDetailCard = ({
               <Button className="w-fit p-5" onClick={onClick}>
                 Add Session
               </Button>
+              <Link to={`/admin/bootcamps/${id}/report`}>
+                <Button className="w-fit p-5 bg-yellow-500 hover:bg-yellow-400">
+                  Student Report & Certificate
+                </Button>
+              </Link>
               <Link to={`enrollment`}>
                 <Button className="w-fit p-5 bg-purple-500 hover:bg-purple-400">
                   View Enrolled Students
