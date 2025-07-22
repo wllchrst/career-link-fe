@@ -23,6 +23,7 @@ interface Props {
     assignmentAnswer?:AssignmentAnswer | undefined,
     attemptsPretest: StudentScore[],
     attemptsPosttest: StudentScore[],
+    evaluationQuestions: EvaluationQuestion[]
 }
 
 const SessionTodolist = ({
@@ -35,21 +36,11 @@ const SessionTodolist = ({
     assignment, 
     assignmentAnswer, 
     attemptsPretest, 
-    attemptsPosttest
+    attemptsPosttest,
+    evaluationQuestions
 }:Props) => {
     const {role} = useRole()
-    let dummyEvaluationQuestion:EvaluationQuestion[] = [
-        {
-            question: "Rate your satisfaction on this session",
-            type: "ratio",
-            id: "1",
-        },
-        {
-            id: "2",
-            question: "What can be improved in this session",
-            type: "text"
-        },
-    ]
+    
     return (
         <>
             <h2 className={'font-semibold text-left text-4xl text-slate-700 py-6 w-full h-full'}>To Do List</h2>
@@ -81,7 +72,7 @@ const SessionTodolist = ({
                         :
                         <>
                             {/* TODO: Form */}
-                            {dummyEvaluationQuestion.map((e, idx) => 
+                            {evaluationQuestions.map((e, idx) => 
                                 <EvaluationCard idx={idx} question={e}/>
                             )}
                             <Button>Submit</Button>

@@ -8,6 +8,8 @@ import { Button } from "../ui/button"
 import toast from "react-hot-toast"
 import { getErrorMessage } from "~/lib/error"
 import { updateEvalQuestion, type UpdateEvalQuestionInput } from "~/features/evaluation/api/update-evaluation-question"
+import { deleteEvaluationQuestion } from "~/features/evaluation/api/delete-evaluation-question"
+import { useState } from "react"
 
 interface Props {
     idx: number,
@@ -16,6 +18,8 @@ interface Props {
 }
 
 const EvaluationCard = ({idx, question, onSuccess}:Props) => {
+
+    let [isUpdating, setUpdating] = useState(false)
 
     let form = useForm<UpdateEvalQuestionInput>({
         defaultValues: question
@@ -50,6 +54,30 @@ const EvaluationCard = ({idx, question, onSuccess}:Props) => {
         }
     }
 
+    let onDelete = async (question: EvaluationQuestion) => {
+        setUpdating(false)
+        const toastId = toast.loading(`Deleting evaluation question...`);
+
+        try {
+            // console.log(question.question)
+            await deleteEvaluationQuestion(question.id)
+            toast.success("Delete evaluation question success", { id: toastId })
+            
+            onSuccess()
+        } catch (error) {
+            console.log('error delete')
+            toast.error(getErrorMessage(error), {
+            id: toastId,
+            });
+        }
+    }
+
+    let onSelect = (question:EvaluationQuestion) => {
+        form.setValue('id', question.id)
+        form.setValue('question', question.question)
+        form.setValue('type', question.type)
+        setUpdating(true)
+    }
 
     return (
         <Card className="flex flex-row p-4 gap-2 w-full">
@@ -59,15 +87,21 @@ const EvaluationCard = ({idx, question, onSuccess}:Props) => {
                         <div className="flex justify-between w-full items-center gap-5 border-b-1 pb-5">
                             <h4 className="text-slate-700 text-xl font-bold p-0 m-0">{idx+1}.</h4>
                             
-                            <Field control={form.control} label="" name="question" placeholder="Question" />
-                            <div className="w-1/5 flex justify-center items-center">
+                            <div className="w-3/5" onClick={() => onSelect(question)}>
+                                {!isUpdating? 
+                                    <p>{question.question}</p>
+                                    :
+                                    <Field control={form.control} label="" name="question" placeholder="Question" />
+                                }
+                            </div>
+                            <div className="w-1/5 flex justify-center items-center ">
                                 <SelectField control={form.control} label="" name="type" values={types}/>
                             </div>
 
                         </div>
                         <div className="flex w-full gap-5 justify-end">
                             <Button className="w-1/5">Update</Button>
-                            <Button className="w-1/5" variant={"destructive"}>Remove</Button>
+                            <Button className="w-1/5" variant={"destructive"} type="button" onClick={() => onDelete(question)}>Remove</Button>
                         </div>
                     </form>
                 </Form>

@@ -2,6 +2,7 @@ import { z } from "zod";
 import { api } from "~/lib/api-client";
 
 export const updateEvalQuestionInputSchema = z.object({
+  id: z.string().min(1, "Id is required"),
   question: z.string().min(1, "Question is required"),
   session_id: z.string().min(1, "Session id is required"),
   type:  z.string().min(1, "Type is required"),

@@ -20,24 +20,15 @@ interface Props {
     sessionId: string,
     id: string,
     onSuccess: () => void,
+    questions: EvaluationQuestion[]
 }
 
 
-const EvaluationAdminGrid = ({sessionId, id, onSuccess}: Props) => {
+const EvaluationAdminGrid = ({sessionId, id, onSuccess, questions}: Props) => {
 
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [progress, setProgress] = useState(0)
 
-    let dummyEvaluationQuestion:EvaluationQuestion[] = [
-        {
-            question: "Rate your satisfaction on this session",
-            type: "ratio"
-        },
-        {
-            question: "What can be improved in this session",
-            type: "text"
-        },
-    ]
     
     const template: Template[]  = [{
         number: 1,
@@ -50,6 +41,7 @@ const EvaluationAdminGrid = ({sessionId, id, onSuccess}: Props) => {
             const toastId = toast.loading(`Importing Test...`);
             try {
                 for (let i = 0;i< res.length;i++){
+                    setProgress(prev => prev + 100 / res.length);
                     await createEvalQuestion({ 
                         data: {
                             question: res[i].question,
@@ -57,8 +49,8 @@ const EvaluationAdminGrid = ({sessionId, id, onSuccess}: Props) => {
                             type: ""
                         }
                     });
-                    setProgress(prev => prev + 100 / res.length);
                 }
+                setProgress(100);
                 toast.success("Import Test Success!", { id: toastId })
                 setTimeout(() => {
                     setProgress(0)
@@ -84,10 +76,14 @@ const EvaluationAdminGrid = ({sessionId, id, onSuccess}: Props) => {
                     {progress > 0 && <Progress value={progress} className="w-full"/>}
                     <div className="flex flex-col gap-5">
                         {
-                            dummyEvaluationQuestion.map((e,idx) => <>
-                                <EvaluationCard idx={idx} question={e} />
+                            questions.map((e,idx) => <>
+                                <EvaluationCard onSuccess={onSuccess} idx={idx} question={e} />
                             </>)
                         }
+                            <div className="flex flex-col gap-5">
+                                {questions.map(e => <div>{e.question}</div>)}
+                            </div>
+                        
                     </div>
                 </div>
                 <div className="flex grid grid-cols-2 gap-5 w-2/5 bg-white rounded-lg shadow-md p-5">

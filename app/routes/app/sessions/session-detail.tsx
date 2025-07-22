@@ -22,6 +22,7 @@ import { getErrorMessage } from "~/lib/error";
 import { createStudentAttendance } from "~/features/attendance/api/create-attendance";
 import { getAttendanceByUserAndSession } from "~/features/attendance/api/get-attendance-by-user-and-session";
 import { format } from "date-fns";
+import { getEvaluationQuestionBySession } from "~/features/evaluation/api/get-evaluation-question-by-session";
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
 
@@ -36,6 +37,8 @@ export const loader = async ({ params }: Route.LoaderArgs) => {
     const {data: attemptsPretest} = await getStudentAttemptByTest(preTest ? preTest.id:"", 'sdf').catch(() => ({data: []}));
     const {data: attemptsPosttest} = await getStudentAttemptByTest(postTest ? postTest.id:"", 'sdf').catch(() => ({data: []}));
     const {data: attendances} = await getAttendanceByUserAndSession(session.id, 'sdf').catch(() => ({data: []}))
+    const {data: evaluationQuestions} = await getEvaluationQuestionBySession(params.session)
+    
     
     return {
         session, 
@@ -46,7 +49,8 @@ export const loader = async ({ params }: Route.LoaderArgs) => {
         assignmentAnswer,
         attemptsPretest,
         attemptsPosttest,
-        attendances
+        attendances,
+        evaluationQuestions
     }
 };
 
@@ -62,7 +66,8 @@ const Session = ({loaderData}:Route.ComponentProps) => {
         assignmentAnswer, 
         attemptsPretest, 
         attemptsPosttest, 
-        attendances
+        attendances,
+        evaluationQuestions
     } = loaderData
     const [activeModal, setActiveModal] = useState<ModalType>(null);
     const revalidator = useRevalidator();
@@ -128,6 +133,7 @@ const Session = ({loaderData}:Route.ComponentProps) => {
                 assignmentAnswer={assignmentAnswer}
                 postTest={postTest}
                 preTest={preTest}
+                evaluationQuestions={evaluationQuestions}
             />
         </div>
     </>
