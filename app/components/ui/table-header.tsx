@@ -29,10 +29,11 @@ const ReportDataTableHeader = () => {
               <TableHead className="h-full w-[15%] text-center">Name</TableHead>
               <TableHead className="h-full w-[8%] text-center">Clock In</TableHead>
               <TableHead className="h-full w-[8%] text-center">Clock Out</TableHead>
-              <TableHead className="h-full w-[16%] text-center">Pre Test Submitted</TableHead>
-              <TableHead className="h-full w-[12%] text-center">Passed Post Test</TableHead>
-              <TableHead className="h-full w-[16%] text-center">Assignment Submitted</TableHead>
-              <TableHead className="h-full w-[12%] text-center">Grade A Assignment</TableHead>
+              <TableHead className="h-full w-[11%] text-center whitespace-normal word-break">Pre Test Submitted</TableHead>
+              <TableHead className="h-full w-[11%] text-center whitespace-normal word-break">Passed Post Test</TableHead>
+              <TableHead className="h-full w-[11%] text-center whitespace-normal word-break">Assignment Submitted</TableHead>
+              <TableHead className="h-full w-[11%] text-center whitespace-normal word-break">Grade A Assignment</TableHead>
+              <TableHead className="h-full w-[10%] text-center">Status</TableHead>
             </TableHeader>
         </>
     )

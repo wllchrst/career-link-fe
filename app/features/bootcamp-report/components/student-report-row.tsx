@@ -38,7 +38,7 @@ const StudentReportRow = ({ idx, cur, e }: Props) => {
         {e?.user.session_attendances.filter(e => e.attendance_type == 'clock_out').length ?? "-"}
       </TableCell>
 
-      <TableCell className="w-[16%] text-center whitespace-normal break-words">
+      <TableCell className="w-[11%] text-center whitespace-normal break-words">
         {Object.values(e?.user.student_attempts.filter(e => e.test.type == TestType.PRE_TEST).reduce<Record<string, StudentAttempt>>((prev, curr) => {
             const target = prev[curr.test_id]
             if (!target){
@@ -47,7 +47,7 @@ const StudentReportRow = ({ idx, cur, e }: Props) => {
             return prev
         }, {})).length ?? "-"}
       </TableCell>
-      <TableCell className="w-[12%] text-center whitespace-normal break-words">
+      <TableCell className="w-[11%] text-center whitespace-normal break-words">
         {Object.values(e?.user.student_attempts.filter(e => e.test.type == TestType.POST_TEST).reduce<Record<string, StudentAttempt>>((prev, curr) => {
             const target = prev[curr.test_id]
             if (!target || (target.score && curr.score && target.score < curr.score)){
@@ -56,12 +56,15 @@ const StudentReportRow = ({ idx, cur, e }: Props) => {
             return prev
         }, {})).length ?? "-"}
       </TableCell>
-      <TableCell className="w-[16%] text-center whitespace-normal break-words">
-        {e?.user.session_assignment_results.filter(e => e.result == AssignmentResultType.AVERAGE).length ?? "-"}
+      <TableCell className="w-[11%] text-center whitespace-normal break-words">
+        {e?.user.session_assignment_results.length ?? "-"}
       </TableCell>
 
-      <TableCell className="w-[12%] text-center whitespace-normal break-words">
+      <TableCell className="w-[11%] text-center whitespace-normal break-words">
         {e?.user.session_assignment_results.filter(e => e.result == AssignmentResultType.GOOD).length ?? "-"}
+      </TableCell>
+      <TableCell className="w-[11%] text-center whitespace-normal break-words">
+        Certificate Eligible
       </TableCell>
     </TableRow>
   );
