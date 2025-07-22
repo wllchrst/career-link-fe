@@ -14,7 +14,7 @@ export type User = {
   major?: string;
   future_position: string;
   skill: string;
-  session_test_scores: StudentScore[];
+  student_attempts: StudentAttempt[];
   session_attendances: Attendance[];
   session_assignment_results: AssignmentResult[];
 };
@@ -98,6 +98,8 @@ export type StudentAttempt = {
   user_id: string;
   created_at: Date;
   done_at: Date;
+  test: SessionTest;
+  score: StudentScore;
 };
 
 export type StudentScore = {

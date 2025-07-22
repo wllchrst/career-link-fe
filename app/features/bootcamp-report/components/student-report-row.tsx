@@ -2,7 +2,8 @@ import { DownloadIcon } from "lucide-react";
 import TooltipLayout from "~/components/layouts/tooltip-layout";
 import { Button } from "~/components/ui/button";
 import { TableCell, TableRow } from "~/components/ui/table";
-import type { Enrollment, User } from "~/types/api";
+import type { Enrollment, StudentAttempt, User } from "~/types/api";
+import { AssignmentResultType, TestType } from "~/types/enum";
 
 interface Props {
   idx: number;
@@ -38,17 +39,29 @@ const StudentReportRow = ({ idx, cur, e }: Props) => {
       </TableCell>
 
       <TableCell className="w-[16%] text-center whitespace-normal break-words">
-        {e?.user.session_test_scores.filter(e => e.score > 0).length ?? "-"}
+        {Object.values(e?.user.student_attempts.filter(e => e.test.type == TestType.PRE_TEST).reduce<Record<string, StudentAttempt>>((prev, curr) => {
+            const target = prev[curr.test_id]
+            if (!target){
+                prev[curr.test_id] = curr
+            }
+            return prev
+        }, {})).length ?? "-"}
       </TableCell>
       <TableCell className="w-[12%] text-center whitespace-normal break-words">
-        {e?.user.session_test_scores.filter(e => e.score > 0).length ?? "-"}
+        {Object.values(e?.user.student_attempts.filter(e => e.test.type == TestType.POST_TEST).reduce<Record<string, StudentAttempt>>((prev, curr) => {
+            const target = prev[curr.test_id]
+            if (!target || (target.score && curr.score && target.score < curr.score)){
+                prev[curr.test_id] = curr
+            }
+            return prev
+        }, {})).length ?? "-"}
       </TableCell>
       <TableCell className="w-[16%] text-center whitespace-normal break-words">
-        {e?.user.session_assignment_results.filter(e => e.result == 'average').length ?? "-"}
+        {e?.user.session_assignment_results.filter(e => e.result == AssignmentResultType.AVERAGE).length ?? "-"}
       </TableCell>
 
       <TableCell className="w-[12%] text-center whitespace-normal break-words">
-        {e?.user.session_assignment_results.filter(e => e.result == 'good').length ?? "-"}
+        {e?.user.session_assignment_results.filter(e => e.result == AssignmentResultType.GOOD).length ?? "-"}
       </TableCell>
     </TableRow>
   );
