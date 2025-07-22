@@ -33,7 +33,7 @@ const ReportDataTableHeader = () => {
               <TableHead className="h-full w-[11%] text-center whitespace-normal word-break">Passed Post Test</TableHead>
               <TableHead className="h-full w-[11%] text-center whitespace-normal word-break">Assignment Submitted</TableHead>
               <TableHead className="h-full w-[11%] text-center whitespace-normal word-break">Grade A Assignment</TableHead>
-              <TableHead className="h-full w-[10%] text-center">Status</TableHead>
+              <TableHead className="h-full w-[10%] text-center">Certificate</TableHead>
             </TableHeader>
         </>
     )

@@ -14,6 +14,18 @@ const BootcampReportGrid = ({enrollments}:Props) => {
 
     
     return (<>
+        <div className="flex items-center gap-10">
+            <h4 className="text-2xl font-semibold">Legend:</h4>
+            <div className="flex gap-5 items-center">
+                <span className="w-5 h-5 border-black border-1"></span>
+                <h4 className="text-xl">Eligible for certificate</h4>
+            </div>
+            <div className="flex gap-5 items-center">
+                <span className="w-5 h-5 border-black border-1 bg-red-200"></span>
+                <h4 className="text-xl">Not Eligible for certificate</h4>
+            </div>
+        </div>
+
         {
             enrollments.length < 1 ? <EmptyMessage text="There is no enrolled student here" title="No Enrolled Student"/>:
             <TableLayout
