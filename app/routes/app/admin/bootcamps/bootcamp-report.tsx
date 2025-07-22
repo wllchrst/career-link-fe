@@ -1,13 +1,12 @@
-import { getEnrollmentByBootcamp } from "~/features/enrollments/api/get-enrollment-by-bootcamp"
 import type { Route } from "./+types/bootcamp-report"
 import { Link } from "react-router"
 import { FaArrowLeft } from "react-icons/fa"
 import BootcampReportGrid from "~/features/bootcamp-report/components/bootcamp-report-grid"
+import { getBootcampReportByBootcampId } from "~/features/bootcamp-report/api/get-bootcamp-report-by-bootcamp-id"
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
 
-    
-    const {data: enrollments} = await getEnrollmentByBootcamp(params.bootcamp)
+    const {data: enrollments} = await getBootcampReportByBootcampId(params.bootcamp)
 
 
     return {id: params.bootcamp, enrollments}

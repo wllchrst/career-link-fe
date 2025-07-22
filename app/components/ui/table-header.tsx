@@ -19,6 +19,25 @@ const MasterDataTableHeader = () => {
     )
 }
 
+const ReportDataTableHeader = () => {
+
+    return (
+        <>
+        <TableHeader className="p-5 items-center flex w-full">
+              <TableHead className="h-full w-[3%] font-medium text-center">No.</TableHead>
+              <TableHead className="h-full w-[12%] text-center">NIM</TableHead>
+              <TableHead className="h-full w-[15%] text-center">Name</TableHead>
+              <TableHead className="h-full w-[8%] text-center">Clock In</TableHead>
+              <TableHead className="h-full w-[8%] text-center">Clock Out</TableHead>
+              <TableHead className="h-full w-[16%] text-center">Pre Test Submitted</TableHead>
+              <TableHead className="h-full w-[12%] text-center">Passed Post Test</TableHead>
+              <TableHead className="h-full w-[16%] text-center">Assignment Submitted</TableHead>
+              <TableHead className="h-full w-[12%] text-center">Grade A Assignment</TableHead>
+            </TableHeader>
+        </>
+    )
+}
+
 const DefaultTableHeader = ({columns}:{columns:string[]}) => {
 
     const style = `w-1/${columns.length} text-center`
@@ -31,4 +50,4 @@ const DefaultTableHeader = ({columns}:{columns:string[]}) => {
     )
 }
 
-export {MasterDataTableHeader, DefaultTableHeader}
+export {MasterDataTableHeader, DefaultTableHeader, ReportDataTableHeader}

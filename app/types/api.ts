@@ -14,6 +14,9 @@ export type User = {
   major?: string;
   future_position: string;
   skill: string;
+  session_test_scores: StudentScore[];
+  session_attendances: Attendance[];
+  session_assignment_results: AssignmentResult[];
 };
 
 export type Announcement = {
