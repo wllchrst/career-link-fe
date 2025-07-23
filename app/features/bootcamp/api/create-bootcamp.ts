@@ -3,7 +3,7 @@ import { api } from "~/lib/api-client";
 
 export const createBootcampInputSchema = z.object({
   name: z.string().min(1, "Name is required"),
-  shortName: z.string().min(1, "Short name is required"),
+  short_name: z.string().min(1, "Short name is required"),
   description: z.string().min(1, "Description is required"),
   category_id: z.string().min(1, "Category ID is required"),
   type_id: z.string().min(1, "Type ID is required"),
@@ -34,8 +34,13 @@ export const createBootcamp = ({
   let formData = new FormData();
 
   for (let key in data) {
-    formData.append(key, data[key]);
+    const value = data[key as keyof CreateBootcampInput];
+
+    if (value !== undefined) {
+      formData.append(key, value instanceof File ? value : String(value));
+    }
   }
+
   return api.post("/bootcamp", formData, {
     headers: {
       "Content-Type": "multipart/form-data",

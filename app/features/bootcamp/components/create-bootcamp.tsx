@@ -1,8 +1,6 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Form
-} from "~/components/ui/form";
+import { Form } from "~/components/ui/form";
 import { Button } from "~/components/ui/button";
 import toast from "react-hot-toast";
 import { getErrorMessage } from "~/lib/error";
@@ -38,7 +36,7 @@ export const CreateBootcamp = ({
     resolver: zodResolver(createBootcampInputSchema),
     defaultValues: {
       name: "",
-      shortName: "",
+      short_name: "",
       description: "",
       category_id: "",
       image_path: "",
@@ -87,7 +85,7 @@ export const CreateBootcamp = ({
               placeholder="Enter short name"
               label="Short name"
               type="text"
-              name="shortName"
+              name="short_name"
             />
             <TextAreaField
               control={form.control}
