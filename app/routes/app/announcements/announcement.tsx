@@ -9,10 +9,10 @@ export const loader = async ({ params }: Route.LoaderArgs) => {
   //TODO: api call to get announcement detail by id
 
   const { announcementId } = params;
-  if (!announcementId) throw new Error();
+  if (!announcementId) throw new Error("no announcement id");
 
   const announcement = getAnnouncementById(announcementId);
-  if (!announcement) throw new Error();
+  if (!announcement) throw new Error("no announcement found");
 
   return { announcement };
 };

@@ -6,7 +6,7 @@ import CenterLayout from "~/components/layouts/center-layout";
 
 const NavbarLayout = () => {
   return (
-    <div className="flex flex-col min-h-screen w-full box-border bg-[var(--background)]">
+    <div className="flex flex-col min-h-screen w-full box-border bg-gray-50">
       <Navbar />
       <div className="flex-grow relative min-h-screen w-full box-border">
         <Sidebar className={"absolute min-h-full"} side={"left"}>

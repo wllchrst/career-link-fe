@@ -1,18 +1,35 @@
-import {Badge} from "~/components/ui/badge";
+import { Badge } from "~/components/ui/badge";
+import { cn } from "~/lib/utils";
 
-interface Color {
-    [key:string]:string
+interface AnnouncementTagProps {
+  type: string;
+  className?: string;
 }
 
-const styles :Color = {
-    "Event":"xl:w-[5%] w-[7%] py-[0.3%] font-normal xl:text-sm text-xs rounded-xl bg-(--orange)",
-    "Info":"xl:w-[5%] w-[7%] py-[0.3%] font-normal xl:text-sm text-xs rounded-xl bg-secondary"
-}
+export const AnnouncementTag = ({ type, className }: AnnouncementTagProps) => {
+  const getTagVariant = (type: string) => {
+    switch (type.toLowerCase()) {
+      case "urgent":
+      case "important":
+        return "destructive";
+      case "info":
+      case "information":
+        return "default";
+      case "update":
+        return "secondary";
+      case "event":
+        return "outline";
+      default:
+        return "secondary";
+    }
+  };
 
-export const AnnouncementTag = ({type}: { type:string }) => {
-    return (
-        <Badge className={`${styles[type]}`}>
-        {type}
-        </Badge>
-    )
-}
+  return (
+    <Badge
+      variant={getTagVariant(type)}
+      className={cn("text-xs font-medium", className)}
+    >
+      {type}
+    </Badge>
+  );
+};

@@ -1,13 +1,13 @@
 import { AnnouncementLists } from "~/features/announcements/components/announcements-list";
-import type { Announcement } from "~/types/api";
 import { announcementsData } from "~/services/announcement-service";
 import { useRole } from "~/provider/role-testing-provider";
-import { IoMdAdd } from "react-icons/io";
+import { Plus, Send } from "lucide-react";
 import type { Route } from "./+types/announcements";
+import { NavbarContentLayout } from "~/components/layouts/navbar-content-layout";
+import { Button } from "~/components/ui/button";
 
 export const loader = async () => {
   //TODO: api call
-
   return { announcementsData }; //masih dummy data;
 };
 
@@ -16,22 +16,30 @@ const Announcements = ({ loaderData }: Route.ComponentProps) => {
   const { role } = useRole();
 
   return (
-    <div className="container flex flex-col mt-2">
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl text-primary font-bold">Announcements</h1>
-        {role == "admin" && (
-          <div className="flex gap-5">
-            <div className="bg-accent text-white rounded-md p-3">
-              Blast Announcements
-            </div>
-            <div className="bg-accent text-white text-3xl p-3 rounded-md">
-              <IoMdAdd />
-            </div>
+    <NavbarContentLayout title="Announcements">
+      {role === "admin" && (
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+          <div>
+            <p className="text-sm text-muted-foreground">
+              Manage and view all announcements
+            </p>
           </div>
-        )}
-      </div>
+          <div className="flex flex-col sm:flex-row gap-2">
+            <Button variant="outline" size="sm">
+              <Send className="h-4 w-4" />
+              Blast Announcements
+            </Button>
+            <Button size="sm">
+              <Plus className="h-4 w-4" />
+              Add Announcement
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {/* Announcements List */}
       <AnnouncementLists announcements={announcementsData} />
-    </div>
+    </NavbarContentLayout>
   );
 };
 

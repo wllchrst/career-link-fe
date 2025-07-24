@@ -15,7 +15,7 @@ export default [
 
     ...prefix("announcements", [
       index("routes/app/announcements/announcements.tsx"),
-      route(":announcement", "routes/app/announcements/announcement.tsx"),
+      route(":announcementId", "routes/app/announcements/announcement.tsx"),
     ]),
     ...prefix("certificates", [
       index("routes/app/certificates/certificates.tsx"),
@@ -31,7 +31,10 @@ export default [
     ]),
     ...prefix("bootcamps/:bootcamp", [
       route("session/:session", "routes/app/sessions/session-detail.tsx"),
-      route("session/:session/evaluation", "routes/app/admin/sessions/session-evaluation-admin-page.tsx"),
+      route(
+        "session/:session/evaluation",
+        "routes/app/admin/sessions/session-evaluation-admin-page.tsx"
+      ),
       route(
         "session/:session/test/:test/attempt/:attempt",
         "routes/app/sessions/session-test-attempt-page.tsx"
@@ -55,7 +58,10 @@ export default [
     ]),
     ...prefix("admin", [
       route("bootcamps", "routes/app/admin/bootcamps/bootcamps.tsx"),
-      route("bootcamps/:bootcamp/report", "routes/app/admin/bootcamps/bootcamp-report.tsx"),
+      route(
+        "bootcamps/:bootcamp/report",
+        "routes/app/admin/bootcamps/bootcamp-report.tsx"
+      ),
       route(
         "bootcamps/categories",
         "routes/app/admin/bootcamps/bootcamp-categories.tsx"
