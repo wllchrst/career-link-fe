@@ -9,14 +9,22 @@ interface Props {
 }
 
 export const BootcampsGrid = ({ bootcamps, onUpdate, onDelete }: Props) => {
-
   return (
-      bootcamps.length > 0 ? 
-      <div className="mt-5 grid grid-cols-3 gap-6">
-        {bootcamps.map((bootcamp) => (
-            <BootcampCard key={bootcamp.id} bootcamp={bootcamp} onUpdate={onUpdate} onDelete={onDelete}/>
-        ))}
-      </div>:
-      <EmptyMessage text="There is no bootcamp yet." title="No Bootcamps" />
+    <div className="mt-8">
+      {bootcamps.length > 0 ? (
+        <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+          {bootcamps.map((bootcamp) => (
+            <BootcampCard
+              key={bootcamp.id}
+              bootcamp={bootcamp}
+              onUpdate={onUpdate}
+              onDelete={onDelete}
+            />
+          ))}
+        </div>
+      ) : (
+        <EmptyMessage text="There is no bootcamp yet." title="No Bootcamps" />
+      )}
+    </div>
   );
 };

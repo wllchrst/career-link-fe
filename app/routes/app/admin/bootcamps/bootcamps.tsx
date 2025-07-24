@@ -1,19 +1,23 @@
-import { CiSearch } from "react-icons/ci";
-import { FaFilter } from "react-icons/fa";
-import { bootcampsData } from "~/features/bootcamp/bootcamp-dummy-data";
-import { BootcampsGrid } from "~/features/bootcamp/components/bootcamps-grid";
-import { Button } from "~/components/ui/button";
-import type { Route } from "./+types/bootcamps";
-import { useRevalidator } from "react-router";
 import { useState } from "react";
+import { FaFilter } from "react-icons/fa";
+import { useRevalidator } from "react-router";
+
+import { Button } from "~/components/ui/button";
+import { NavbarContentLayout } from "~/components/layouts/navbar-content-layout";
 import { Modal, type ModalType } from "~/components/modal";
+
+import { BootcampsGrid } from "~/features/bootcamp/components/bootcamps-grid";
 import { CreateBootcamp } from "~/features/bootcamp/components/create-bootcamp";
+import { UpdateBootcamp } from "~/features/bootcamp/components/update-bootcamp";
+import { DeleteBootcamp } from "~/features/bootcamp/components/delete-bootcamp";
+
 import { getBootcampCategories } from "~/features/bootcamp-category/api/get-bootcamp-categories";
 import { getBootcampTypes } from "~/features/bootcamp-type/api/get-bootcamp-types";
 import { getBootcamps } from "~/features/bootcamp/api/get-bootcamps";
+
 import type { Bootcamp, User } from "~/types/api";
-import { DeleteBootcamp } from "~/features/bootcamp/components/delete-bootcamp";
-import { UpdateBootcamp } from "~/features/bootcamp/components/update-bootcamp";
+import type { Route } from "./+types/bootcamps";
+import { Plus } from "lucide-react";
 
 export const loader = async () => {
   const { data: categories } = await getBootcampCategories();
@@ -25,15 +29,25 @@ export const loader = async () => {
 
 const Bootcamps = ({ loaderData }: Route.ComponentProps) => {
   const [activeModal, setActiveModal] = useState<ModalType>(null);
-  const revalidator = useRevalidator();
+  const [selectedBootcamp, setSelectedBootcamp] = useState<Bootcamp | null>(
+    null
+  );
 
-  //TODO: untuk testing create bootcamp aja
+  const revalidator = useRevalidator();
+  const { bootcamps, categories, bootcampTypes } = loaderData;
+
+  const onSuccess = () => {
+    setActiveModal(null);
+    setSelectedBootcamp(null);
+    revalidator.revalidate();
+  };
+
   const dummySpeakers: User[] = [
     {
       id: "000df53b-f9e1-487c-a564-b0da889eee3d",
-      name: "dummy speaker",
+      name: "Dummy Speaker",
       phone: "dummy phone",
-      email: "dummy_spekaer@email.com",
+      email: "dummy_speaker@email.com",
       future_position: "dummy",
       skill: "dummy",
       student_attempts: [],
@@ -42,28 +56,9 @@ const Bootcamps = ({ loaderData }: Route.ComponentProps) => {
     },
   ];
 
-  const onSuccess = () => {
-    setActiveModal(null);
-    revalidator.revalidate();
-  };
-  const [selectedBootcamp, setSelectedBootcamp] = useState<Bootcamp | null>(
-    null
-  );
-
-  const onUpdate = (bootcamp: Bootcamp) => {
-    setSelectedBootcamp(bootcamp);
-    setActiveModal("update");
-  };
-
-  const onDelete = (bootcamp: Bootcamp) => {
-    setSelectedBootcamp(bootcamp);
-    setActiveModal("delete");
-  };
-
-  const { bootcamps, categories, bootcampTypes } = loaderData;
-
   return (
     <>
+      {/* Create Bootcamp Modal */}
       <Modal
         title="Add Bootcamp"
         isOpen={activeModal === "create"}
@@ -76,58 +71,70 @@ const Bootcamps = ({ loaderData }: Route.ComponentProps) => {
           onSuccess={onSuccess}
         />
       </Modal>
+
+      {/* Update Bootcamp Modal */}
       <Modal
-        title="Update bootcamp"
+        title="Update Bootcamp"
         isOpen={activeModal === "update"}
         onClose={() => setActiveModal(null)}
       >
         <UpdateBootcamp
-          onSuccess={onSuccess}
           bootcamp={selectedBootcamp!}
           categories={categories}
           types={bootcampTypes}
-          speakers={[]}
+          speakers={dummySpeakers}
+          onSuccess={onSuccess}
         />
       </Modal>
 
+      {/* Delete Bootcamp Modal */}
       <Modal
-        title="Delete bootcamp"
+        title="Delete Bootcamp"
         isOpen={activeModal === "delete"}
         onClose={() => setActiveModal(null)}
       >
-        <div>
-          <DeleteBootcamp
-            onSuccess={onSuccess}
-            onClose={() => setActiveModal(null)}
-            selectedCategory={selectedBootcamp!}
-          />
-        </div>
+        <DeleteBootcamp
+          selectedCategory={selectedBootcamp!}
+          onSuccess={onSuccess}
+          onClose={() => setActiveModal(null)}
+        />
       </Modal>
 
-      <div className="container flex flex-col">
+      <NavbarContentLayout
+        title="Bootcamps"
+        subtitle="Manage all bootcamps available in the system"
+      >
         <div className="flex flex-col">
-          <h1 className="text-2xl text-primary font-bold mb-4">Bootcamps</h1>
-          <div className="flex justify-between items-center">
-            <div className="mt-4 flex gap-5">
-              <Button
-                className="w-fit px-5 py-5"
-                onClick={() => setActiveModal("create")}
-              >
-                Add Bootcamp
-              </Button>
-            </div>
-            <div className="flex text-accent border border-accent bg-white items-center h-12 rounded-md gap-2 p-3">
-              <FaFilter />
-              <div>Filter</div>
-            </div>
+          <div className="flex justify-between items-center gap-2">
+            <Button size="sm" onClick={() => setActiveModal("create")}>
+              <Plus className="h-4 w-4" />
+              Add Bootcamp
+            </Button>
+            <Button variant="outline" size="sm" className="gap-2">
+              <FaFilter className="text-muted-foreground" />
+              Filter
+            </Button>
           </div>
-          <BootcampsGrid
-            bootcamps={bootcamps}
-            onUpdate={onUpdate}
-            onDelete={onDelete}
-          />
+
+          {bootcamps.length === 0 ? (
+            <div className="text-center text-muted-foreground mt-20">
+              No bootcamps available.
+            </div>
+          ) : (
+            <BootcampsGrid
+              bootcamps={bootcamps}
+              onUpdate={(bootcamp) => {
+                setSelectedBootcamp(bootcamp);
+                setActiveModal("update");
+              }}
+              onDelete={(bootcamp) => {
+                setSelectedBootcamp(bootcamp);
+                setActiveModal("delete");
+              }}
+            />
+          )}
         </div>
-      </div>
+      </NavbarContentLayout>
     </>
   );
 };
