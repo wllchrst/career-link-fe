@@ -1,18 +1,20 @@
-import {Badge} from "~/components/ui/badge";
+import { Badge } from "~/components/ui/badge";
 
-interface Color {
-    [key:string]:string
-}
+const typeStyles = {
+  "Soft Skill":
+    "bg-emerald-100 text-emerald-800 border-emerald-200 hover:bg-emerald-200",
+  "Hard Skill": "bg-blue-100 text-blue-800 border-blue-200 hover:bg-blue-200",
+};
 
-const backgroundColors :Color = {
-    "Soft Skill":"px-3 py-1 font-normal text-sm rounded-xl bg-(--green)",
-    "Hard Skill":"px-3 py-1 font-normal text-sm rounded-xl bg-secondary"
-}
-
-export const BootcampTypeTag = ({type}: { type:string }) => {
-    return (
-        <Badge className={`${backgroundColors[type]}`}>
-            {type}
-        </Badge>
-    )
-}
+export const BootcampTypeTag = ({ type }: { type: string }) => {
+  return (
+    <Badge
+      variant="secondary"
+      className={`${
+        typeStyles[type as keyof typeof typeStyles] || typeStyles["Hard Skill"]
+      } transition-colors`}
+    >
+      {type}
+    </Badge>
+  );
+};
