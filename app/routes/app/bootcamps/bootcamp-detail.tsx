@@ -22,17 +22,17 @@ export const loader = async ({ params }: Route.LoaderArgs) => {
 const BootcampDetail = ({ loaderData }: Route.ComponentProps) => {
   const [activeModal, setActiveModal] = useState<ModalType>(null);
   const revalidator = useRevalidator();
-  const [selectedSession, setSelectedSession] = useState<Session>()
+  const [selectedSession, setSelectedSession] = useState<Session>();
 
-  const onUpdateSession = (session:Session) => {
-    setSelectedSession(session)
-    setActiveModal('update')
-  }
+  const onUpdateSession = (session: Session) => {
+    setSelectedSession(session);
+    setActiveModal("update");
+  };
 
-  const onDeleteSession = (session:Session) => {
-    setSelectedSession(session)
-    setActiveModal('delete')
-  }
+  const onDeleteSession = (session: Session) => {
+    setSelectedSession(session);
+    setActiveModal("delete");
+  };
 
   const onSuccess = () => {
     setActiveModal(null);
@@ -55,14 +55,18 @@ const BootcampDetail = ({ loaderData }: Route.ComponentProps) => {
         isOpen={activeModal === "update"}
         onClose={() => setActiveModal(null)}
       >
-        <CreateUpdateSession bootcamp={bootcamp} onSuccess={onSuccess} session={selectedSession} />
+        <CreateUpdateSession
+          bootcamp={bootcamp}
+          onSuccess={onSuccess}
+          session={selectedSession}
+        />
       </Modal>
       <Modal
         title="Delete Bootcamp's Session"
         isOpen={activeModal === "delete"}
         onClose={() => setActiveModal(null)}
       >
-        <DeleteSession onSuccess={onSuccess} question={selectedSession}/>
+        <DeleteSession onSuccess={onSuccess} question={selectedSession} />
       </Modal>
       <div className={"container flex flex-col gap-8"}>
         <BootcampDetailCard
@@ -74,7 +78,12 @@ const BootcampDetail = ({ loaderData }: Route.ComponentProps) => {
           image={bootcamp.image_path}
           onClick={() => setActiveModal("create")}
         />
-        <SessionsGrid onDeleteSession={onDeleteSession} onUpdateSession={onUpdateSession} bootcampId={bootcamp.id} sessions={bootcamp.sessions ?? []} />
+        <SessionsGrid
+          onDeleteSession={onDeleteSession}
+          onUpdateSession={onUpdateSession}
+          bootcampId={bootcamp.id}
+          sessions={bootcamp.sessions ?? []}
+        />
       </div>
     </>
   );

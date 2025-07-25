@@ -1,24 +1,57 @@
-import { MdEdit } from "react-icons/md"
+import { MdEdit } from "react-icons/md";
+import { Badge } from "~/components/ui/badge";
+import { Button } from "~/components/ui/button";
+import { Card, CardContent } from "~/components/ui/card";
+import { Separator } from "~/components/ui/separator";
 
 interface Props {
-    onClick: () => void
+  onClick: () => void;
 }
 
-const FuturePlan = ({onClick}:Props) => {
-    return (
-        <div className="flex flex-col gap-5 bg-white shadow p-10 rounded-md">
-            <div className="flex justify-between">
-                <div className="text-2xl text-primary font-semibold">Position</div>
-                <MdEdit className="text-primary text-3xl" onClick={onClick}/>
-            </div>
-            <div className="text-md">Application Developer</div>
-            <hr className="border-t border-gray-300 m-4" />
-            <div className="flex justify-between">
-                <div className="text-2xl text-primary font-semibold">Skill</div>
-            </div>
-            <div className="text-md">C, C++, Java, Golang, Rust, R, Python, Javascript</div>
-        </div>  
-    )
-}
+const FuturePlan = ({ onClick }: Props) => {
+  const skills = [
+    "C",
+    "C++",
+    "Java",
+    "Golang",
+    "Rust",
+    "R",
+    "Python",
+    "Javascript",
+  ];
 
-export default FuturePlan
+  return (
+    <Card>
+      <CardContent className="p-8 space-y-6">
+        <div className="flex justify-between items-start">
+          <div className="space-y-4">
+            <div>
+              <h3 className="text-2xl font-semibold text-primary mb-2">
+                Position
+              </h3>
+              <p className="text-lg">Application Developer</p>
+            </div>
+          </div>
+          <Button variant="ghost" size="icon" onClick={onClick}>
+            <MdEdit className="w-5 h-5" />
+          </Button>
+        </div>
+
+        <Separator />
+
+        <div className="space-y-4">
+          <h3 className="text-2xl font-semibold text-primary">Skills</h3>
+          <div className="flex flex-wrap gap-2">
+            {skills.map((skill, index) => (
+              <Badge key={index} variant="secondary" className="text-sm">
+                {skill}
+              </Badge>
+            ))}
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
+export default FuturePlan;

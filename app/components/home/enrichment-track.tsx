@@ -1,11 +1,21 @@
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+
 export const EnrichmentTrack = () => {
-    return (
-        <div className="flex flex-col w-sm gap-2">
-            <div className="ml-2 text-gray-500">1st Semester</div>
-            <div className="flex flex-col border border-gray-300 p-5 rounded-md">
-                <div className="text-xl">Study Abroad</div>
-                <div className="text-gray-500">Tokyo University, Japan</div>
-            </div>
+  return (
+    <Card className="w-64">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-sm text-muted-foreground">
+          1st Semester
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="pt-0">
+        <div className="space-y-1">
+          <h4 className="font-semibold">Study Abroad</h4>
+          <p className="text-sm text-muted-foreground">
+            Tokyo University, Japan
+          </p>
         </div>
-    )
-}
+      </CardContent>
+    </Card>
+  );
+};
