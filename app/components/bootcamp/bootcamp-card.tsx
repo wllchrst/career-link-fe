@@ -34,7 +34,7 @@ export const BootcampCard = ({
                   bootcamp.image_path
                 }`}
                 alt={bootcamp.name}
-                className="w-35 h-24 object-cover rounded-lg border"
+                className="w- h-24 object-cover rounded-lg border"
               />
             </div>
 
@@ -98,7 +98,7 @@ export const BootcampCard = ({
         <img
           src={`${import.meta.env.VITE_STORAGE_URL}/${bootcamp.image_path}`}
           alt={bootcamp.name}
-          className="h-35 w-full object-cover group-hover:scale-105 transition-transform duration-300"
+          className="h-30 w-full object-cover group-hover:scale-105 transition-transform duration-300"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
@@ -108,7 +108,7 @@ export const BootcampCard = ({
               size="sm"
               variant="secondary"
               onClick={() => onUpdate?.(bootcamp)}
-              className="h-8 w-8 p-0"
+              className="h-8 w-8 p-0 bg-white/90 hover:bg-white"
             >
               <Edit className="w-4 h-4" />
             </Button>
