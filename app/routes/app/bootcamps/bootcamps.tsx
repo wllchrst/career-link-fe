@@ -20,13 +20,16 @@ const Bootcamps = ({ loaderData }: Route.ComponentProps) => {
 
   return (
     <div className="container flex flex-col gap-6">
-      <div className="flex flex-col gap-3 mt-4">
-        <h1 className="text-2xl text-primary font-bold">
-          Learners are Viewing
-        </h1>
-        <BootcampsCarousel bootcamps={bootcamps} />
-      </div>
-      <div className="flex flex-col">
+      {
+        bootcamps.length > 4 && 
+        <div className="flex flex-col gap-3">
+          <h1 className="text-2xl text-primary font-bold">
+            Learners are Viewing
+          </h1>
+          <BootcampsCarousel bootcamps={bootcamps} />
+        </div>
+      }
+      <div className="flex flex-col gap-5">
         <h1 className="text-2xl text-primary font-bold">
           Learn Fast, Grow Faster
         </h1>
@@ -34,9 +37,9 @@ const Bootcamps = ({ loaderData }: Route.ComponentProps) => {
           Master essential hard and soft skills through our comprehensive
           training programs, accessible anytime, anywhere
         </div>
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center mb-3">
           <div className="mt-4 flex gap-5">
-            <div className="flex items-center bg-white px-3 py-2 rounded-md w-120">
+            <div className="flex items-center border bg-white px-3 py-2 rounded-md w-120">
               <CiSearch className="text-gray-500 text-xl" />
               <input
                 type="text"
