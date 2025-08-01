@@ -1,15 +1,18 @@
 import { DownloadIcon } from "lucide-react";
 import { useState } from "react";
+import toast from "react-hot-toast";
 import TooltipLayout from "~/components/layouts/tooltip-layout";
 import { Button } from "~/components/ui/button";
 import { TableCell, TableRow } from "~/components/ui/table";
+import { createCertificate } from "~/features/certificates/api/create-certificate";
 import type { Enrollment, StudentAttempt, User } from "~/types/api";
-import { AssignmentResultType, TestType } from "~/types/enum";
+import { AssignmentResultType, CertificateType, TestType } from "~/types/enum";
 
 interface Props {
   idx: number;
   cur: number;
   e: Enrollment;
+  sessionCount: number;
 }
 
 const displayOrDash = (value?: string, limit = 10) => {
@@ -29,7 +32,7 @@ const displayMaxScoreAttempt = (attempts: StudentAttempt[]) => {
   return res
 }
 
-const validateEligibility = (enrollment: Enrollment) => {
+const validateEligibility = (enrollment: Enrollment, sessionCount: number) => {
   
   let clockInCount = enrollment.user.session_attendances.filter(e => e.attendance_type == 'clock_in').length 
   let clockOutCount = enrollment.user.session_attendances.filter(e => e.attendance_type == 'clock_in').length
@@ -40,12 +43,38 @@ const validateEligibility = (enrollment: Enrollment) => {
 
   if (Math.max(clockInCount, clockOutCount, assignmentGradeACount, preTestSubmitted, assignmentSubmittedCount, postTestPassed) == 0) {
     return 0
+  }else if ([clockInCount, clockOutCount, assignmentGradeACount, preTestSubmitted, postTestPassed].every(e => e == sessionCount)){
+    return 2
   }
   return 1
 }
 
-const StudentReportRow = ({ idx, cur, e }: Props) => {
-  let [isEligible, _] = useState(validateEligibility(e)) 
+const StudentReportRow = ({ idx, cur, e, sessionCount }: Props) => {
+  let [isEligible, _] = useState(validateEligibility(e, sessionCount)) 
+
+  const generateCertificate = async (e: Enrollment) => {
+
+    const toastId = toast.loading("Generating certificate...")
+    
+    try {
+      await createCertificate({
+        data: {
+          bootcamp_id: e.bootcamp_id,
+          user_id: e.user_id,
+          type: isEligible == 2? CertificateType.PREMIUM:CertificateType.NORMAL,
+        }
+      })
+      toast.success(`Generate certificate for ${e.user.name} success!`, {
+        id: toastId
+      })
+    } catch (error) {
+      toast.error(`Generate certificate for ${e.user.name} failed!`, {
+        id: toastId
+      })
+      
+    }
+
+  }
   return (
     <TableRow className={`shadow-md p-5 border-box bg-white rounded-lg items-center my-2 flex w-full ${isEligible?"":"bg-red-200 hover:bg-red-300"}`}>
       <TableCell className="w-[3%] font-medium text-center">
@@ -80,7 +109,7 @@ const StudentReportRow = ({ idx, cur, e }: Props) => {
         {e?.user.session_assignment_results.filter(e => e.result == AssignmentResultType.GOOD).length ?? "-"}
       </TableCell>
       <TableCell className="w-[11%] text-center whitespace-normal break-words">
-        <Button disabled={!isEligible} variant={`${isEligible?"outline":"destructive"}`}>
+        <Button disabled={!isEligible} variant={`${isEligible?"outline":"destructive"}`} onClick={() => generateCertificate(e)}>
           Generate
         </Button>
       </TableCell>

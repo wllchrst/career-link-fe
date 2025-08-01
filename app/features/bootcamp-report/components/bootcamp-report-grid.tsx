@@ -7,9 +7,10 @@ import StudentReportRow from "./student-report-row"
 
 interface Props {
     enrollments: Enrollment[]
+    session: number
 }
 
-const BootcampReportGrid = ({enrollments}:Props) => {
+const BootcampReportGrid = ({enrollments, session}:Props) => {
     
 
     
@@ -33,7 +34,7 @@ const BootcampReportGrid = ({enrollments}:Props) => {
             >
                 {enrollments.sort((a, b) => compare(a.user.nim ?? '', b.user.nim ?? '')).map(
                 (e, idx) => (
-                    <StudentReportRow cur={1} idx={idx} e={e}/>
+                    <StudentReportRow cur={1} idx={idx} e={e} sessionCount={session}/>
                 )
                 )}
             </TableLayout>

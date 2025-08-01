@@ -7,6 +7,7 @@ import AccordionLayout from "~/components/layouts/accordion-layout";
 import SessionDataCard from "~/components/session/session-data-card";
 import TestCard from "~/components/test/test-card";
 import { Button } from "~/components/ui/button";
+import EmptyMessage from "~/components/ui/empty-message";
 import { Form } from "~/components/ui/form";
 import { Progress } from "~/components/ui/progress";
 import { createEvalAnswer } from "~/features/evaluation/api/create-evaluation-answer";
@@ -167,12 +168,18 @@ const SessionTodolist = ({
               <Link to={"evaluation"}>Manage Evaluation</Link>
             </Button>
           ) : (
+              evaluationQuestions.length > 10 ? 
               <form onSubmit={onSubmit}>
                   {evaluationQuestions.map((e, idx) => (
                     <EvaluationCard idx={idx} question={e} setAnswer={setAnswer}/>
                   ))}
                   <Button>Submit</Button>
               </form>
+              :
+              <>
+                <EmptyMessage text="There is no evaluation. Please contact your instructor!" title="No Evaluation form yet."/>
+            
+              </>
           )}
         </AccordionLayout>
       </div>
