@@ -19,7 +19,7 @@ export default [
     ]),
     ...prefix("certificates", [
       index("routes/app/certificates/certificates.tsx"),
-      route(":certificate", "routes/app/certificates/certificate.tsx"),
+      route(":id", "routes/app/certificates/certificate.tsx"),
     ]),
     ...prefix("bootcamps", [
       index("routes/app/bootcamps/bootcamps.tsx"),

@@ -23,12 +23,12 @@ export const CertificateLists = ({ certificates }: CertificateListProps) => {
   const [viewMode, setViewMode] = useState<"grid" | "list">("list");
 
   const filteredCertificates = certificates.filter((cert) => {
-    const matchesSearch = cert.title
+    const matchesSearch = cert.bootcamp.name
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
-    const matchesType = filterType === "all" || cert.type === filterType;
+    const matchesType = filterType === "all" || cert.bootcamp.type.name === filterType;
     const matchesMethod =
-      filterMethod === "all" || cert.method === filterMethod;
+      filterMethod === "all" || cert.bootcamp.category.name === filterMethod;
     return matchesSearch && matchesType && matchesMethod;
   });
 

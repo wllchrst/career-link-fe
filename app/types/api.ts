@@ -30,11 +30,9 @@ export type Announcement = {
 
 export type Certificate = {
   id: string;
-  title: string;
-  type: string;
-  method: string;
-  createdAt: string;
-  imageUrl: string;
+  bootcamp: Bootcamp;
+  user: User;
+  created_at: string;
 };
 
 export type Bootcamp = {
@@ -42,9 +40,9 @@ export type Bootcamp = {
   name: string;
   shortName: string;
   type_id: string;
-  types: BootcampType;
+  type: BootcampType;
   category_id: string;
-  categories: BootcampCategory;
+  category: BootcampCategory;
   image_path: string;
   description: string;
   sessions: Session[];

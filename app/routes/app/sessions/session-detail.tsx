@@ -1,6 +1,5 @@
 import AccordionLayout from "~/components/layouts/accordion-layout";
 import TestCard from "~/components/test/test-card";
-import type { Route } from "./+types/session-detail";
 import { getBootcampSession } from "~/features/session/api/get-session";
 import SessionCard from "~/components/session/session-card";
 import AssignmentCard from "~/components/assignment/assignment-card";
@@ -23,6 +22,7 @@ import { createStudentAttendance } from "~/features/attendance/api/create-attend
 import { getAttendanceByUserAndSession } from "~/features/attendance/api/get-attendance-by-user-and-session";
 import { format } from "date-fns";
 import { getEvaluationQuestionBySession } from "~/features/evaluation/api/get-evaluation-question-by-session";
+import type { Route } from "./+types/session-detail";
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
 

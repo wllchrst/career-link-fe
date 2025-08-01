@@ -1,10 +1,15 @@
-import type {Route} from "../../../../.react-router/types/app/routes/app/announcements/+types/announcement";
+import { getCertificate } from "~/features/certificates/api/get-certificate";
 import {CertificatePreview} from "~/features/certificates/components/certificate-preview";
+import type { Route } from "./+types/certificate";
 
-export async function loader({ params }: Route.LoaderArgs) {
-
+export const loader = async ({params}:Route.LoaderArgs) => {
+    const {data: certificate} = await getCertificate(params.id)
+    return {certificate}
 }
 
-export default function Certificate({params,}: Route.ComponentProps) {
-    return <CertificatePreview id={params.certificate}/>;
+export default function Certificate({loaderData}: Route.ComponentProps) {
+
+    const {certificate} = loaderData
+
+    return <CertificatePreview certificate={certificate}/>;
 }

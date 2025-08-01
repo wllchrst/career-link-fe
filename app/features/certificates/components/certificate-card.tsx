@@ -6,6 +6,7 @@ import { NavLink } from "react-router";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import domtoimage from "dom-to-image";
+import { format } from "date-fns";
 
 interface CertificateCardProps {
   certificate: Certificate;
@@ -38,18 +39,18 @@ export const CertificateCard = ({
       <Card className="group hover:shadow-lg transition-all duration-200 border-0 shadow-md">
         <CardHeader className="pb-3">
           <CardTitle className="text-lg line-clamp-2 group-hover:text-primary transition-colors">
-            {certificate.title}
+            {certificate.bootcamp.name}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex flex-wrap gap-2">
-            <BootcampTypeTag type={certificate.type} />
-            <BootcampMethodTag type={certificate.method} />
+            <BootcampTypeTag type={certificate.bootcamp.type.name} />
+            <BootcampMethodTag type={certificate.bootcamp.category.name} />
           </div>
 
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Calendar className="w-4 h-4" />
-            <span>Claimed on {certificate.createdAt}</span>
+            <span>Claimed on {format(certificate.created_at, "MM/dd/yyyy")}</span>
           </div>
 
           <div className="flex gap-2 pt-2">
@@ -79,17 +80,17 @@ export const CertificateCard = ({
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div className="space-y-3 flex-1">
             <h3 className="text-xl font-semibold text-primary group-hover:text-primary/80 transition-colors">
-              {certificate.title}
+              {certificate.bootcamp.name}
             </h3>
 
             <div className="flex flex-wrap gap-2">
-              <BootcampTypeTag type={certificate.type} />
-              <BootcampMethodTag type={certificate.method} />
+              <BootcampTypeTag type={certificate.bootcamp.type.name} />
+              <BootcampMethodTag type={certificate.bootcamp.category.name} />
             </div>
 
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <Calendar className="w-4 h-4" />
-              <span>Claimed on {certificate.createdAt}</span>
+              <span>Claimed on {format(certificate.created_at, "MM/dd/yyyy")}</span>
             </div>
           </div>
 
