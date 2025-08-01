@@ -1,3 +1,5 @@
+import { useState, type FormEvent } from "react";
+import toast from "react-hot-toast";
 import { Link } from "react-router";
 import AssignmentCard from "~/components/assignment/assignment-card";
 import EvaluationCard from "~/components/evaluation/question-user-card";
@@ -6,6 +8,9 @@ import SessionDataCard from "~/components/session/session-data-card";
 import TestCard from "~/components/test/test-card";
 import { Button } from "~/components/ui/button";
 import { Form } from "~/components/ui/form";
+import { Progress } from "~/components/ui/progress";
+import { createEvalAnswer } from "~/features/evaluation/api/create-evaluation-answer";
+import { getErrorMessage } from "~/lib/error";
 import {
   isClockInOpen,
   isClockInRange,
@@ -53,6 +58,47 @@ const SessionTodolist = ({
   evaluationQuestions,
 }: Props) => {
   const { role } = useRole();
+  const [answers, setAnswers] = useState<string[]>(evaluationQuestions.map(_ => ""))
+  const [progress, setProgress] = useState(0)
+
+
+  const setAnswer = (idx:number, answer:string) => {
+    setAnswers((prev) => {
+      console.log(answer)
+      prev[idx] = answer
+      return prev
+    })
+  }
+
+  const onSubmit = async (e:FormEvent) => {
+    e.preventDefault()
+    const toastId = toast.loading(`Submitting Evaluation...`);
+
+    try {
+      console.log(answers)
+      for(let i = 0;i < evaluationQuestions.length;i++){
+        await createEvalAnswer({ 
+          data: {
+            question_id: evaluationQuestions[i].id,
+            session_id: session.id,
+            answer: answers[i],
+          }
+        });
+        setProgress(prev => prev + 100 / evaluationQuestions.length);
+      }
+      setProgress(100);
+      toast.success("Evaluation Submitted!", { id: toastId })
+    } catch (error) {
+      toast.error(getErrorMessage(error), {
+          id: toastId,
+      });
+    }finally{
+      setAnswers(evaluationQuestions.map(_ => ""))
+      setTimeout(() => {
+          setProgress(0)
+      }, 3000);
+    }
+  }
 
   return (
     <>
@@ -115,18 +161,18 @@ const SessionTodolist = ({
           />
         </AccordionLayout>
         <AccordionLayout text={"Evaluation"} isLocked={false}>
+          {progress > 0 && <Progress value={progress} className="w-full"/>}
           {role == "admin" ? (
             <Button className={"p-2 w-40 bg-purple-600 hover:bg-purple-500"}>
               <Link to={"evaluation"}>Manage Evaluation</Link>
             </Button>
           ) : (
-            <>
-              {/* TODO: Form */}
-              {evaluationQuestions.map((e, idx) => (
-                <EvaluationCard idx={idx} question={e} />
-              ))}
-              <Button>Submit</Button>
-            </>
+              <form onSubmit={onSubmit}>
+                  {evaluationQuestions.map((e, idx) => (
+                    <EvaluationCard idx={idx} question={e} setAnswer={setAnswer}/>
+                  ))}
+                  <Button>Submit</Button>
+              </form>
           )}
         </AccordionLayout>
       </div>

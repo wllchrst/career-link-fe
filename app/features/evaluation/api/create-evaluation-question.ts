@@ -16,3 +16,4 @@ export const createEvalQuestion = ({
 }): Promise<{ data: { id: string }; message: string }> => {
   return api.post("bootcamp/session_evaluation_question", data);
 };
+  

@@ -39,7 +39,7 @@ const EvaluationCard = ({idx, question, onSuccess}:Props) => {
     const handleSubmit = async (data: UpdateEvalQuestionInput) => {
         const toastId = toast.loading(`Updating evaluation question...`);
         try {
-
+            console.log(data)
             await updateEvalQuestion({
                 data,
                 id: question.id,

@@ -46,23 +46,24 @@ const EvaluationAdminGrid = ({sessionId, id, onSuccess, questions}: Props) => {
                         data: {
                             question: res[i].question,
                             session_id: sessionId,
-                            type: ""
+                            type: res[i].type
                         }
                     });
                 }
                 setProgress(100);
                 toast.success("Import Test Success!", { id: toastId })
+                onSuccess()
+            } catch (error) {
+                toast.error(getErrorMessage(error), {
+                    id: toastId,
+                });
+            }finally {
                 setTimeout(() => {
                     setProgress(0)
                     if (fileInputRef.current){
                         fileInputRef.current.value = "";
                     }
                 }, 3000);
-                onSuccess()
-            } catch (error) {
-                toast.error(getErrorMessage(error), {
-                id: toastId,
-                });
             }
         })
         reader.readAsArrayBuffer(e.target.files![0])
