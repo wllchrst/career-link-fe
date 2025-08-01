@@ -168,7 +168,7 @@ const SessionTodolist = ({
               <Link to={"evaluation"}>Manage Evaluation</Link>
             </Button>
           ) : (
-              evaluationQuestions.length > 10 ? 
+              evaluationQuestions.length > 0 ? 
               <form onSubmit={onSubmit}>
                   {evaluationQuestions.map((e, idx) => (
                     <EvaluationCard idx={idx} question={e} setAnswer={setAnswer}/>
