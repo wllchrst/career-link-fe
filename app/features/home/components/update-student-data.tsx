@@ -25,7 +25,6 @@ const UpdateStudentData = ({user,onSuccess}:Props) => {
             nim: user.nim,
             phone: user.phone,
             skill: user.skill ?? "",
-            password: "axel.kurniawan@binus.ac.id"
         },
       });
     

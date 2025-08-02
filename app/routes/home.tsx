@@ -27,14 +27,13 @@ export default function Home({loaderData}: Route.ComponentProps) {
   
   const { role } = useRole();
   const {students, page, meta} = loaderData
-  const {user} = useAuth()
   
   return (
     <>
       {role == "admin" ? (
         <HomeAdmin student={students} cur={page} lastPage={meta.last_page}/>
       ) : (
-        <HomeProfileCard user={user} />
+        <HomeProfileCard />
       )}
     </>
   );

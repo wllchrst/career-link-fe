@@ -13,27 +13,24 @@ import { Card, CardContent } from "~/components/ui/card";
 import { Badge } from "~/components/ui/badge";
 import { Separator } from "~/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
-import type { User } from "~/types/api";
+import { useAuth } from "~/lib/auth";
 
-interface Props {
-  user: User | null
-}
 
-export const HomeProfileCard = ({user}:Props) => {
+export const HomeProfileCard = () => {
+  const {user, fetchUser} = useAuth();
   const { role } = useRole();
   const [activeModal, setActiveModal] = useState<ModalType>(null);
-  const revalidator = useRevalidator();
 
   const onSuccess = () => {
     setActiveModal(null);
-    revalidator.revalidate();
+    fetchUser()
   };
 
-  useEffect(() => {
+  useEffect(() => {  
     if (user && (user.skill == "" || user.future_position == "")) {
       setActiveModal('update')
     }
-  })
+  }, [user])
 
   return (
     <div className="max-w-6xl mx-auto p-6 space-y-8">

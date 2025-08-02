@@ -39,6 +39,7 @@ export const logout = (redirectTo: string) => {
 interface AuthContextType {
   user: User | null;
   loading: boolean;
+  fetchUser: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -70,7 +71,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, [token]);
 
   return (
-    <AuthContext.Provider value={{ user, loading }}>
+    <AuthContext.Provider value={{ user, fetchUser, loading }}>
       {children}
     </AuthContext.Provider>
   );

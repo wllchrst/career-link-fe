@@ -11,7 +11,6 @@ export const updateStudentInputSchema = z.object({
   future_position: z.string().min(1, "Future Position is required"),
   phone: z.string().min(1, "Phone is required"),
   major: z.string().min(1, "Major is required"),
-  password: z.string(),
   skill: z.string().min(1, "Skill is required"),
 });
 
