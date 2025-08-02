@@ -17,6 +17,7 @@ interface Props {
   onSelect: (e: Enrollment, idx:number) => void;
   isSelected: boolean;
   isEligible: number;
+  hasCertificate: boolean;
 }
 
 const displayMaxScoreAttempt = (attempts: StudentAttempt[]) => {
@@ -37,7 +38,7 @@ const displayOrDash = (value?: string, limit = 10) => {
 };
 
 
-const StudentReportRow = ({ idx, cur, onSelect, e, sessionCount, isSelected, isEligible }: Props) => {
+const StudentReportRow = ({ idx, cur, onSelect, e, sessionCount, isSelected, isEligible, hasCertificate }: Props) => {
   
 
   const generateCertificate = async (e: Enrollment) => {
@@ -65,10 +66,10 @@ const StudentReportRow = ({ idx, cur, onSelect, e, sessionCount, isSelected, isE
   }
 
   const validateSelect = () => {
-    if (isEligible) onSelect(e, idx)
+    if (isEligible && !hasCertificate) onSelect(e, idx)
   }
   return (
-    <TableRow className={`shadow-md p-5 border-box bg-white rounded-lg items-center my-2 flex w-full ${isEligible?"":"bg-red-200 hover:bg-red-300"}`}>
+    <TableRow className={`shadow-md p-5 border-box bg-white rounded-lg items-center my-2 flex w-full ${isEligible?"":"bg-red-200 hover:bg-red-300"} ${!hasCertificate?"":"bg-green-200 hover:bg-green-300"}`}>
       <TableCell className="w-[3%] font-medium text-center">
         <Checkbox onClick={validateSelect} checked={isSelected} className="border-black"/>
       </TableCell>
@@ -101,7 +102,7 @@ const StudentReportRow = ({ idx, cur, onSelect, e, sessionCount, isSelected, isE
         {e?.user.session_assignment_results.filter(e => e.result == AssignmentResultType.GOOD).length ?? "-"}
       </TableCell>
       <TableCell className="w-[11%] text-center whitespace-normal break-words">
-        <Button disabled={!isEligible} variant={`${isEligible?"outline":"destructive"}`} onClick={() => generateCertificate(e)}>
+        <Button className={` ${!hasCertificate?"":"bg-green-300 hover:bg-green-400 text-white"}`} disabled={!isEligible || hasCertificate} variant={`${isEligible?"outline":"destructive"}`} onClick={() => generateCertificate(e)}>
           Generate
         </Button>
       </TableCell>

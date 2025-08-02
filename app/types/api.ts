@@ -31,6 +31,7 @@ export type Announcement = {
 export type Certificate = {
   id: string;
   bootcamp: Bootcamp;
+  user_id: string;
   user: User;
   created_at: string;
 };

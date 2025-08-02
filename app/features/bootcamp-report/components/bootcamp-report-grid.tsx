@@ -2,7 +2,7 @@ import TableLayout from "~/components/layouts/table-layout"
 import EmptyMessage from "~/components/ui/empty-message"
 import { ReportDataTableHeader } from "~/components/ui/table-header"
 import { compare } from "~/lib/utils"
-import type { Enrollment, StudentAttempt } from "~/types/api"
+import type { Certificate, Enrollment, StudentAttempt } from "~/types/api"
 import StudentReportRow from "./student-report-row"
 import { Button } from "~/components/ui/button"
 import { useState } from "react"
@@ -16,6 +16,7 @@ interface Props {
     enrollments: Enrollment[]
     session: number
     bootcampid: string
+    certificates: string[]
 }
 
 
@@ -48,7 +49,7 @@ const validateEligibility = (enrollment: Enrollment, sessionCount: number) => {
 }
 
 
-const BootcampReportGrid = ({enrollments, session, bootcampid}:Props) => {
+const BootcampReportGrid = ({enrollments, session, bootcampid, certificates}:Props) => {
     
     const [selected, setSelected] = useState<string[]>(enrollments.sort((a, b) => compare(a.user.nim ?? '', b.user.nim ?? '')).map(_ => ""))
     const [progress, setProgress] = useState(0)
@@ -83,7 +84,7 @@ const BootcampReportGrid = ({enrollments, session, bootcampid}:Props) => {
 
     const selectAll = () => {
         setSelected(enrollments.map((e, idx) => {
-            if (isEligible[idx] != 0) return e.user_id
+            if (isEligible[idx] != 0 && !certificates.includes(e.user_id)) return e.user_id
             return ""
         }))
     }
@@ -144,8 +145,8 @@ const BootcampReportGrid = ({enrollments, session, bootcampid}:Props) => {
             enrollments.length < 1 ? <EmptyMessage text="There is no enrolled student here" title="No Enrolled Student"/>:
             <div className="flex flex-col gap-4">
                 <div className="flex items-center gap-4">
-                    <Button onClick={exportResult} className="bg-green-500 hover:bg-green-400">Export to Excel</Button>
-                    <Button onClick={selectAll} className="bg-orange-500 hover:bg-orange-400">Select All</Button>
+                    <Button onClick={exportResult} variant={'success'}>Export to Excel</Button>
+                    <Button onClick={selectAll} variant={'accent'}>Select All</Button>
                     <Button onClick={generateAll}>Generate</Button>
                     {selected.filter(e => e != "").length + " Selected"}
                 </div>
@@ -155,7 +156,7 @@ const BootcampReportGrid = ({enrollments, session, bootcampid}:Props) => {
                 >
                     {enrollments.sort((a, b) => compare(a.user.nim ?? '', b.user.nim ?? '')).map(
                     (e, idx) => (
-                        <StudentReportRow cur={1} idx={idx} e={e} sessionCount={session} onSelect={onSelect} isSelected={selected[idx] != ""} isEligible={isEligible[idx]}/>
+                        <StudentReportRow hasCertificate={certificates.includes(e.user_id)} cur={1} idx={idx} e={e} sessionCount={session} onSelect={onSelect} isSelected={selected[idx] != ""} isEligible={isEligible[idx]}/>
                     )
                     )}
                 </TableLayout>

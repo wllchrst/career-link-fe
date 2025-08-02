@@ -24,7 +24,7 @@ const ReportDataTableHeader = () => {
     return (
         <>
         <TableHeader className="p-5 items-center flex w-full">
-              <TableHead className="h-full w-[3%] font-medium text-center">No.</TableHead>
+              <TableHead className="h-full w-[3%] font-medium text-center">  </TableHead>
               <TableHead className="h-full w-[12%] text-center">NIM</TableHead>
               <TableHead className="h-full w-[15%] text-center">Name</TableHead>
               <TableHead className="h-full w-[8%] text-center">Clock In</TableHead>
