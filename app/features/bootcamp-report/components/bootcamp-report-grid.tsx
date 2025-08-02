@@ -10,10 +10,12 @@ import { AssignmentResultType, CertificateType, TestType } from "~/types/enum"
 import toast from "react-hot-toast"
 import { createCertificate } from "~/features/certificates/api/create-certificate"
 import { Progress } from "~/components/ui/progress"
+import { exportToExcel } from "~/lib/excel"
 
 interface Props {
     enrollments: Enrollment[]
     session: number
+    bootcampid: string
 }
 
 
@@ -45,7 +47,8 @@ const validateEligibility = (enrollment: Enrollment, sessionCount: number) => {
   return 1
 }
 
-const BootcampReportGrid = ({enrollments, session}:Props) => {
+
+const BootcampReportGrid = ({enrollments, session, bootcampid}:Props) => {
     
     const [selected, setSelected] = useState<string[]>(enrollments.sort((a, b) => compare(a.user.nim ?? '', b.user.nim ?? '')).map(_ => ""))
     const [progress, setProgress] = useState(0)
@@ -60,6 +63,22 @@ const BootcampReportGrid = ({enrollments, session}:Props) => {
             return val
         }))
         
+    }
+
+    
+    const exportResult = () => {
+        exportToExcel(`${bootcampid}-studentreport`, enrollments.map(e => (
+            {
+                nim: e.user.nim,
+                name: e.user.name,
+                "clock in": e?.user.session_attendances.filter(e => e.attendance_type == 'clock_in').length,
+                "clock out": e?.user.session_attendances.filter(e => e.attendance_type == 'clock_out').length,
+                "pre test": displayMaxScoreAttempt(e?.user.student_attempts.filter(e => e.test.type == TestType.PRE_TEST)).length,
+                "post-test passed": displayMaxScoreAttempt(e?.user.student_attempts.filter(e => e.test.type == TestType.POST_TEST)).filter(e => e.score && e.score.score >= e.test.minimum_score).length,
+                "assignment submitted": e?.user.session_assignment_results.length,
+                "assignment grade A": e?.user.session_assignment_results.filter(e => e.result == AssignmentResultType.GOOD).length,
+            }
+        )))
     }
 
     const selectAll = () => {
@@ -85,7 +104,7 @@ const BootcampReportGrid = ({enrollments, session}:Props) => {
         if (selected[i] == "") continue
         await createCertificate({
             data: {
-            bootcamp_id: enrollments[0].bootcamp_id,
+            bootcamp_id: bootcampid,
             user_id: selected[i],
             type: isEligible[i] == 2? CertificateType.PREMIUM:CertificateType.NORMAL,
             }
@@ -125,7 +144,8 @@ const BootcampReportGrid = ({enrollments, session}:Props) => {
             enrollments.length < 1 ? <EmptyMessage text="There is no enrolled student here" title="No Enrolled Student"/>:
             <div className="flex flex-col gap-4">
                 <div className="flex items-center gap-4">
-                    <Button onClick={selectAll} className="bg-green-500 hover:bg-green-400">Select All</Button>
+                    <Button onClick={exportResult} className="bg-green-500 hover:bg-green-400">Export to Excel</Button>
+                    <Button onClick={selectAll} className="bg-orange-500 hover:bg-orange-400">Select All</Button>
                     <Button onClick={generateAll}>Generate</Button>
                     {selected.filter(e => e != "").length + " Selected"}
                 </div>

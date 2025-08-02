@@ -28,7 +28,7 @@ const BootcampReport = ({loaderData}:Route.ComponentProps) => {
             </Link>
             <h2 className={'font-bold text-left w-full text-4xl text-slate-700 p-6 h-full'}>Student Report Summary</h2>
         </div>
-        <BootcampReportGrid session={sessionCount} enrollments={enrollments}/>
+        <BootcampReportGrid bootcampid={id} session={sessionCount} enrollments={enrollments}/>
     </div>
     </>)
 }
