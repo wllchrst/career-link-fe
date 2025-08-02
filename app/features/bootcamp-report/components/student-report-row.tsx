@@ -3,6 +3,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import TooltipLayout from "~/components/layouts/tooltip-layout";
 import { Button } from "~/components/ui/button";
+import { Checkbox } from "~/components/ui/checkbox";
 import { TableCell, TableRow } from "~/components/ui/table";
 import { createCertificate } from "~/features/certificates/api/create-certificate";
 import type { Enrollment, StudentAttempt, User } from "~/types/api";
@@ -13,13 +14,10 @@ interface Props {
   cur: number;
   e: Enrollment;
   sessionCount: number;
+  onSelect: (e: Enrollment, idx:number) => void;
+  isSelected: boolean;
+  isEligible: number;
 }
-
-const displayOrDash = (value?: string, limit = 10) => {
-  if (!value || value.trim() === "") return "-";
-  if (value.length <= limit) return value;
-  return value.slice(0, limit) + "...";
-};
 
 const displayMaxScoreAttempt = (attempts: StudentAttempt[]) => {
   let res = Object.values(attempts.reduce<Record<string, StudentAttempt>>((prev, curr) => {
@@ -32,25 +30,15 @@ const displayMaxScoreAttempt = (attempts: StudentAttempt[]) => {
   return res
 }
 
-const validateEligibility = (enrollment: Enrollment, sessionCount: number) => {
+const displayOrDash = (value?: string, limit = 10) => {
+  if (!value || value.trim() === "") return "-";
+  if (value.length <= limit) return value;
+  return value.slice(0, limit) + "...";
+};
+
+
+const StudentReportRow = ({ idx, cur, onSelect, e, sessionCount, isSelected, isEligible }: Props) => {
   
-  let clockInCount = enrollment.user.session_attendances.filter(e => e.attendance_type == 'clock_in').length 
-  let clockOutCount = enrollment.user.session_attendances.filter(e => e.attendance_type == 'clock_in').length
-  let assignmentSubmittedCount = enrollment.user.session_assignment_results.length
-  let preTestSubmitted = displayMaxScoreAttempt(enrollment.user.student_attempts.filter(e => e.test.type == TestType.PRE_TEST)).length
-  let assignmentGradeACount = enrollment.user.session_assignment_results.filter(e => e.result == AssignmentResultType.GOOD).length
-  let postTestPassed = displayMaxScoreAttempt(enrollment.user.student_attempts.filter(e => e.test.type == TestType.POST_TEST)).filter(e => e.score && e.score.score >= e.test.minimum_score).length
-
-  if (Math.max(clockInCount, clockOutCount, assignmentGradeACount, preTestSubmitted, assignmentSubmittedCount, postTestPassed) == 0) {
-    return 0
-  }else if ([clockInCount, clockOutCount, assignmentGradeACount, preTestSubmitted, postTestPassed].every(e => e == sessionCount)){
-    return 2
-  }
-  return 1
-}
-
-const StudentReportRow = ({ idx, cur, e, sessionCount }: Props) => {
-  let [isEligible, _] = useState(validateEligibility(e, sessionCount)) 
 
   const generateCertificate = async (e: Enrollment) => {
 
@@ -75,10 +63,14 @@ const StudentReportRow = ({ idx, cur, e, sessionCount }: Props) => {
     }
 
   }
+
+  const validateSelect = () => {
+    if (isEligible) onSelect(e, idx)
+  }
   return (
     <TableRow className={`shadow-md p-5 border-box bg-white rounded-lg items-center my-2 flex w-full ${isEligible?"":"bg-red-200 hover:bg-red-300"}`}>
       <TableCell className="w-[3%] font-medium text-center">
-        {idx + (cur - 1) * 10 + 1}
+        <Checkbox onClick={validateSelect} checked={isSelected} className="border-black"/>
       </TableCell>
 
       <TableCell className="w-[12%] text-center">{e?.user.nim ?? "-"}</TableCell>
