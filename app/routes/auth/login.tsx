@@ -8,7 +8,7 @@ export const Login = () => {
 
   return (
     <LoginForm
-      onSuccess={() => navigate(`${redirectTo ? `${redirectTo}` : "/"}`)}
+      onSuccess={() => navigate(`${redirectTo ? `${redirectTo}` : "/home"}`)}
     />
   );
 };

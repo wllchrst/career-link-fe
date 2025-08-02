@@ -84,7 +84,7 @@ export const LoginForm = ({ onSuccess }: Props) => {
               form.formState.isSubmitting ? "opacity-70 cursor-not-allowed" : ""
             }
           >
-            {form.formState.isSubmitting ? "Creating..." : "Create"}
+            {form.formState.isSubmitting ? "Signing in..." : "Sign in"}
           </Button>
         </div>
       </form>

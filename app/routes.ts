@@ -3,16 +3,16 @@ import {
   index,
   route,
   prefix,
+  layout,
 } from "@react-router/dev/routes";
 
 export default [
-  route("auth", "components/layouts/auth-layout.tsx", [
-    route("login", "routes/auth/login.tsx"),
+  route("/", "components/layouts/auth-layout.tsx", [
+    index("routes/auth/login.tsx"),
   ]),
-
-  route("", "components/layouts/navbar-layout.tsx", [
-    index("routes/home.tsx"),
-
+  
+  layout("components/layouts/navbar-layout.tsx", [
+    route("/home", "routes/home.tsx"),
     ...prefix("announcements", [
       index("routes/app/announcements/announcements.tsx"),
       route(":announcementId", "routes/app/announcements/announcement.tsx"),
@@ -69,4 +69,5 @@ export default [
       route("bootcamps/types", "routes/app/admin/bootcamps/bootcamp-types.tsx"),
     ]),
   ]),
+
 ] satisfies RouteConfig;

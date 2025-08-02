@@ -6,24 +6,26 @@ import { getErrorMessage } from "~/lib/error";
 import { Form } from "~/components/ui/form";
 import Field from "~/components/ui/form-field";
 import { Button } from "~/components/ui/button";
+import type { User } from "~/types/api";
 
 interface Props {
   onSuccess: () => void;
+  user: User;
 }
 
-const UpdateStudentData = ({onSuccess}:Props) => {
+const UpdateStudentData = ({user,onSuccess}:Props) => {
 
     const form = useForm<UpdateStudentDataInput>({
         resolver: zodResolver(updateStudentInputSchema),
         defaultValues: {
-            name: 'william',
-            email:'william@gmail.com',
-            future_position: '',
-            major: 'Computer Science',
-            nim: '1234567890',
-            password: 'william',
-            phone: '081234567890',
-            skill: ''
+            email: user.email,
+            future_position: user.future_position ?? "",
+            major: user.major,
+            name: user.name,
+            nim: user.nim,
+            phone: user.phone,
+            skill: user.skill ?? "",
+            password: "axel.kurniawan@binus.ac.id"
         },
       });
     
@@ -31,7 +33,7 @@ const UpdateStudentData = ({onSuccess}:Props) => {
         const toastId = toast.loading("Updating future plan...");
     
         try {
-          const res = await updateStudentData({data})
+          const res = await updateStudentData({data, id: user.id})
           toast.success(res.message, { id: toastId });
     
           form.reset();
@@ -48,7 +50,7 @@ const UpdateStudentData = ({onSuccess}:Props) => {
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <Field control={form.control} placeholder="Enter here" label="Future Position" type="text" name="future_position"/>
-            <Field control={form.control} placeholder="Enter here" label="Skill" type="text" name="skill"/>
+            <Field control={form.control} placeholder="Enter here (separated by comma) ex: C,C++" label="Skill" type="text" name="skill"/>
             
             <div className="flex justify-end">
                 <Button

@@ -6,20 +6,12 @@ import { Separator } from "~/components/ui/separator";
 
 interface Props {
   onClick: () => void;
+  skill: string;
+  position: string;
 }
 
-const FuturePlan = ({ onClick }: Props) => {
-  const skills = [
-    "C",
-    "C++",
-    "Java",
-    "Golang",
-    "Rust",
-    "R",
-    "Python",
-    "Javascript",
-  ];
-
+const FuturePlan = ({ onClick, skill, position }: Props) => {
+  
   return (
     <Card>
       <CardContent className="p-8 space-y-6">
@@ -29,7 +21,7 @@ const FuturePlan = ({ onClick }: Props) => {
               <h3 className="text-2xl font-semibold text-primary mb-2">
                 Position
               </h3>
-              <p className="text-lg">Application Developer</p>
+              <p className="text-lg">{position}</p>
             </div>
           </div>
           <Button variant="ghost" size="icon" onClick={onClick}>
@@ -42,9 +34,9 @@ const FuturePlan = ({ onClick }: Props) => {
         <div className="space-y-4">
           <h3 className="text-2xl font-semibold text-primary">Skills</h3>
           <div className="flex flex-wrap gap-2">
-            {skills.map((skill, index) => (
+            {skill.split(',').map((s, index) => (
               <Badge key={index} variant="secondary" className="text-sm">
-                {skill}
+                {s}
               </Badge>
             ))}
           </div>

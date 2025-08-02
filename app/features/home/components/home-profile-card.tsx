@@ -4,7 +4,7 @@ import { IoMdAdd } from "react-icons/io";
 import { MdEdit, MdSync } from "react-icons/md";
 import { useRole } from "~/provider/role-testing-provider";
 import FuturePlan from "./future-plan";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Modal, type ModalType } from "~/components/modal";
 import { useRevalidator } from "react-router";
 import UpdateStudentData from "./update-student-data";
@@ -13,8 +13,13 @@ import { Card, CardContent } from "~/components/ui/card";
 import { Badge } from "~/components/ui/badge";
 import { Separator } from "~/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
+import type { User } from "~/types/api";
 
-export const HomeProfileCard = () => {
+interface Props {
+  user: User | null
+}
+
+export const HomeProfileCard = ({user}:Props) => {
   const { role } = useRole();
   const [activeModal, setActiveModal] = useState<ModalType>(null);
   const revalidator = useRevalidator();
@@ -24,6 +29,12 @@ export const HomeProfileCard = () => {
     revalidator.revalidate();
   };
 
+  useEffect(() => {
+    if (user && (user.skill == "" || user.future_position == "")) {
+      setActiveModal('update')
+    }
+  })
+
   return (
     <div className="max-w-6xl mx-auto p-6 space-y-8">
       <Modal
@@ -31,7 +42,7 @@ export const HomeProfileCard = () => {
         isOpen={activeModal == "update"}
         onClose={() => setActiveModal(null)}
       >
-        <UpdateStudentData onSuccess={onSuccess} />
+        <UpdateStudentData user={user!} onSuccess={onSuccess} />
       </Modal>
 
       <Card className="overflow-hidden">
@@ -40,7 +51,7 @@ export const HomeProfileCard = () => {
             <Avatar className="w-48 h-48 mx-auto lg:mx-0">
               <AvatarImage
                 src="https://i.pinimg.com/280x280_RS/4d/3d/5d/4d3d5dbfdae11f199d158de3bb7ada35.jpg"
-                alt="Daniel Adamlu"
+                alt={user?.name}
               />
               <AvatarFallback className="text-4xl">DA</AvatarFallback>
             </Avatar>
@@ -48,9 +59,9 @@ export const HomeProfileCard = () => {
             <div className="flex-1 space-y-6 w-full">
               <div className="text-center lg:text-left">
                 <h1 className="text-4xl font-bold text-primary mb-2">
-                  Daniel Adamlu
+                  {user?.name}
                 </h1>
-                <p className="text-xl text-muted-foreground">2602105046</p>
+                <p className="text-xl text-muted-foreground">{user?.nim}</p>
               </div>
 
               <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
@@ -59,12 +70,6 @@ export const HomeProfileCard = () => {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-3">
-                {role === "admin" && (
-                  <Button variant="outline" className="flex items-center gap-2">
-                    <MdSync className="w-4 h-4" />
-                    Sync Data
-                  </Button>
-                )}
                 <Button className="flex items-center gap-2 flex-1">
                   <AiOutlineUpload className="w-4 h-4" />
                   Upload CV
@@ -143,7 +148,7 @@ export const HomeProfileCard = () => {
 
       <div className="space-y-6">
         <h2 className="text-3xl font-bold text-primary">My Future Plan</h2>
-        <FuturePlan onClick={() => setActiveModal("update")} />
+        <FuturePlan onClick={() => setActiveModal("update")} position={user?.future_position ?? ""} skill={user?.skill ?? ""}/>
       </div>
 
       <div className="space-y-6">

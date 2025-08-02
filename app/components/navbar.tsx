@@ -19,7 +19,11 @@ export default function Navbar() {
         { label: "Types", to: "/admin/bootcamps/types" },
       ],
     },
-    { label: "Certificates", to: "/certificates" },
+    { 
+      label: "Certificates", 
+      to: "/certificates", 
+      userOnly: true
+    },
   ];
 
   return (
