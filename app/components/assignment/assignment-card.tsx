@@ -12,6 +12,7 @@ import toast from "react-hot-toast"
 import { getErrorMessage } from "~/lib/error"
 import { updateAssignmentAnswer } from "~/features/assignment/api/answer/update-assignment-answer"
 import { DeleteAssignment } from "~/features/assignment/components/delete-assignment"
+import { useAuth } from "~/lib/auth"
 
 interface Props {
     session: Session,
@@ -25,7 +26,8 @@ const AssignmentCard = ({session, assignment, assignmentAnswer, result}:Props) =
     const [fileName, setFileName] = useState("");
     const [activeModal, setActiveModal] = useState<ModalType>(null);
     const revalidator = useRevalidator();
-    
+    const {user} = useAuth()
+
     const onSuccess = () => {
         setActiveModal(null);
         revalidator.revalidate();
@@ -41,7 +43,7 @@ const AssignmentCard = ({session, assignment, assignmentAnswer, result}:Props) =
                 const res = assignmentAnswer? await updateAssignmentAnswer({
                     data:{
                         answer_file: file,
-                        user_id: 'sdf',
+                        user_id: user?.id!,
                         assignment_id: assignment!.id,
                         answer_file_path: file.name
                     },
@@ -49,7 +51,7 @@ const AssignmentCard = ({session, assignment, assignmentAnswer, result}:Props) =
                 }):await createAssignmentAnswer({
                     data:{
                         answer_file: file,
-                        user_id: 'sdf',
+                        user_id: user?.id!,
                         assignment_id: assignment!.id,
                         answer_file_path: file.name
                     }

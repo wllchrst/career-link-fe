@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import { getErrorMessage } from "~/lib/error";
 import { useEffect, useState } from "react";
 import type { Question } from "~/types/api";
+import { useAuth } from "~/lib/auth";
 
 export const loader = async ({ params }:Route.LoaderArgs) => {
 
@@ -21,6 +22,7 @@ const Quiz = ({loaderData}:Route.ComponentProps) => {
     let {sessionId, bootcampId, attemptId, testId} = loaderData
     
     const [questions, setQuestions] = useState<Question[]>([]);
+    const {user} = useAuth()
     
     useEffect(() => {
         let savedQuestions = window.localStorage.getItem(`test_questions-${attemptId}`);
@@ -45,7 +47,7 @@ const Quiz = ({loaderData}:Route.ComponentProps) => {
             await finalizeStudentAttempt({
                 data: {
                     test_id: testId,
-                    user_id: 'sdf'
+                    user_id: user?.id!
                 }
             })
             toast.success("Your test has been successfully submitted!", {id: id})

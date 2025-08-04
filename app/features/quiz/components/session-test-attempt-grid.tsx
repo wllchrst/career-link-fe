@@ -6,6 +6,7 @@ import type { Question } from "~/types/api"
 import { createStudentAnswer } from "../api/answer/create-student-answer";
 import toast from "react-hot-toast";
 import { getErrorMessage } from "~/lib/error";
+import { useAuth } from "~/lib/auth";
 
 interface Props {
     questions: Question[],
@@ -19,6 +20,7 @@ const SessionTestAttemptGrid = ({questions, attemptId, onFinish}:Props) => {
     const [answers, setAnswers] = useState<string[]>(questions.map(_ => ""))    
 
     const [idx, setIdx] = useState(0)
+    const {user} = useAuth()
 
     const handleClickFlag = (flag:boolean) => {
         setIsFlagged(
@@ -58,7 +60,7 @@ const SessionTestAttemptGrid = ({questions, attemptId, onFinish}:Props) => {
                 data:{
                     attempt_id: attemptId,
                     question_id: questions[idx].id,
-                    user_id: 'sdf',
+                    user_id: user?.id!,
                     option_id: option
                 }
             })))

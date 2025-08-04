@@ -6,17 +6,22 @@ import type { Route } from "./+types/bootcamps";
 import { getBootcamps } from "~/features/bootcamp/api/get-bootcamps";
 import { getBootcampTypes } from "~/features/bootcamp-type/api/get-bootcamp-types";
 import { getBootcampCategories } from "~/features/bootcamp-category/api/get-bootcamp-categories";
+import { useEffect, useState } from "react";
+import type { Bootcamp } from "~/types/api";
+import { getEnrollmentByUser } from "~/features/enrollments/api/get-enrollment-by-user";
+import { useAuth } from "~/lib/auth";
 
-export const loader = async () => {
-  const { data: categories } = await getBootcampCategories();
-  const { data: types } = await getBootcampTypes();
-  const { data: bootcamps } = await getBootcamps();
 
-  return { bootcamps, categories, types };
-};
+const Bootcamps = () => {
 
-const Bootcamps = ({ loaderData }: Route.ComponentProps) => {
-  const { bootcamps, types, categories } = loaderData;
+  const [bootcamps, setBootcamps] = useState<Bootcamp[]>([])
+  const {user} = useAuth()
+  
+
+  useEffect(() => {
+    console.log(user)
+    getEnrollmentByUser(user?.id!).then(e => setBootcamps(e.data.map(enrollment => enrollment.bootcamp))).catch(console.log)
+  }, [user])
 
   return (
     <div className="container flex flex-col gap-6">

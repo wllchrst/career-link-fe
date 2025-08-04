@@ -11,7 +11,7 @@ export default function TableLayout({header, children}:Props) {
     
 
     return (
-        <Table className="mt-5">
+        <Table className="mt-5" >
             {header}
             <TableBody className="grid">
                 {children}

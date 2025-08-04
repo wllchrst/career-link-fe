@@ -30,7 +30,7 @@ export default function Navbar() {
     <>
       <div className="w-full bg-primary flex items-center">
         <SidebarTrigger />
-        <NavLink to={"/"}>
+        <NavLink to={"/home"}>
           <h2 className="font-semibold text-white text-3xl mx-10">
             CareerLink
           </h2>

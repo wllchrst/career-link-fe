@@ -6,9 +6,9 @@ import AssignmentCard from "~/components/assignment/assignment-card";
 import { TestType } from "~/types/enum";
 import { getSessionTest } from "~/features/quiz/api/get-test-by-session";
 import { getStudentAttemptByTest } from "~/features/quiz/api/attempt/get-student-attempt-by-test";
-import type { StudentAttempt } from "~/types/api";
+import type { AssignmentAnswer, Attendance, StudentAttempt, StudentScore } from "~/types/api";
 import { Button } from "~/components/ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRevalidator } from "react-router";
 import { Modal, type ModalType } from "~/components/modal";
 import EmptyMessage from "~/components/ui/empty-message";
@@ -23,22 +23,19 @@ import { getAttendanceByUserAndSession } from "~/features/attendance/api/get-att
 import { format } from "date-fns";
 import { getEvaluationQuestionBySession } from "~/features/evaluation/api/get-evaluation-question-by-session";
 import type { Route } from "./+types/session-detail";
+import { useAuth } from "~/lib/auth";
+import TableLayout from "~/components/layouts/table-layout";
+import { TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table";
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
 
     const { data: session } = await getBootcampSession(params.session);
     const { data: tests } = await getSessionTest(session.id);
     const { data: assignment } = await getAssignment(session.id).catch(() => ({data: undefined}));
-    const {data: assignmentAnswer } = await getAssignmentAnswerByUserAndAssignment(assignment? assignment.id : "", 'sdf').catch(() => ({data: undefined}));
     const { data: sessionData } = await getSessionDataBySession(session.id)
     const preTest = tests.filter(e => e.type == TestType.PRE_TEST)[0]
     const postTest = tests.filter(e => e.type == TestType.POST_TEST)[0]
-    
-    const {data: attemptsPretest} = await getStudentAttemptByTest(preTest ? preTest.id:"", 'sdf').catch(() => ({data: []}));
-    const {data: attemptsPosttest} = await getStudentAttemptByTest(postTest ? postTest.id:"", 'sdf').catch(() => ({data: []}));
-    const {data: attendances} = await getAttendanceByUserAndSession(session.id, 'sdf').catch(() => ({data: []}))
     const {data: evaluationQuestions} = await getEvaluationQuestionBySession(params.session)
-    
     
     return {
         session, 
@@ -46,10 +43,6 @@ export const loader = async ({ params }: Route.LoaderArgs) => {
         preTest,
         postTest,
         assignment,
-        assignmentAnswer,
-        attemptsPretest,
-        attemptsPosttest,
-        attendances,
         evaluationQuestions
     }
 };
@@ -57,20 +50,49 @@ export const loader = async ({ params }: Route.LoaderArgs) => {
 
 const Session = ({loaderData}:Route.ComponentProps) => {
 
+    const {user} = useAuth();
+
     const {
         session, 
         sessionData, 
         preTest, 
         postTest, 
         assignment, 
-        assignmentAnswer, 
-        attemptsPretest, 
-        attemptsPosttest, 
-        attendances,
         evaluationQuestions
     } = loaderData
+
+    const [assignmentAnswer, setAssignmentAnswer] = useState<AssignmentAnswer>()
+    const [attemptsPretest, setAttemptPretest] = useState<StudentScore[]>([])
+    const [attemptsPosttest, setAttemptPosttest] = useState<StudentScore[]>([])
+    const [attendances, setAttendances] = useState<Attendance[]>([])
     const [activeModal, setActiveModal] = useState<ModalType>(null);
     const revalidator = useRevalidator();
+
+    const fetchAll = async () => {
+        console.log(user)
+        try {
+            const {data: pretestAttempts} = await getStudentAttemptByTest(preTest ? preTest.id:"", user?.id!)
+            setAttemptPretest(pretestAttempts)
+            const {data: posttestAttempts} = await getStudentAttemptByTest(postTest ? postTest.id:"", user?.id!)
+            setAttemptPosttest(posttestAttempts)
+            const {data: myAttendances} = await getAttendanceByUserAndSession(session.id, user?.id!)
+            setAttendances(myAttendances)
+        } catch (error) {
+            console.log(error)            
+        }
+
+        // try {
+        //     const {data: answers} = await getAssignmentAnswerByUserAndAssignment(assignment?.id ?? "", user?.id!)
+        //     setAssignmentAnswer(answers)
+        // } catch (error) {
+        //     console.log(error)
+        //     setAssignmentAnswer(undefined)
+        // }
+    }
+
+    useEffect(() => {
+        fetchAll()
+    }, [user, attendances])
 
     const onSuccess = () => {
         setActiveModal(null);
@@ -85,9 +107,16 @@ const Session = ({loaderData}:Route.ComponentProps) => {
                     data: {
                         attendance_type: attendances.length < 1?'clock_in':'clock_out',
                         session_id: session.id,
-                        user_id: 'sdf'
+                        user_id: user?.id!
                     }
                 })
+                setAttendances([...attendances, {
+                    id: res.data.id,
+                    attendance_type: attendances.length < 1?'clock_in':'clock_out',
+                    session_id: session.id,
+                    user: user!,
+                    finished_at: new Date()
+                }])
                 toast.success(res.message, { id: toastId });
                 onSuccess()
             } catch (error) {
@@ -96,6 +125,19 @@ const Session = ({loaderData}:Route.ComponentProps) => {
             });
         }
     }
+
+    const attendanceHeader = () => (
+        <TableHeader className="items-center flex w-full">
+            <TableHead className="p-5 h-full w-1/2 text-center border-t-1 border-x-1 border-black">Clock in</TableHead>
+            <TableHead className="p-5 h-full w-1/2 text-center border-t-1 border-x-1 border-black">Clock out</TableHead>
+        </TableHeader>
+    )
+
+    const getAttendance = (type: 'clock_in' | 'clock_out') => format(attendances.filter(e => e.attendance_type == type).sort((a,b) => 
+        new Date(type == 'clock_in'?a.finished_at:b.finished_at).getTime() - 
+        new Date(type == 'clock_in'?b.finished_at:a.finished_at).getTime()
+    )[0].finished_at, "dd/MM/yyyy HH:mm:ss")
+
     return (
     <>
         <Modal
@@ -103,16 +145,21 @@ const Session = ({loaderData}:Route.ComponentProps) => {
             isOpen={activeModal === "create"}
             onClose={() => setActiveModal(null)}
         >
-            {attendances.length > 0 ? <>
-                {attendances.sort((a,b) => new Date(a.finished_at).getTime() - new Date(b.finished_at).getTime()).map(e => <div>
-                    <h4>{e.attendance_type.replace('_', ' ')} at {format(e.finished_at, "MM/dd/yyyy HH:mm:ss")}</h4>
-                </div>)}          
-            </>:<EmptyMessage 
+            {attendances.length > 0 ? <TableLayout header={attendanceHeader()} className="w-full my-10">
+                <TableRow className="grid grid-cols-2">
+                    <TableCell className="p-5 text-center border-1 border-black">
+                        <h4>{getAttendance('clock_in')}</h4>           
+                    </TableCell>
+                    <TableCell className="p-5 text-center border-1 border-black">
+                        <h4>{format(attendances.filter(e => e.attendance_type == 'clock_out').sort((a,b) => new Date(b.finished_at).getTime() - new Date(a.finished_at).getTime())[0].finished_at, "dd/MM/yyyy HH:mm:ss")}</h4>
+                    </TableCell>
+                </TableRow>
+            </TableLayout>:<EmptyMessage 
                 title="No Clock in/out yet" 
                 text="You haven't clock in/out. please click button below to take attendance"
             />}
             <Button 
-                className="w-full"
+                className="w-full mt-5"
                 onClick={takeAttendance}
             >
                 Clock {attendances.length > 0? "Out":"In"}

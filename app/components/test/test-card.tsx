@@ -16,6 +16,7 @@ import toast from "react-hot-toast";
 import { getErrorMessage } from "~/lib/error";
 import { DefaultTableHeader } from "../ui/table-header";
 import TestInformationCard from "./test-information-card";
+import { useAuth } from "~/lib/auth";
 
 interface Props {
   sessionId: string;
@@ -28,6 +29,7 @@ const TestCard = ({ sessionId, testType, test, attempts }: Props) => {
   const [activeModal, setActiveModal] = useState<ModalType>(null);
   const revalidator = useRevalidator();
   const navigate = useNavigate()
+  const {user} = useAuth()
 
   const onSuccess = () => {
     setActiveModal(null);
@@ -52,7 +54,7 @@ const TestCard = ({ sessionId, testType, test, attempts }: Props) => {
         }
         
         const {data: attempt} = await createStudentAttempt({data: {
-          user_id: 'sdf',
+          user_id: user?.id!,
           test_id: test.id
         }})
         toast.success("You will be redirected to test page", { id: toastId });
