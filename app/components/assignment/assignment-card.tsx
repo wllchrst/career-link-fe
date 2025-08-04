@@ -1,7 +1,7 @@
 import { useRole } from "~/provider/role-testing-provider"
 import { Button } from "../ui/button"
 import { Modal, type ModalType } from "../modal"
-import { useState, type ChangeEvent } from "react"
+import { useEffect, useState, type ChangeEvent } from "react"
 import { Link, useRevalidator } from "react-router"
 import CreateAssignment from "~/features/assignment/components/create-update-assignment"
 import type { Assignment, AssignmentAnswer, AssignmentResult, Session } from "~/types/api"
@@ -13,6 +13,7 @@ import { getErrorMessage } from "~/lib/error"
 import { updateAssignmentAnswer } from "~/features/assignment/api/answer/update-assignment-answer"
 import { DeleteAssignment } from "~/features/assignment/components/delete-assignment"
 import { useAuth } from "~/lib/auth"
+import { getAssignmentAnswerByUserAndAssignment } from "~/features/assignment/api/answer/get-assignment-answer-by-user-and-assignment"
 
 interface Props {
     session: Session,
@@ -21,12 +22,26 @@ interface Props {
     result?: AssignmentResult | undefined, 
 }
 
-const AssignmentCard = ({session, assignment, assignmentAnswer, result}:Props) => {
+const AssignmentCard = ({session, assignment, result}:Props) => {
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+    const [assignmentAnswer, setAssignmentAnswer] = useState<AssignmentAnswer>();
     const [fileName, setFileName] = useState("");
     const [activeModal, setActiveModal] = useState<ModalType>(null);
     const revalidator = useRevalidator();
     const {user} = useAuth()
+
+    const fetchAnswer = async () => {
+        try {
+            const {data: answers} = await getAssignmentAnswerByUserAndAssignment(assignment?.id ?? "", user?.id!)
+            setAssignmentAnswer(answers)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        fetchAnswer()
+    }, [user])
 
     const onSuccess = () => {
         setActiveModal(null);
@@ -59,6 +74,13 @@ const AssignmentCard = ({session, assignment, assignmentAnswer, result}:Props) =
                 setFileName(res.data.id)
                 toast.success(res.message, { id: toastId });
                 onSuccess()
+                setAssignmentAnswer({
+                    id: res.data.id,
+                    user_id: user?.id!,
+                    assignment_id: assignment?.id!,
+                    user: user!,
+                    answer_file_path: previewUrl!,
+                })
             } catch (error) {
             toast.error(getErrorMessage(error), {
                 id: toastId,

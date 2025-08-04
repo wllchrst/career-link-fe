@@ -61,7 +61,6 @@ const Session = ({loaderData}:Route.ComponentProps) => {
         evaluationQuestions
     } = loaderData
 
-    const [assignmentAnswer, setAssignmentAnswer] = useState<AssignmentAnswer>()
     const [attemptsPretest, setAttemptPretest] = useState<StudentScore[]>([])
     const [attemptsPosttest, setAttemptPosttest] = useState<StudentScore[]>([])
     const [attendances, setAttendances] = useState<Attendance[]>([])
@@ -80,19 +79,11 @@ const Session = ({loaderData}:Route.ComponentProps) => {
         } catch (error) {
             console.log(error)            
         }
-
-        // try {
-        //     const {data: answers} = await getAssignmentAnswerByUserAndAssignment(assignment?.id ?? "", user?.id!)
-        //     setAssignmentAnswer(answers)
-        // } catch (error) {
-        //     console.log(error)
-        //     setAssignmentAnswer(undefined)
-        // }
     }
 
     useEffect(() => {
         fetchAll()
-    }, [user, attendances])
+    }, [user])
 
     const onSuccess = () => {
         setActiveModal(null);
@@ -177,7 +168,6 @@ const Session = ({loaderData}:Route.ComponentProps) => {
                 attendanceOnClick={() => setActiveModal('create')} 
                 attemptsPosttest={attemptsPosttest}
                 attemptsPretest={attemptsPretest}
-                assignmentAnswer={assignmentAnswer}
                 postTest={postTest}
                 preTest={preTest}
                 evaluationQuestions={evaluationQuestions}

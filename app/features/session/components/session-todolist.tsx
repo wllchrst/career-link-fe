@@ -39,7 +39,6 @@ interface Props {
   preTest: SessionTest;
   postTest: SessionTest;
   assignment?: Assignment | undefined;
-  assignmentAnswer?: AssignmentAnswer | undefined;
   attemptsPretest: StudentScore[];
   attemptsPosttest: StudentScore[];
   evaluationQuestions: EvaluationQuestion[];
@@ -53,7 +52,6 @@ const SessionTodolist = ({
   preTest,
   postTest,
   assignment,
-  assignmentAnswer,
   attemptsPretest,
   attemptsPosttest,
   evaluationQuestions,
@@ -158,7 +156,6 @@ const SessionTodolist = ({
           <AssignmentCard
             session={session}
             assignment={assignment}
-            assignmentAnswer={assignmentAnswer}
           />
         </AccordionLayout>
         <AccordionLayout text={"Evaluation"} isLocked={false}>
