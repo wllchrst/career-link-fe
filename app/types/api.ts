@@ -1,4 +1,4 @@
-import type { TestType } from "./enum";
+import type { AnnouncementType, TestType } from "./enum";
 
 export type ApiResponse<T> = {
   message: string;
@@ -22,10 +22,10 @@ export type User = {
 export type Announcement = {
   id: string;
   title: string;
-  type: string;
-  imageUrl: string;
+  type: AnnouncementType;
+  image_path: string;
   description: string;
-  createdAt: string;
+  created_at: string;
 };
 
 export type Certificate = {

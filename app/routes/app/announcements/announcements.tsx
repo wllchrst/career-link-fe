@@ -1,5 +1,4 @@
 import { AnnouncementLists } from "~/features/announcements/components/announcements-list";
-import { announcementsData } from "~/services/announcement-service";
 import { useRole } from "~/provider/role-testing-provider";
 import { Plus, Send } from "lucide-react";
 import type { Route } from "./+types/announcements";
@@ -9,9 +8,15 @@ import { useRevalidator } from "react-router";
 import { useState } from "react";
 import { Modal, type ModalType } from "~/components/modal";
 import type { Announcement } from "~/types/api";
+import { CreateAnnouncement } from "~/features/announcements/components/create-announcement";
+import { getAnnouncements } from "~/features/announcements/api/get-announcements";
+import { UpdateAnnouncement } from "~/features/announcements/components/update-announcement";
+import { DeleteAnnouncement } from "~/features/announcements/components/delete-announcement";
 
 export const loader = async () => {
   //TODO: api call
+  let {data: announcementsData} = await getAnnouncements()
+
   return { announcementsData }; //masih dummy data;
 };
 
@@ -46,7 +51,7 @@ const Announcements = ({ loaderData }: Route.ComponentProps) => {
         isOpen={activeModal === "create"}
         onClose={() => setActiveModal(null)}
       >
-        add
+        <CreateAnnouncement onSuccess={onSuccess}/>
       </Modal>
 
       <Modal
@@ -54,7 +59,7 @@ const Announcements = ({ loaderData }: Route.ComponentProps) => {
         isOpen={activeModal === "update"}
         onClose={() => setActiveModal(null)}
       >
-        update
+        {selectedAnnouncement && <UpdateAnnouncement onSuccess={onSuccess} announcement={selectedAnnouncement}/>}
       </Modal>
 
       <Modal
@@ -62,7 +67,7 @@ const Announcements = ({ loaderData }: Route.ComponentProps) => {
         isOpen={activeModal === "delete"}
         onClose={() => setActiveModal(null)}
       >
-        delete
+        {selectedAnnouncement && <DeleteAnnouncement onClose={() => setActiveModal(null)} onSuccess={onSuccess} announcement={selectedAnnouncement}/>}
       </Modal>
       {role === "admin" && (
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-4 mb-6">

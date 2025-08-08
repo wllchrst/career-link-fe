@@ -18,7 +18,7 @@ export const AnnouncementDetail = ({ announcement }: Props) => {
             <AnnouncementTag type={announcement.type} />
             <Badge variant="outline" className="flex items-center gap-1.5">
               <CalendarDays className="h-3 w-3" />
-              {new Date(announcement.createdAt).toLocaleDateString("id-ID", {
+              {new Date(announcement.created_at).toLocaleDateString("id-ID", {
                 year: "numeric",
                 month: "long",
                 day: "numeric",
@@ -36,10 +36,10 @@ export const AnnouncementDetail = ({ announcement }: Props) => {
         <Separator />
 
         <CardContent className="space-y-6 pt-6">
-          {announcement.imageUrl ? (
+          {announcement.image_path ? (
             <div className="w-full aspect-video rounded-lg overflow-hidden bg-muted">
               <img
-                src={announcement.imageUrl}
+                src={`${import.meta.env.VITE_STORAGE_URL}/${announcement.image_path}`}
                 alt={announcement.title}
                 className="w-full h-full object-cover"
               />
