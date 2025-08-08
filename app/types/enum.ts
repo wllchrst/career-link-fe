@@ -12,3 +12,10 @@ export enum AssignmentResultType {
     AVERAGE= 'average',
     GOOD= 'good',
 }
+
+export enum AnnouncementType {
+    IMPORTANT='important',
+    INFORMATION='information',
+    UPDATE='update',
+    EVENT='event'
+}

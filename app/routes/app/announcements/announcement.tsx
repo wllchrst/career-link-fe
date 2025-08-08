@@ -4,6 +4,7 @@ import {
   announcementsData,
   getAnnouncementById,
 } from "~/services/announcement-service";
+import { getAnnouncement } from "~/features/announcements/api/get-announcement";
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
   //TODO: api call to get announcement detail by id
@@ -11,7 +12,8 @@ export const loader = async ({ params }: Route.LoaderArgs) => {
   const { announcementId } = params;
   if (!announcementId) throw new Error("no announcement id");
 
-  const announcement = getAnnouncementById(announcementId);
+  const {data: announcement} = await getAnnouncement({id: announcementId});
+
   if (!announcement) throw new Error("no announcement found");
 
   return { announcement };
