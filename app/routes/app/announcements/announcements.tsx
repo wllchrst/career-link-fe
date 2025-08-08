@@ -5,6 +5,10 @@ import { Plus, Send } from "lucide-react";
 import type { Route } from "./+types/announcements";
 import { NavbarContentLayout } from "~/components/layouts/navbar-content-layout";
 import { Button } from "~/components/ui/button";
+import { useRevalidator } from "react-router";
+import { useState } from "react";
+import { Modal, type ModalType } from "~/components/modal";
+import type { Announcement } from "~/types/api";
 
 export const loader = async () => {
   //TODO: api call
@@ -15,6 +19,21 @@ const Announcements = ({ loaderData }: Route.ComponentProps) => {
   const { announcementsData } = loaderData;
   const { role } = useRole();
 
+  const revalidator = useRevalidator();
+  const [activeModal, setActiveModal] = useState<ModalType>(null);
+  const [selectedAnnouncement, setSelectedAnnouncement] = useState<Announcement | null>(null);
+
+  const onSuccess = () => {
+    setActiveModal(null);
+    setSelectedAnnouncement(null);
+    revalidator.revalidate();
+  };
+
+  const onSelect = (e:Announcement, type:ModalType) => {
+    setActiveModal(type)
+    setSelectedAnnouncement(e)
+  }
+
   return (
     <NavbarContentLayout
       title="Announcements"
@@ -22,6 +41,29 @@ const Announcements = ({ loaderData }: Route.ComponentProps) => {
         role === "admin" ? "Manage and view all announcements" : undefined
       }
     >
+      <Modal
+        title="Add Announcement"
+        isOpen={activeModal === "create"}
+        onClose={() => setActiveModal(null)}
+      >
+        add
+      </Modal>
+
+      <Modal
+        title="Update Announcement"
+        isOpen={activeModal === "update"}
+        onClose={() => setActiveModal(null)}
+      >
+        update
+      </Modal>
+
+      <Modal
+        title="Delete Announcement"
+        isOpen={activeModal === "delete"}
+        onClose={() => setActiveModal(null)}
+      >
+        delete
+      </Modal>
       {role === "admin" && (
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-4 mb-6">
           <div className="flex flex-col sm:flex-row gap-2">
@@ -29,7 +71,7 @@ const Announcements = ({ loaderData }: Route.ComponentProps) => {
               <Send className="h-4 w-4" />
               Blast Announcements
             </Button>
-            <Button size="sm">
+            <Button size="sm" onClick={() => setActiveModal('create')}>
               <Plus className="h-4 w-4" />
               Add Announcement
             </Button>
@@ -38,7 +80,7 @@ const Announcements = ({ loaderData }: Route.ComponentProps) => {
       )}
 
       {/* Announcements List */}
-      <AnnouncementLists announcements={announcementsData} />
+      <AnnouncementLists announcements={announcementsData} onSelect={onSelect}/>
     </NavbarContentLayout>
   );
 };

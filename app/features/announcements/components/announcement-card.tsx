@@ -6,12 +6,15 @@ import { NavLink } from "react-router";
 import { AnnouncementTag } from "~/components/announcement/announcement-tag";
 import { useRole } from "~/provider/role-testing-provider";
 import { Edit2, Trash2, Calendar } from "lucide-react";
+import type { ModalType } from "~/components/modal";
 
 interface AnnouncementCardProps {
   announcement: Announcement;
+  onSelect: (e:Announcement, type:ModalType) => void;
+
 }
 
-export const AnnouncementCard = ({ announcement }: AnnouncementCardProps) => {
+export const AnnouncementCard = ({ announcement, onSelect }: AnnouncementCardProps) => {
   const { role } = useRole();
 
   return (
@@ -41,9 +44,10 @@ export const AnnouncementCard = ({ announcement }: AnnouncementCardProps) => {
                   size="icon-sm"
                   className="h-8 w-8 text-muted-foreground hover:text-foreground"
                   onClick={(e) => {
-                    e.preventDefault();
+                    e.preventDefault()
+                    onSelect(announcement, 'update')
                   }}
-                >
+                  >
                   <Edit2 className="h-4 w-4" />
                 </Button>
                 <Button
@@ -51,7 +55,8 @@ export const AnnouncementCard = ({ announcement }: AnnouncementCardProps) => {
                   size="icon-sm"
                   className="h-8 w-8 text-muted-foreground hover:text-destructive"
                   onClick={(e) => {
-                    e.preventDefault();
+                    e.preventDefault()
+                    onSelect(announcement, 'delete')
                   }}
                 >
                   <Trash2 className="h-4 w-4" />

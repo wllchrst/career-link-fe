@@ -14,6 +14,7 @@ import { updateAssignmentAnswer } from "~/features/assignment/api/answer/update-
 import { DeleteAssignment } from "~/features/assignment/components/delete-assignment"
 import { useAuth } from "~/lib/auth"
 import { getAssignmentAnswerByUserAndAssignment } from "~/features/assignment/api/answer/get-assignment-answer-by-user-and-assignment"
+import { format } from "date-fns"
 
 interface Props {
     session: Session,
@@ -79,7 +80,7 @@ const AssignmentCard = ({session, assignment, result}:Props) => {
                     user_id: user?.id!,
                     assignment_id: assignment?.id!,
                     user: user!,
-                    answer_file_path: previewUrl!,
+                    answer_file_path: file.name,
                 })
             } catch (error) {
             toast.error(getErrorMessage(error), {
@@ -109,6 +110,8 @@ const AssignmentCard = ({session, assignment, result}:Props) => {
                 <DeleteAssignment onSuccess={onSuccess} selectedCategory={assignment!} onClose={() => setActiveModal(null)} />
             </Modal>
             {assignment? <>
+                <h4>Starts on : {format(assignment.open_date, "dd-MM-yyyy HH:mm")}</h4>
+                <h4>Deadline  : {format(assignment.close_date, "dd-MM-yyyy HH:mm")}</h4>
                 <p>The assignment can be downloaded from the button below</p>
                 <a href={`${import.meta.env.VITE_STORAGE_URL}/${assignment.question_file_path}`} download target="_blank" className="w-1/3">
                     <Button variant={'outline'} className="w-full h-10">
@@ -141,39 +144,41 @@ const AssignmentCard = ({session, assignment, result}:Props) => {
                             <p>Upload Answer</p>
                         </label>
                         <input type="file" name="" id="file" hidden onChange={e => onChange(e)}/>
-                        <a href={
-                            assignmentAnswer ? `${import.meta.env.VITE_STORAGE_URL}/${assignmentAnswer.answer_file_path}`:
-                            previewUrl!
-                        } download target="_blank" className="w-full">
-                            <Button variant={'outline'} className="w-full h-10">
-                                <div className="flex gap-2 items-center justify-between w-full">
-                                    <div className="flex items-center gap-2">
-                                        <File />
-                                        <p className="font-regular">{assignmentAnswer? assignmentAnswer.answer_file_path.replace('uploads/','') :'Document Name'}</p>
+                        {
+                            (assignmentAnswer) && 
+                            <a href={
+                                previewUrl? previewUrl: `${import.meta.env.VITE_STORAGE_URL}/${assignmentAnswer.answer_file_path}`
+                            } download target="_blank" className="w-full">
+                                <Button variant={'outline'} className="w-full h-10">
+                                    <div className="flex gap-2 items-center justify-between w-full">
+                                        <div className="flex items-center gap-2">
+                                            <File />
+                                            <p className="font-regular">{assignmentAnswer? assignmentAnswer.answer_file_path :'Document Name'}</p>
+                                        </div>
+                                        <Download />
                                     </div>
-                                    <Download />
-                                </div>
-                            </Button>    
-                        </a>
+                                </Button>    
+                            </a>
+                        }
                     </div>
                     
                 </>
                 }
                 {
                 role == "user" && result ?
-                <div className="bg-green-200 border-green-700 border-1 p-3 rounded-md flex items-center gap-3 w-2/5">
-                    <AlertCircle className="text-green-700" />
-                    <p className="text-md font-bold text-green-700">
-                        Your result: {result.result}
-                    </p> 
-                </div>:
-                <div className="bg-red-200 border-red-700 border-1 p-3 rounded-md flex items-center gap-3 w-2/5">
-                    <AlertCircle className="text-red-700" />
-                    <p className="text-md font-bold text-red-700">
-                        You haven't made any submission yet
-                    </p> 
-                </div>
-                
+                    <div className="bg-green-200 border-green-700 border-1 p-3 rounded-md flex items-center gap-3 w-2/5">
+                        <AlertCircle className="text-green-700" />
+                        <p className="text-md font-bold text-green-700">
+                            Your result: {result.result}
+                        </p> 
+                    </div>:
+                    (!assignmentAnswer && !previewUrl) && 
+                    <div className="bg-red-200 border-red-700 border-1 p-3 rounded-md flex items-center gap-3 w-2/5">
+                        <AlertCircle className="text-red-700" />
+                        <p className="text-md font-bold text-red-700">
+                            You haven't made any submission yet
+                        </p> 
+                    </div>
                 }
             </>:
             <EmptyMessage text="There is no assignment. Please contact your instructor!" title="No Assignment Yet."/>

@@ -1,12 +1,14 @@
 import type { Announcement } from "~/types/api";
 import { AnnouncementCard } from "./announcement-card";
 import { Send } from "lucide-react";
+import type { ModalType } from "~/components/modal";
 
 interface AnnouncementListProps {
   announcements: Announcement[];
+  onSelect: (e:Announcement, type:ModalType) => void;
 }
 
-export const AnnouncementLists = ({ announcements }: AnnouncementListProps) => {
+export const AnnouncementLists = ({ announcements, onSelect }: AnnouncementListProps) => {
   if (announcements.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-12 text-center">
@@ -24,7 +26,7 @@ export const AnnouncementLists = ({ announcements }: AnnouncementListProps) => {
   return (
     <div className="space-y-4">
       {announcements.map((announcement) => (
-        <AnnouncementCard key={announcement.id} announcement={announcement} />
+        <AnnouncementCard key={announcement.id} announcement={announcement} onSelect={onSelect} />
       ))}
     </div>
   );

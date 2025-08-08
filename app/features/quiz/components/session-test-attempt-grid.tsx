@@ -54,6 +54,7 @@ const SessionTestAttemptGrid = ({questions, attemptId, onFinish}:Props) => {
     const finish = async () => {
         //save all answers
         console.log(questions)
+        console.log(answers)
         const toastId = toast.loading("Submitting...");
         try{
             await Promise.all(answers.map(async (option, idx) => await createStudentAnswer({
