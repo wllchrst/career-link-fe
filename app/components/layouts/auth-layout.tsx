@@ -11,7 +11,7 @@ const AuthLayout = () => {
 
   useEffect(() => {
     if (!loading && user) {
-      navigate(redirectTo ? redirectTo : "/", {
+      navigate(redirectTo ? redirectTo : "home", {
         replace: true,
       });
     }

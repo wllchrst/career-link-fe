@@ -1,4 +1,5 @@
 import { createContext, useState, useContext, type ReactNode, useEffect } from "react";
+import { useAuth } from "~/lib/auth";
 
 type Role = "user" | "admin";
 
@@ -11,15 +12,16 @@ const RoleContext = createContext<RoleContextType | undefined>(undefined);
 
 export const RoleTestingProvider = ({ children }: { children: ReactNode }) => {
   const [role, setRole] = useState<Role>("user");
+  let {user} = useAuth()
 
   useEffect(() => {
-
-    let newRole = window.localStorage.getItem('role')
-    if (newRole == 'admin' || newRole == 'user'){
-      setRole(newRole)
+    
+    if (user && user.email == "admin.careerlink@binus.edu"){
+      setRole("admin")
     }
-    console.log('here')
-  }, [role])  
+    setRole("user")
+    
+  }, [user])  
 
   return (
     <RoleContext.Provider value={{ role, setRole }}>
