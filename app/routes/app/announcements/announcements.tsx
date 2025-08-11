@@ -15,7 +15,7 @@ import { DeleteAnnouncement } from "~/features/announcements/components/delete-a
 
 export const loader = async () => {
   //TODO: api call
-  let {data: announcementsData} = await getAnnouncements()
+  let {data: announcementsData} = await getAnnouncements().catch(() => ({data: []}))
 
   return { announcementsData }; //masih dummy data;
 };

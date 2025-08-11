@@ -4,8 +4,9 @@ import { useRole } from "~/provider/role-testing-provider";
 import type { Route } from "./+types/home";
 import { getUsers } from "~/features/home/api/get-student-data";
 import { useNavigate } from "react-router";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useAuth } from "~/lib/auth";
+import type { User } from "~/types/api";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -17,16 +18,33 @@ export function meta({}: Route.MetaArgs) {
 export const loader = async ({request}:{request:Request}) => {
     
     const url = new URL(request.url); 
-    const page = parseInt(url.searchParams.get("page") ?? "1");
-    const { data: students, meta } = await getUsers(page);
-    return {students, page, meta }
+    return {url}
 };
 
 
 export default function Home({loaderData}: Route.ComponentProps) {
   
   const { role } = useRole();
-  const {students, page, meta} = loaderData
+
+  const {url} = loaderData
+  
+  const page = parseInt(url.searchParams.get("page") ?? "1");
+  const [ students, setStudents ] = useState<User[]>([])
+  const [ meta, setMeta ] = useState<{last_page: number}>({
+    last_page: 1
+  })
+
+  const fetch = async () => {
+    const { data: students, meta } = await getUsers(page);
+    setStudents(students)
+    setMeta(meta)
+  }
+
+  useEffect(() => {
+    if (role == 'admin'){
+      fetch()
+    }
+  }, [])
   
   return (
     <>
