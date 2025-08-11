@@ -16,7 +16,7 @@ export const RoleTestingProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     
-    if (user && user.email == "admin.careerlink@binus.edu"){
+    if (user && user.name == "admin"){
       setRole("admin")
     }
     setRole("user")
