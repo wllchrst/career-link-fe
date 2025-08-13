@@ -48,7 +48,7 @@ export default function Home({loaderData}: Route.ComponentProps) {
     if (role == 'admin'){
       fetch()
     }
-  }, [])
+  }, [role])
 
   
   if (!user){

@@ -84,10 +84,6 @@ const Announcements = ({ loaderData }: Route.ComponentProps) => {
       {role === "admin" && (
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-4 mb-6">
           <div className="flex flex-col sm:flex-row gap-2">
-            <Button variant="outline" size="sm">
-              <Send className="h-4 w-4" />
-              Blast Announcements
-            </Button>
             <Button size="sm" onClick={() => setActiveModal('create')}>
               <Plus className="h-4 w-4" />
               Add Announcement

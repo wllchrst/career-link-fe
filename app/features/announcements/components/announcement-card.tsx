@@ -5,8 +5,10 @@ import { Card, CardContent, CardHeader } from "~/components/ui/card";
 import { NavLink } from "react-router";
 import { AnnouncementTag } from "~/components/announcement/announcement-tag";
 import { useRole } from "~/provider/role-testing-provider";
-import { Edit2, Trash2, Calendar } from "lucide-react";
+import { Edit2, Trash2, Calendar, Send } from "lucide-react";
 import type { ModalType } from "~/components/modal";
+import { sendAnnouncement } from "../api/send-email-announcement";
+import toast from "react-hot-toast";
 
 interface AnnouncementCardProps {
   announcement: Announcement;
@@ -31,7 +33,7 @@ export const AnnouncementCard = ({ announcement, onSelect }: AnnouncementCardPro
                 {role !== "admin" && (
                   <div className="flex items-center gap-1 text-xs text-muted-foreground">
                     <Calendar className="h-3 w-3" />
-                    {announcement.createdAt}
+                    {announcement.created_at}
                   </div>
                 )}
               </div>
@@ -39,6 +41,21 @@ export const AnnouncementCard = ({ announcement, onSelect }: AnnouncementCardPro
 
             {role === "admin" && (
               <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                <Button variant="outline" size="sm" onClick={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+
+                  sendAnnouncement({
+                    data: {
+                      subject: announcement.title,
+                      body: announcement.description
+                    }
+                  })
+                  toast.success("Announcement has sent to the email")
+                }}>
+                  <Send className="h-4 w-4" />
+                  Blast Announcements
+                </Button>
                 <Button
                   variant="ghost"
                   size="icon-sm"
@@ -77,7 +94,7 @@ export const AnnouncementCard = ({ announcement, onSelect }: AnnouncementCardPro
             <div className="flex items-center justify-between pt-3 border-t border-border/50">
               <div className="flex items-center gap-1 text-xs text-muted-foreground">
                 <Calendar className="h-3 w-3" />
-                Created {announcement.createdAt}
+                Created {announcement.created_at}
               </div>
               <Badge variant="secondary" className="text-xs">
                 Published

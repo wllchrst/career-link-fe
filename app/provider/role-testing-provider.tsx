@@ -5,7 +5,7 @@ type Role = "user" | "admin";
 
 interface RoleContextType {
   role: Role;
-  setRole: (role: Role) => void;
+  updateRole: () => void;
 }
 
 const RoleContext = createContext<RoleContextType | undefined>(undefined);
@@ -14,17 +14,22 @@ export const RoleTestingProvider = ({ children }: { children: ReactNode }) => {
   const [role, setRole] = useState<Role>("user");
   let {user} = useAuth()
 
-  useEffect(() => {
-    
+  const updateRole = () => {
     if (user && user.name == "admin"){
       setRole("admin")
+      localStorage.setItem("role", "admin")
+      return
     }
     setRole("user")
-    
+    localStorage.setItem("role", "user")
+  }
+
+  useEffect(() => {
+    updateRole()
   }, [user])  
 
   return (
-    <RoleContext.Provider value={{ role, setRole }}>
+    <RoleContext.Provider value={{ role, updateRole }}>
       {children}
     </RoleContext.Provider>
   );
