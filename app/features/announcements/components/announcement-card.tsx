@@ -9,6 +9,7 @@ import { Edit2, Trash2, Calendar, Send } from "lucide-react";
 import type { ModalType } from "~/components/modal";
 import { sendAnnouncement } from "../api/send-email-announcement";
 import toast from "react-hot-toast";
+import { getErrorMessage } from "~/lib/error";
 
 interface AnnouncementCardProps {
   announcement: Announcement;
@@ -18,6 +19,25 @@ interface AnnouncementCardProps {
 
 export const AnnouncementCard = ({ announcement, onSelect }: AnnouncementCardProps) => {
   const { role } = useRole();
+
+  const sendEmail = () => {
+    const toastId = toast.loading("Sending email...")
+    try {
+      sendAnnouncement({
+        data: {
+          subject: announcement.title,
+          body: announcement.description
+        }
+      })
+      toast.success("Announcement has sent to the email", {
+        id: toastId,
+      })
+    } catch (error) {
+      toast.error(getErrorMessage(error), {
+        id: toastId,
+      })
+    }
+  }
 
   return (
     <Card className="group hover:shadow-md transition-all duration-200 border-border/50">
@@ -44,14 +64,7 @@ export const AnnouncementCard = ({ announcement, onSelect }: AnnouncementCardPro
                 <Button variant="outline" size="sm" onClick={(e) => {
                   e.preventDefault()
                   e.stopPropagation()
-
-                  sendAnnouncement({
-                    data: {
-                      subject: announcement.title,
-                      body: announcement.description
-                    }
-                  })
-                  toast.success("Announcement has sent to the email")
+                  sendEmail()
                 }}>
                   <Send className="h-4 w-4" />
                   Blast Announcements
