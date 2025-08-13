@@ -7,6 +7,7 @@ import { useNavigate } from "react-router";
 import { useContext, useEffect, useState } from "react";
 import { useAuth } from "~/lib/auth";
 import type { User } from "~/types/api";
+import EmptyMessage from "~/components/ui/empty-message";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -25,6 +26,9 @@ export const loader = async ({request}:{request:Request}) => {
 export default function Home({loaderData}: Route.ComponentProps) {
   
   const { role } = useRole();
+  const {user} = useAuth();
+  const navigate = useNavigate()
+
 
   const {url} = loaderData
   
@@ -45,6 +49,14 @@ export default function Home({loaderData}: Route.ComponentProps) {
       fetch()
     }
   }, [])
+
+  
+  if (!user){
+    return <div className="flex flex-col items-center justify-center">
+        <EmptyMessage text="You are prohibited to access this page. Please login first!" title="Unauthorized"/>
+        <a href="/career-link/">Login here</a>
+    </div>
+  }
   
   return (
     <>

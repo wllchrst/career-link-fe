@@ -12,6 +12,8 @@ import { CreateAnnouncement } from "~/features/announcements/components/create-a
 import { getAnnouncements } from "~/features/announcements/api/get-announcements";
 import { UpdateAnnouncement } from "~/features/announcements/components/update-announcement";
 import { DeleteAnnouncement } from "~/features/announcements/components/delete-announcement";
+import EmptyMessage from "~/components/ui/empty-message";
+import { useAuth } from "~/lib/auth";
 
 export const loader = async () => {
   //TODO: api call
@@ -23,10 +25,12 @@ export const loader = async () => {
 const Announcements = ({ loaderData }: Route.ComponentProps) => {
   const { announcementsData } = loaderData;
   const { role } = useRole();
-
+  const { user } = useAuth();
   const revalidator = useRevalidator();
   const [activeModal, setActiveModal] = useState<ModalType>(null);
   const [selectedAnnouncement, setSelectedAnnouncement] = useState<Announcement | null>(null);
+
+
 
   const onSuccess = () => {
     setActiveModal(null);
@@ -37,6 +41,14 @@ const Announcements = ({ loaderData }: Route.ComponentProps) => {
   const onSelect = (e:Announcement, type:ModalType) => {
     setActiveModal(type)
     setSelectedAnnouncement(e)
+  }
+
+  
+  if (!user){
+    return <div className="flex flex-col items-center justify-center">
+        <EmptyMessage text="You are prohibited to access this page. Please login first!" title="Unauthorized"/>
+        <a href="/career-link/">Login here</a>
+    </div>
   }
 
   return (

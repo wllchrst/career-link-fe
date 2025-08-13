@@ -4,6 +4,7 @@ import { getCertificateByUser } from "~/features/certificates/api/get-certificat
 import { useAuth } from "~/lib/auth";
 import { useEffect, useState } from "react";
 import type { Certificate } from "~/types/api";
+import EmptyMessage from "~/components/ui/empty-message";
 
 const Certificates = () => {
   
@@ -18,6 +19,14 @@ const Certificates = () => {
   useEffect(() => {
     fetch()
   }, [])
+
+  
+  if (!user){
+    return <div className="flex flex-col items-center justify-center">
+        <EmptyMessage text="You are prohibited to access this page. Please login first!" title="Unauthorized"/>
+        <a href="/career-link/">Login here</a>
+    </div>
+  }
 
   return (
     <NavbarContentLayout title="My Certificates">

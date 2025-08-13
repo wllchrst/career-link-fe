@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import type { Bootcamp } from "~/types/api";
 import { getEnrollmentByUser } from "~/features/enrollments/api/get-enrollment-by-user";
 import { useAuth } from "~/lib/auth";
+import EmptyMessage from "~/components/ui/empty-message";
 
 
 const Bootcamps = () => {
@@ -22,6 +23,13 @@ const Bootcamps = () => {
     console.log(user)
     getEnrollmentByUser(user?.id!).then(e => setBootcamps(e.data.map(enrollment => enrollment.bootcamp))).catch(console.log)
   }, [user])
+
+  if (!user){
+    return <div className="flex flex-col items-center justify-center">
+        <EmptyMessage text="You are prohibited to access this page. Please login first!" title="Unauthorized"/>
+        <a href="/career-link/">Login here</a>
+    </div>
+  }
 
   return (
     <div className="container flex flex-col gap-6">
