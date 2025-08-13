@@ -30,16 +30,12 @@ export const getUser = (): Promise<{ data: User }> => {
   return api.get("user/me");
 };
 
-export const logout = (redirectTo: string) => {
-  const navigate = useNavigate();
-  Cookies.remove("access_token");
-  navigate(`/auth/login${encodeURIComponent(redirectTo)}`);
-};
 
 interface AuthContextType {
   user: User | null;
   loading: boolean;
   fetchUser: () => void;
+  logout: (redirectTo: string) => void
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -47,6 +43,12 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+  
+  const logout = (redirectTo: string) => {
+    Cookies.remove("access_token");
+    navigate(redirectTo);
+  };
 
   const token = Cookies.get("access_token");
 
@@ -71,7 +73,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, [token]);
 
   return (
-    <AuthContext.Provider value={{ user, fetchUser, loading }}>
+    <AuthContext.Provider value={{ user, logout, fetchUser, loading }}>
       {children}
     </AuthContext.Provider>
   );
