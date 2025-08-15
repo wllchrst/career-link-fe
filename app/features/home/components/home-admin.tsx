@@ -11,6 +11,7 @@ import { useState } from "react";
 import { MasterDataTableHeader } from "~/components/ui/table-header";
 import StudentRow from "./student-row";
 import { compare } from "~/lib/utils";
+import toast from "react-hot-toast";
 
 interface StudentProps {
   student: User[];
@@ -25,17 +26,23 @@ const HomeAdmin = ({ student, cur, lastPage }: StudentProps) => {
 
   const onPrev = () => {
     if (cur == 1) return;
-    navigate(`/?page=${cur - 1}`);
+    navigate(`/home?page=${cur - 1}`);
   };
   const onNext = () => {
     if (lastPage == cur) return;
-    navigate(`/?page=${cur + 1}`);
+    navigate(`/home?page=${cur + 1}`);
   };
   const sync = () => {
     setLoading(true);
+    const toastId = toast.loading("Syncing data...")
     syncUser().then(() => {
-      setLoading(false);
-      navigate(`/?page=${1}`);
+      toast.success("Sync success", {id: toastId})
+
+      setTimeout(() => {
+        setLoading(false);
+        navigate(`/?page=${1}`);
+      }, 2000);
+      
     });
   };
 
@@ -78,6 +85,7 @@ const HomeAdmin = ({ student, cur, lastPage }: StudentProps) => {
       <TableLayout
         header = {<MasterDataTableHeader />}
       >
+      <Paginator cur={cur} student={student} onPrev={onPrev} onNext={onNext} lastPage={lastPage} />
         {student.sort((a, b) => compare(a.nim ?? '', b.nim ?? '')).map(
           (e, idx) => (
             <StudentRow cur={cur} idx={idx} e={e}/>
@@ -117,7 +125,7 @@ const HomeAdmin = ({ student, cur, lastPage }: StudentProps) => {
           // </tr>
         )}
       </TableLayout>
-      <Paginator onPrev={onPrev} onNext={onNext} lastPage={lastPage} />
+      <Paginator cur={cur} student={student} onPrev={onPrev} onNext={onNext} lastPage={lastPage} />
     </div>
   );
 };

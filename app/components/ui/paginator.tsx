@@ -1,22 +1,40 @@
+import type { User } from "~/types/api"
 import { Pagination, PaginationEllipsis, PaginationLink, PaginationNext, PaginationPrevious } from "./pagination"
 
 interface Props {
+    student: User[],
     onNext: () => void,
     onPrev: () => void,
     lastPage: number,
+    cur: number,
 }
 
-const Paginator = ({onNext, onPrev, lastPage}:Props) => {
+const Paginator = ({student, cur, onNext, onPrev, lastPage}:Props) => {
 
     return (
-        <Pagination>
-            <PaginationPrevious onClick={onPrev} className="hover:text-white">Previous</PaginationPrevious>
-            <PaginationLink href="?page=1&per_page=8" className="hover:text-white">1</PaginationLink>
-            <PaginationLink href="?page=2&per_page=8" className="hover:text-white">2</PaginationLink>
-            <PaginationLink href="?page=3&per_page=8" className="hover:text-white">3</PaginationLink>
-            <PaginationEllipsis />
-            <PaginationLink href={`?page=${lastPage}&per_page=8`} className="hover:text-white">{lastPage}</PaginationLink>
-            <PaginationNext onClick={onNext} className="hover:text-white">Next</PaginationNext>
+        <Pagination className="flex gap-5">
+            {lastPage > 1 && <PaginationLink href={`?page=${cur-1}`}>Previous</PaginationLink>}
+
+            {
+                cur >= 3 && <>
+                    {<PaginationLink href={`?page=${cur-2}`}>{cur-2}</PaginationLink>}
+                    {<PaginationLink href={`?page=${cur-1}`}>{cur-1}</PaginationLink>}
+                    {lastPage > cur && <PaginationLink href={`?page=${cur}`}>{cur}</PaginationLink>}
+                </>
+            }
+            
+
+            {
+                cur < 3 && <>
+                    {lastPage > 1 && <PaginationLink href={`?page=${1}`}>{1}</PaginationLink>}
+                    {lastPage > 2 && <PaginationLink href={`?page=2`}>2</PaginationLink>}
+                    {lastPage > 3 && <PaginationLink href={`?page=3`}>3</PaginationLink>}
+                </>
+            }
+
+            {lastPage > cur + 4 && <PaginationEllipsis />}
+            {lastPage > cur + 3 && <PaginationLink href={`?page=${lastPage}`}>{lastPage}</PaginationLink>}
+            {lastPage > cur + 1 && <PaginationLink href={`?page=${cur+1}`}>Next</PaginationLink>}
         </Pagination>
     )
 }

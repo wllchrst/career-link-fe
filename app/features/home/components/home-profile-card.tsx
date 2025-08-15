@@ -1,12 +1,11 @@
 import { EnrichmentTrack } from "~/components/home/enrichment-track";
 import { AiOutlineUpload } from "react-icons/ai";
 import { IoMdAdd } from "react-icons/io";
-import { MdEdit, MdSync } from "react-icons/md";
+import { MdEdit } from "react-icons/md";
 import { useRole } from "~/provider/role-testing-provider";
 import FuturePlan from "./future-plan";
 import { useEffect, useState } from "react";
 import { Modal, type ModalType } from "~/components/modal";
-import { useRevalidator } from "react-router";
 import UpdateStudentData from "./update-student-data";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent } from "~/components/ui/card";
@@ -29,6 +28,9 @@ export const HomeProfileCard = () => {
   useEffect(() => {  
     if (user && (user.skill == "" || user.future_position == "")) {
       setActiveModal('update')
+    }
+    if (user && (user.skill == "" || user.future_position == "")) {
+      setActiveModal('create')
     }
   }, [user])
 
@@ -146,60 +148,6 @@ export const HomeProfileCard = () => {
       <div className="space-y-6">
         <h2 className="text-3xl font-bold text-primary">My Future Plan</h2>
         <FuturePlan onClick={() => setActiveModal("update")} position={user?.future_position ?? ""} skill={user?.skill ?? ""}/>
-      </div>
-
-      <div className="space-y-6">
-        <h2 className="text-3xl font-bold text-primary">My Thesis</h2>
-        <Card>
-          <CardContent className="p-8">
-            <div className="space-y-6">
-              <div>
-                <h3 className="text-2xl font-semibold text-primary mb-2">
-                  [Judul Skripsi]
-                </h3>
-                <p className="text-xl text-muted-foreground">[Thesis Title]</p>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3">
-                    <span className="font-medium text-sm text-muted-foreground w-20">
-                      Topic:
-                    </span>
-                    <Badge variant="outline">[topic]</Badge>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span className="font-medium text-sm text-muted-foreground w-20">
-                      Track:
-                    </span>
-                    <Badge variant="outline">[track]</Badge>
-                  </div>
-                </div>
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3">
-                    <span className="font-medium text-sm text-muted-foreground w-20">
-                      Supervisor:
-                    </span>
-                    <span>[supervisor]</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span className="font-medium text-sm text-muted-foreground w-20">
-                      Member:
-                    </span>
-                    <span>[NIM] - [Name]</span>
-                  </div>
-                </div>
-              </div>
-
-              <Separator />
-
-              <p className="text-muted-foreground leading-relaxed">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua
-              </p>
-            </div>
-          </CardContent>
-        </Card>
       </div>
     </div>
   );
