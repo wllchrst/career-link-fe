@@ -16,10 +16,12 @@ import EmptyMessage from "~/components/ui/empty-message";
 import { useAuth } from "~/lib/auth";
 
 export const loader = async () => {
-  //TODO: api call
-  let {data: announcementsData} = await getAnnouncements().catch(() => ({data: []}))
+  let {data: announcementsData} = await getAnnouncements().catch((e) => {
+    console.log(e)
+    return {data: []}
+  })
 
-  return { announcementsData }; //masih dummy data;
+  return { announcementsData };
 };
 
 const Announcements = ({ loaderData }: Route.ComponentProps) => {

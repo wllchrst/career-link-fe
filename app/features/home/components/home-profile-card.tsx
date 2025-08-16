@@ -26,11 +26,8 @@ export const HomeProfileCard = () => {
   };
 
   useEffect(() => {  
-    if (user && (user.skill == "" || user.future_position == "")) {
+    if (user && (user.skill == "" || user.future_position == "" || user.cv == "")) {
       setActiveModal('update')
-    }
-    if (user && (user.skill == "" || user.future_position == "")) {
-      setActiveModal('create')
     }
   }, [user])
 

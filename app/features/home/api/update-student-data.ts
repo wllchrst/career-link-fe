@@ -12,6 +12,7 @@ export const updateStudentInputSchema = z.object({
   phone: z.string().min(1, "Phone is required"),
   major: z.string().min(1, "Major is required"),
   skill: z.string().min(1, "Skill is required"),
+  cv_file: z.instanceof(File),
 });
 
 export type UpdateStudentDataInput = z.infer<typeof updateStudentInputSchema>;
@@ -23,5 +24,17 @@ export const updateStudentData = ({
   data: UpdateStudentDataInput;
   id: string;
 }): Promise<{ data: User; message: string }> => {
-  return api.put(`/user/${id}`, data);
+
+  let formData = new FormData();
+  
+    for (let key in data) {
+      const value = data[key as keyof UpdateStudentDataInput];
+      
+      if (value !== undefined) {
+        console.log(key, value)
+        formData.append(key, value instanceof File ? value : String(value));
+      }
+    }
+    
+  return api.post(`/user/${id}`, formData);
 };

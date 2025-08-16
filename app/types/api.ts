@@ -12,17 +12,18 @@ export type User = {
   email: string;
   phone: string;
   major?: string;
-  studentTrackDesc: string;
+  enrichment_track: string;
   future_position: string;
   skill: string;
   student_attempts: StudentAttempt[];
   session_attendances: Attendance[];
   session_assignment_results: AssignmentResult[];
   partner: string;
-  position?: string;
+  current_position?: string;
   duration: string;
-  jobStartDate: string;
-  jobEndDate: string;
+  job_start_date: string;
+  job_end_date: string;
+  cv_image_path: string;
 };
 
 export type Announcement = {

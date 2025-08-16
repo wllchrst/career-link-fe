@@ -50,19 +50,7 @@ const HomeAdmin = ({ student, cur, lastPage }: StudentProps) => {
     <div className="container flex flex-col">
       <h1 className="text-2xl text-primary font-bold mb-4">Student Lists</h1>
       <div className="flex justify-between items-center">
-        <div className="flex gap-5">
-          <div className="flex items-center bg-white px-3 py-2 rounded-md w-120">
-            <CiSearch className="text-gray-500 text-xl" />
-            <input
-              type="text"
-              placeholder="Search by NIM, Name, or Email"
-              className="bg-transparent outline-none px-2 py-1 text-gray-600 w-full"
-            />
-          </div>
-          <button className="bg-accent text-white px-4 py-2 rounded-md">
-            Search
-          </button>
-        </div>
+        
         <div className="flex gap-4">
           <Button
             onClick={() => exportToExcel("Student-data-master", student)}
@@ -82,10 +70,10 @@ const HomeAdmin = ({ student, cur, lastPage }: StudentProps) => {
           </div>
         </div>
       </div>
+      <Paginator cur={cur} student={student} onPrev={onPrev} onNext={onNext} lastPage={lastPage} />
       <TableLayout
         header = {<MasterDataTableHeader />}
       >
-      <Paginator cur={cur} student={student} onPrev={onPrev} onNext={onNext} lastPage={lastPage} />
         {student.sort((a, b) => compare(a.nim ?? '', b.nim ?? '')).map(
           (e, idx) => (
             <StudentRow cur={cur} idx={idx} e={e}/>
