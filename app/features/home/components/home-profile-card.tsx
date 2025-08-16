@@ -26,7 +26,7 @@ export const HomeProfileCard = () => {
   };
 
   useEffect(() => {  
-    if (user && (user.skill == "" || user.future_position == "" || user.cv == "")) {
+    if (user && (user.skill == "" || user.future_position == "" || user.cv_image_path == "")) {
       setActiveModal('update')
     }
   }, [user])
@@ -36,7 +36,12 @@ export const HomeProfileCard = () => {
       <Modal
         title="Update Future Plan"
         isOpen={activeModal == "update"}
-        onClose={() => setActiveModal(null)}
+        onClose={() =>{
+          if (user && (user.cv_image_path == "" || user.skill == "" || user.future_position == "")){
+            return
+          }
+          setActiveModal(null)
+        }}
       >
         <UpdateStudentData user={user!} onSuccess={onSuccess} />
       </Modal>
@@ -61,7 +66,6 @@ export const HomeProfileCard = () => {
               </div>
 
               <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
-                <EnrichmentTrack />
                 <EnrichmentTrack />
               </div>
 
@@ -96,15 +100,10 @@ export const HomeProfileCard = () => {
                     1st Semester
                   </h3>
                   <Badge variant="secondary" className="mb-3">
-                    Study Abroad
+                    {user?.enrichment_track}
                   </Badge>
                   <p className="text-xl font-medium mb-2">
-                    Tokyo University, Japan
-                  </p>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                    sed do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua
+                    {user?.partner} - {user?.current_position}
                   </p>
                 </div>
                 <Button variant="ghost" size="icon">
@@ -115,29 +114,24 @@ export const HomeProfileCard = () => {
 
             <Separator />
 
-            <div className="space-y-4">
+            {user?.duration.startsWith("12") && <div className="space-y-4">
               <div className="flex justify-between items-start">
                 <div>
                   <h3 className="text-2xl font-semibold text-primary mb-2">
                     2nd Semester
                   </h3>
                   <Badge variant="secondary" className="mb-3">
-                    Internship
+                    {user.enrichment_track}
                   </Badge>
                   <p className="text-xl font-medium mb-2">
-                    Blibli (PT Global Niaga)
-                  </p>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                    sed do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua
+                    {user.partner} - {user.current_position}
                   </p>
                 </div>
                 <Button variant="ghost" size="icon">
                   <MdEdit className="w-5 h-5" />
                 </Button>
               </div>
-            </div>
+            </div>}
           </CardContent>
         </Card>
       </div>
