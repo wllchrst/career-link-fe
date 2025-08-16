@@ -41,6 +41,7 @@ export type Certificate = {
   user_id: string;
   user: User;
   created_at: string;
+  type: string;
 };
 
 export type Bootcamp = {
