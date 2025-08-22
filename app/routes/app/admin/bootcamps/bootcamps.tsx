@@ -65,17 +65,7 @@ const Bootcamps = ({ loaderData }: Route.ComponentProps) => {
   };
 
   const dummySpeakers: User[] = [
-    {
-      id: "000df53b-f9e1-487c-a564-b0da889eee3d",
-      name: "Dummy Speaker",
-      phone: "dummy phone",
-      email: "dummy_speaker@email.com",
-      future_position: "dummy",
-      skill: "dummy",
-      student_attempts: [],
-      session_attendances: [],
-      session_assignment_results: [],
-    },
+    
   ];
 
   // Filter bootcamps based on search and filters

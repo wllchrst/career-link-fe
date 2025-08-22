@@ -12,7 +12,7 @@ export const Login = () => {
 
   useEffect(() => {
     if (user){
-      navigate("home")
+      navigate("/career-link/home")
     }
   }, [])
 
@@ -22,7 +22,7 @@ export const Login = () => {
 
   return (
     <LoginForm
-      onSuccess={() => navigate(`${redirectTo ? `${redirectTo}` : "/home"}`)}
+      onSuccess={() => navigate(`/career-link/home`)}
     />
   );
 };

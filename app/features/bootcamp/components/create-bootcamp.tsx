@@ -41,7 +41,7 @@ export const CreateBootcamp = ({
       category_id: "",
       image_path: "",
       type_id: "",
-      speaker_id: "sdf",
+      speaker_id: "488fa118-125d-4044-a09c-cb35a5cc6cf6",
     },
   });
 

@@ -189,3 +189,10 @@ export type EvaluationQuestion = {
   question: string;
   type: string;
 }
+
+export type AnnouncementReply = {
+  id: string
+  announcement_id: string
+  user_id: string
+  content: string
+}
