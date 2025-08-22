@@ -13,7 +13,7 @@ import { Form } from "~/components/ui/form"
 
 
 interface Props {
-    onSuccess: () => void
+    onSuccess: () => Promise<void>
 }
 
 export const CreateAnnouncement = ({onSuccess}:Props) => {
@@ -40,7 +40,7 @@ export const CreateAnnouncement = ({onSuccess}:Props) => {
         try {
             let res = await createAnnouncement({data})
             toast.success(res.message, {id: toastId})
-            onSuccess()
+            await onSuccess()
         } catch (error) {
             toast.success(getErrorMessage(error), {id: toastId})
         }

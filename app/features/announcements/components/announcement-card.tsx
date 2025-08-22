@@ -24,10 +24,7 @@ export const AnnouncementCard = ({ announcement, onSelect }: AnnouncementCardPro
     const toastId = toast.loading("Sending email...")
     try {
       sendAnnouncement({
-        data: {
-          subject: announcement.title,
-          body: announcement.description
-        }
+        id: announcement.id,
       })
       toast.success("Announcement has sent to the email", {
         id: toastId,

@@ -5,7 +5,7 @@ import type { Route } from "./+types/announcements";
 import { NavbarContentLayout } from "~/components/layouts/navbar-content-layout";
 import { Button } from "~/components/ui/button";
 import { useRevalidator } from "react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Modal, type ModalType } from "~/components/modal";
 import type { Announcement } from "~/types/api";
 import { CreateAnnouncement } from "~/features/announcements/components/create-announcement";
@@ -14,30 +14,33 @@ import { UpdateAnnouncement } from "~/features/announcements/components/update-a
 import { DeleteAnnouncement } from "~/features/announcements/components/delete-announcement";
 import EmptyMessage from "~/components/ui/empty-message";
 import { useAuth } from "~/lib/auth";
-
-export const loader = async () => {
-  let {data: announcementsData} = await getAnnouncements().catch((e) => {
-    console.log(e)
-    return {data: []}
-  })
-
-  return { announcementsData };
-};
+import { getErrorMessage } from "~/lib/error";
 
 const Announcements = ({ loaderData }: Route.ComponentProps) => {
-  const { announcementsData } = loaderData;
+  const [announcementsData, setAnnouncementsData] = useState<Announcement[]>([])
   const { role } = useRole();
   const { user } = useAuth();
-  const revalidator = useRevalidator();
   const [activeModal, setActiveModal] = useState<ModalType>(null);
   const [selectedAnnouncement, setSelectedAnnouncement] = useState<Announcement | null>(null);
 
+  const fetchAnnouncements = async () => {
+    try {
+      let {data: announcementsData} = await getAnnouncements()
+      setAnnouncementsData(announcementsData)
+    } catch (error) {
+      console.log(getErrorMessage(error))
+    }
+  };
 
 
-  const onSuccess = () => {
+  useEffect(() => {
+    fetchAnnouncements()
+  }, [])
+
+  const onSuccess = async () => {
     setActiveModal(null);
     setSelectedAnnouncement(null);
-    revalidator.revalidate();
+    await fetchAnnouncements()
   };
 
   const onSelect = (e:Announcement, type:ModalType) => {

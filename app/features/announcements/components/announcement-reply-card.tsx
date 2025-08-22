@@ -10,12 +10,14 @@ import CreateAnnouncementReply from "./create-announcement-reply"
 
 interface Props {
   reply: AnnouncementReply
-  className?: string
+  className?: string,
+  onSuccess: () => Promise<void>
 }
 
 export function AnnouncementReplyCard({
     reply,
-    className
+    className,
+    onSuccess
 }: Props) {
     const [isUpdate, setUpdate] = useState(false)
 
@@ -33,6 +35,11 @@ export function AnnouncementReplyCard({
         }
     }
 
+    const onUpdateSuccess = async () => {
+        setUpdate(false)
+        await onSuccess()
+    }
+
 
     return (
         <div className={cn("space-y-4", className)}>
@@ -48,7 +55,7 @@ export function AnnouncementReplyCard({
                 </div>
                 {!isUpdate?
                     <p className="text-sm leading-relaxed">{reply.content}</p>:
-                    <CreateAnnouncementReply onSuccess={async () => setUpdate(false)} announcementId={reply.announcement_id} userId={reply.user.id} content={reply.content} id={reply.id}/>
+                    <CreateAnnouncementReply onSuccess={onUpdateSuccess} announcementId={reply.announcement_id} userId={reply.user.id} content={reply.content} id={reply.id}/>
                 }
                 </div>
             </div>

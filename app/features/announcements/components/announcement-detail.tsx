@@ -26,7 +26,7 @@ export const AnnouncementDetail = ({ announcement }: Props) => {
 
   const getReplies = async () => {
 
-    const {data: replies} = role == 'admin' ? 
+    const {data: replies} = user?.name == 'admin' ? 
     await getAnnouncementReplyByAnnouncement({announcementId: announcement.id}): 
     await getAnnouncementReplyByUser({userId: user?.id ?? ""})
     
@@ -95,7 +95,7 @@ export const AnnouncementDetail = ({ announcement }: Props) => {
         </CardHeader>
         <Separator />
         <CardContent>
-            {replies.map(e => <AnnouncementReplyCard reply={e}/>)}
+            {replies.map(e => <AnnouncementReplyCard reply={e} onSuccess={getReplies} />)}
         </CardContent>
       </Card>
     </div>

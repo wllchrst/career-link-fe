@@ -1,17 +1,9 @@
-import { z } from "zod";
 import { api } from "~/lib/api-client";
 
-export const sendEmailAnnouncementInputSchema = z.object({
-    subject: z.string().min(1, "Subject cant be empty"),
-    body: z.string().min(1, "Body cant be empty"),
-})
-
-export type SendEmailAnnouncementInput = z.infer<typeof sendEmailAnnouncementInputSchema>
-
 export const sendAnnouncement = ({
-  data,
+  id,
 }: {
-  data: SendEmailAnnouncementInput;
+  id: string
 }): Promise<{ data: { id: string }; message: string }> => {
-  return api.get(`/email/test?subject=${data.subject}&body=${data.body}`);
+  return api.get(`/announcement/send_to_all_user/${id}`);
 };

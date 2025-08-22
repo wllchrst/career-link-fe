@@ -15,7 +15,7 @@ import { updateAnnouncement, type UpdateAnnouncementInput } from "../api/update-
 
 
 interface Props {
-    onSuccess: () => void
+    onSuccess: () => Promise<void>
     announcement: Announcement
 }
 
@@ -43,7 +43,7 @@ export const UpdateAnnouncement = ({onSuccess, announcement}:Props) => {
         try {
             let res = await updateAnnouncement({data, id: announcement.id})
             toast.success(res.message, {id: toastId})
-            onSuccess()
+            await onSuccess()
         } catch (error) {
             toast.success(getErrorMessage(error), {id: toastId})
         }

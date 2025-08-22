@@ -23,7 +23,7 @@ import { getBootcampCategories } from "~/features/bootcamp-category/api/get-boot
 import { getBootcampTypes } from "~/features/bootcamp-type/api/get-bootcamp-types";
 import { getBootcamps } from "~/features/bootcamp/api/get-bootcamps";
 
-import type { Bootcamp, User } from "~/types/api";
+import { type BootcampCategory, type BootcampType, type Bootcamp, type User } from "~/types/api";
 import type { Route } from "./+types/bootcamps";
 import {
   Plus,
@@ -36,15 +36,7 @@ import {
   Filter,
 } from "lucide-react";
 
-export const loader = async () => {
-  const { data: categories } = await getBootcampCategories();
-  const { data: bootcampTypes } = await getBootcampTypes();
-  const { data: bootcamps } = await getBootcamps();
-
-  return { bootcamps, categories, bootcampTypes };
-};
-
-const Bootcamps = ({ loaderData }: Route.ComponentProps) => {
+const Bootcamps = () => {
   const [activeModal, setActiveModal] = useState<ModalType>(null);
   const [selectedBootcamp, setSelectedBootcamp] = useState<Bootcamp | null>(
     null
@@ -56,7 +48,9 @@ const Bootcamps = ({ loaderData }: Route.ComponentProps) => {
   const [showFilters, setShowFilters] = useState(false);
 
   const revalidator = useRevalidator();
-  const { bootcamps, categories, bootcampTypes } = loaderData;
+  const [categories, setCategories] = useState<BootcampCategory[]>([])
+  const [bootcampTypes, setBootcampTypes] = useState<BootcampType[]>([])
+  const [bootcamps, setBootcamps] = useState<Bootcamp[]>([])
 
   const onSuccess = () => {
     setActiveModal(null);
