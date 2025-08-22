@@ -22,7 +22,7 @@ export const Login = () => {
 
   return (
     <LoginForm
-      onSuccess={() => navigate(`/career-link/home`)}
+      onSuccess={() => navigate(`${redirectTo ? `${redirectTo}` : "/home"}`)}
     />
   );
 };

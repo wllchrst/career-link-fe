@@ -45,10 +45,10 @@ export default function Home({loaderData}: Route.ComponentProps) {
   }
 
   useEffect(() => {
-    if (role == 'admin'){
+    if (user && user.name == 'admin'){
       fetch()
     }
-  }, [role])
+  }, [user])
 
   
   if (!user){
@@ -60,7 +60,7 @@ export default function Home({loaderData}: Route.ComponentProps) {
   
   return (
     <>
-      {role == "admin" ? (
+      {(user && user.name == "admin") ? (
         <HomeAdmin student={students} cur={page} lastPage={meta.last_page}/>
       ) : (
         <HomeProfileCard />

@@ -193,6 +193,6 @@ export type EvaluationQuestion = {
 export type AnnouncementReply = {
   id: string
   announcement_id: string
-  user_id: string
+  user: User
   content: string
 }

@@ -2,7 +2,6 @@ import toast from "react-hot-toast"
 import { FaEdit, FaTrash } from "react-icons/fa"
 import { Button } from "~/components/ui/button"
 import { cn } from "~/lib/utils"
-import { useRole } from "~/provider/role-testing-provider"
 import type { AnnouncementReply } from "~/types/api"
 import { deleteAnnouncementReply } from "../api/delete-announcement-reply"
 import { useState } from "react"
@@ -37,21 +36,22 @@ export function AnnouncementReplyCard({
 
     return (
         <div className={cn("space-y-4", className)}>
-        <div className="flex gap-3">
+            <div className="flex gap-3">
 
-            <div className="flex-1 space-y-2">
-            <div className="flex items-center justify-between w-full">
-                <span className="font-medium text-sm">{reply.user_id}</span>
-                <Button onClick={() => setUpdate(!isUpdate)}><FaEdit /></Button>
-                <Button onClick={() => onDelete(reply.id)}><FaTrash /></Button>
-                
+                <div className="flex-1 space-y-2">
+                <div className="flex items-center justify-between w-full">
+                    <span className="font-medium text-sm">{reply.user.name}</span>
+                    <div className="flex gap-2">
+                        <Button onClick={() => setUpdate(!isUpdate)}><FaEdit /></Button>
+                        <Button onClick={() => onDelete(reply.id)}><FaTrash /></Button>
+                    </div>
+                </div>
+                {!isUpdate?
+                    <p className="text-sm leading-relaxed">{reply.content}</p>:
+                    <CreateAnnouncementReply onSuccess={async () => setUpdate(false)} announcementId={reply.announcement_id} userId={reply.user.id} content={reply.content} id={reply.id}/>
+                }
+                </div>
             </div>
-            {!isUpdate?
-                <p className="text-sm leading-relaxed">{reply.content}</p>:
-                <CreateAnnouncementReply onSuccess={async () => setUpdate(false)} announcementId={reply.announcement_id} userId={reply.user_id} content={reply.content} id={reply.id}/>
-            }
-            </div>
-        </div>
         </div>
     )
 }

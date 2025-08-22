@@ -12,6 +12,8 @@ import { useEffect, useState } from "react";
 import { getAnnouncementReplyByAnnouncement } from "../api/get-announcement-reply-by-announcement";
 import { AnnouncementReplyCard } from "./announcement-reply-card";
 import EmptyMessage from "~/components/ui/empty-message";
+import { useRole } from "~/provider/role-testing-provider";
+import { getAnnouncementReplyByUser } from "../api/get-announcement-reply-by-user";
 
 interface Props {
   announcement: Announcement;
@@ -19,11 +21,15 @@ interface Props {
 
 export const AnnouncementDetail = ({ announcement }: Props) => {
   const {user} = useAuth()
+  const {role} = useRole()
   const [replies, setReplies] = useState<AnnouncementReply[]>([])
 
   const getReplies = async () => {
 
-    const {data: replies} = await getAnnouncementReplyByAnnouncement({announcementId: announcement.id})
+    const {data: replies} = role == 'admin' ? 
+    await getAnnouncementReplyByAnnouncement({announcementId: announcement.id}): 
+    await getAnnouncementReplyByUser({userId: user?.id ?? ""})
+    
     setReplies(replies)
   }
 
