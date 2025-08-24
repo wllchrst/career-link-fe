@@ -33,19 +33,20 @@ const displayMaxScoreAttempt = (attempts: StudentAttempt[]) => {
 
 const validateEligibility = (enrollment: Enrollment, sessionCount: number) => {
   
-  let clockInCount = enrollment.user.session_attendances.filter(e => e.attendance_type == 'clock_in').length 
-  let clockOutCount = enrollment.user.session_attendances.filter(e => e.attendance_type == 'clock_in').length
-  let assignmentSubmittedCount = enrollment.user.session_assignment_results.length
-  let preTestSubmitted = displayMaxScoreAttempt(enrollment.user.student_attempts.filter(e => e.test.type == TestType.PRE_TEST)).length
-  let assignmentGradeACount = enrollment.user.session_assignment_results.filter(e => e.result == AssignmentResultType.GOOD).length
-  let postTestPassed = displayMaxScoreAttempt(enrollment.user.student_attempts.filter(e => e.test.type == TestType.POST_TEST)).filter(e => e.score && e.score.score >= e.test.minimum_score).length
-
-  if (Math.max(clockInCount, clockOutCount, assignmentGradeACount, preTestSubmitted, assignmentSubmittedCount, postTestPassed) == 0) {
-    return 0
-  }else if ([clockInCount, clockOutCount, assignmentGradeACount, preTestSubmitted, postTestPassed].every(e => e == sessionCount)){
-    return 2
-  }
-  return 1
+    let clockInCount = enrollment.user.session_attendances.filter(e => e.attendance_type == 'clock_in').length 
+    let clockOutCount = enrollment.user.session_attendances.filter(e => e.attendance_type == 'clock_in').length
+    let assignmentSubmittedCount = enrollment.user.session_assignment_results.length
+    let preTestSubmitted = displayMaxScoreAttempt(enrollment.user.student_attempts.filter(e => e.test.type == TestType.PRE_TEST)).length
+    let assignmentGradeACount = enrollment.user.session_assignment_results.filter(e => e.result == AssignmentResultType.GOOD).length
+    let postTestPassed = displayMaxScoreAttempt(enrollment.user.student_attempts.filter(e => e.test.type == TestType.POST_TEST)).filter(e => e.score && e.score.score >= e.test.minimum_score).length
+    
+    if ([clockInCount, clockOutCount, assignmentGradeACount, preTestSubmitted, assignmentSubmittedCount, postTestPassed].some(e => e < Math.floor(sessionCount / 2))) {
+        return 0
+    }
+    if ([clockInCount, clockOutCount, assignmentGradeACount, preTestSubmitted, postTestPassed].every(e => e == sessionCount)){
+        return 2
+    }
+    return 1
 }
 
 
