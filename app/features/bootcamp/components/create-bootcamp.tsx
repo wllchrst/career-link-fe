@@ -17,7 +17,7 @@ import SelectField from "~/components/ui/select-field";
 import type { BootcampCategory, BootcampType, User } from "~/types/api";
 
 interface Props {
-  onSuccess: () => void;
+  onSuccess: () => Promise<void>;
   categories: BootcampCategory[];
   types: BootcampType[];
   speakers: User[];
@@ -41,7 +41,7 @@ export const CreateBootcamp = ({
       category_id: "",
       image_path: "",
       type_id: "",
-      speaker_id: "488fa118-125d-4044-a09c-cb35a5cc6cf6",
+      speaker_id: "",
     },
   });
 
@@ -52,7 +52,7 @@ export const CreateBootcamp = ({
       const res = await createBootcamp({ data });
       toast.success(res.message, { id: toastId });
       form.reset();
-      onSuccess();
+      await onSuccess();
     } catch (error) {
       toast.error(getErrorMessage(error), {
         id: toastId,

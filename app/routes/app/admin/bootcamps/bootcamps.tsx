@@ -35,6 +35,7 @@ import {
   Calendar,
   Filter,
 } from "lucide-react";
+import { getUsers } from "~/features/home/api/get-student-data";
 
 const Bootcamps = () => {
   const [activeModal, setActiveModal] = useState<ModalType>(null);
@@ -51,21 +52,23 @@ const Bootcamps = () => {
   const [categories, setCategories] = useState<BootcampCategory[]>([])
   const [bootcampTypes, setBootcampTypes] = useState<BootcampType[]>([])
   const [bootcamps, setBootcamps] = useState<Bootcamp[]>([])
+  const [users, setUsers] = useState<User[]>([])
 
-  const onSuccess = () => {
+  const onSuccess = async () => {
     setActiveModal(null);
     setSelectedBootcamp(null);
-    revalidator.revalidate();
+    await fetchBootcamps()
   };
 
   const fetchBootcamps = async () => {
     const {data: bootcamps} = await getBootcamps()
     const {data: bootcampTypes} = await getBootcampTypes()
     const {data: bootcampCategories} = await getBootcampCategories()
-
+    const {data: users} = await getUsers(1, 10000)
     setBootcampTypes(bootcampTypes)
     setCategories(bootcampCategories)
     setBootcamps(bootcamps)
+    setUsers(users)
   }
 
   useEffect(() => {
@@ -96,7 +99,7 @@ const Bootcamps = () => {
         <CreateBootcamp
           categories={categories}
           types={bootcampTypes}
-          speakers={dummySpeakers}
+          speakers={users}
           onSuccess={onSuccess}
         />
       </Modal>

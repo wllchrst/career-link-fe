@@ -14,7 +14,7 @@ import { updateBootcamp, updateBootcampInputSchema, type UpdateBootcampInput } f
 
 interface Props {
   bootcamp: Bootcamp;
-  onSuccess: () => void;
+  onSuccess: () => Promise<void>;
   categories: BootcampCategory[];
   types: BootcampType[];
   speakers: User[];
@@ -58,7 +58,7 @@ export const UpdateBootcamp = ({bootcamp, onSuccess, categories, types, speakers
           const res = await updateBootcamp({ bootcampId: bootcamp.id, data });
           toast.success(res.message, { id: toastId });
           form.reset();
-          onSuccess();
+          await onSuccess();
         } catch (error) {
           toast.error(getErrorMessage(error), {
             id: toastId,

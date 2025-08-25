@@ -6,7 +6,7 @@ import { deleteBootcamp } from "../api/delete-bootcamp";
 import { getErrorMessage } from "~/lib/error";
 
 interface Props {
-  onSuccess: () => void;
+  onSuccess: () => Promise<void>;
   onClose?: () => void;
   selectedCategory: Bootcamp;
 }
@@ -26,7 +26,7 @@ export const DeleteBootcamp = ({
       await deleteBootcamp(selectedCategory.id);
       toast.success("Delete bootcamp success", { id: toastId });
 
-      onSuccess();
+      await onSuccess();
     } catch (error) {
       toast.error(getErrorMessage(error), { id: toastId });
     } finally {

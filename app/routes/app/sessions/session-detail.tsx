@@ -142,7 +142,9 @@ const Session = ({loaderData}:Route.ComponentProps) => {
                         <h4>{getAttendance('clock_in')}</h4>           
                     </TableCell>
                     <TableCell className="p-5 text-center border-1 border-black">
-                        <h4>{format(attendances.filter(e => e.attendance_type == 'clock_out').sort((a,b) => new Date(b.finished_at).getTime() - new Date(a.finished_at).getTime())[0].finished_at, "dd/MM/yyyy HH:mm:ss")}</h4>
+                        {attendances.length > 1 && 
+                            <h4>{format(attendances.filter(e => e.attendance_type == 'clock_out').sort((a,b) => new Date(b.finished_at).getTime() - new Date(a.finished_at).getTime())[0].finished_at, "dd/MM/yyyy HH:mm:ss")}</h4>
+                        }
                     </TableCell>
                 </TableRow>
             </TableLayout>:<EmptyMessage 

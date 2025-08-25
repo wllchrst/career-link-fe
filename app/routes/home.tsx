@@ -39,7 +39,7 @@ export default function Home({loaderData}: Route.ComponentProps) {
   })
 
   const fetch = async () => {
-    const { data: students, meta } = await getUsers(page);
+    const { data: students, meta } = await getUsers(page, 10);
     setStudents(students)
     setMeta(meta)
   }
