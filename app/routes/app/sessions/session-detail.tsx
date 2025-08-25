@@ -53,8 +53,6 @@ const Session = ({loaderData}:Route.ComponentProps) => {
     const revalidator = useRevalidator();
     
     
-    if (!session) return null
-
     const fetchAll = async () => {
         console.log(user)
         try {
@@ -86,10 +84,14 @@ const Session = ({loaderData}:Route.ComponentProps) => {
             console.log(error)            
         }
     }
-
+    
     useEffect(() => {
         fetchAll()
     }, [user])
+    
+    if (!session) return null
+
+
 
     const onSuccess = () => {
         setActiveModal(null);
