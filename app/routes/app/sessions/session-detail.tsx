@@ -136,10 +136,6 @@ const Session = ({loaderData}:Route.ComponentProps) => {
         new Date(type == 'clock_in'?b.finished_at:a.finished_at).getTime()
     )[0].finished_at, "dd/MM/yyyy HH:mm:ss")
 
-    if (!preTest || !postTest){
-        return null
-    }
-
     return (
     <>
         <Modal
