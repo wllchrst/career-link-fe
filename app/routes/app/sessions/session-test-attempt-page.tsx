@@ -12,14 +12,24 @@ import { useAuth } from "~/lib/auth";
 
 export const loader = async ({ params }:Route.LoaderArgs) => {
 
-    let {data: questions}:{data: Question[]} = await getSessionTestQuestions(params.test).catch(() => ({data: []}))
     
-    return {questions, bootcampId: params.bootcamp, sessionId: params.session, testId: params.test, attemptId: params.attempt}
+    return {bootcampId: params.bootcamp, sessionId: params.session, testId: params.test, attemptId: params.attempt}
 }
 
 const Quiz = ({loaderData}:Route.ComponentProps) => {
 
     let {sessionId, bootcampId, attemptId, testId} = loaderData
+    
+    const [question, setQuestion] = useState<Question[]>([])
+
+    const fetchQuestion = async () => {
+        let {data: questions}:{data: Question[]} = await getSessionTestQuestions(loaderData.testId).catch(() => ({data: []}))
+        setQuestion(questions)
+    }
+
+    useEffect(() => {
+        fetchQuestion()
+    }, [])
     
     const [questions, setQuestions] = useState<Question[]>([]);
     const {user} = useAuth()
@@ -27,7 +37,7 @@ const Quiz = ({loaderData}:Route.ComponentProps) => {
     useEffect(() => {
         let savedQuestions = window.localStorage.getItem(`test_questions-${attemptId}`);
         if (!savedQuestions) {
-            let data = loaderData.questions
+            let data = question
             for (let i = data.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [data[i], data[j]] = [data[j], data[i]];
