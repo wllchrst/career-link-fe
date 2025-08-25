@@ -177,8 +177,8 @@ const Session = ({loaderData}:Route.ComponentProps) => {
                 attendanceOnClick={() => setActiveModal('create')} 
                 attemptsPosttest={attemptsPosttest}
                 attemptsPretest={attemptsPretest}
-                postTest={postTest}
-                preTest={preTest}
+                postTest={postTest!}
+                preTest={preTest!}
                 evaluationQuestions={evaluationQuestions}
             />
         </div>
