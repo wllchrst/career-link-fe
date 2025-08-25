@@ -3,17 +3,29 @@ import { Link } from "react-router"
 import type { Route } from "./+types/enrollments"
 import { getEnrollmentByBootcamp } from "~/features/enrollments/api/get-enrollment-by-bootcamp"
 import EnrollmentGrid from "~/features/enrollments/components/enrollment-grid"
+import { useEffect, useState } from "react"
+import type { Enrollment } from "~/types/api"
 
-export const loader = async ({params}:Route.LoaderArgs) => {
-
-    const {data: enrollments} = await getEnrollmentByBootcamp(params.bootcamp)
-
-    return {enrollments, bootcamp: params.bootcamp}
+export const loader = async ({params}:Route.LoaderArgs) => {    
+    return {bootcamp: params.bootcamp}
 }
 
 const Enrollments = ({loaderData}:Route.ComponentProps) => {
 
-    const {enrollments, bootcamp} = loaderData
+    const {bootcamp} = loaderData
+
+    const [enrollments, setEnrollments] = useState<Enrollment[]>([])
+
+    const fetchEnrollment = async () => {
+
+        const {data: enrollments} = await getEnrollmentByBootcamp(bootcamp)
+        setEnrollments(enrollments)
+
+    }
+
+    useEffect(() => {
+        fetchEnrollment()
+    }, [])
 
     return (<>
         <div className="w-full flex flex-col gap-5">
