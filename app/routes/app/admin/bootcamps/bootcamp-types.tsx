@@ -1,7 +1,7 @@
 import { getBootcampTypes } from "~/features/bootcamp-type/api/get-bootcamp-types";
 import type { Route } from "./+types/bootcamp-types";
 import { Button } from "~/components/ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Modal, type ModalType } from "~/components/modal";
 import type { BootcampType } from "~/types/api";
 import { BootcampTypesList } from "~/features/bootcamp-type/components/bootcamp-types-list";
@@ -9,18 +9,29 @@ import { useRevalidator } from "react-router";
 import { CreateBootcampType } from "~/features/bootcamp-type/components/create-bootcamp-type";
 import { UpdateBootcampType } from "~/features/bootcamp-type/components/update-bootcamp-type";
 import { DeleteBootcampType } from "~/features/bootcamp-type/components/delete-bootcamp-type";
+import { getErrorMessage } from "~/lib/error";
 
-export const loader = async () => {
-  const { data: bootcampTypes } = await getBootcampTypes();
-
-  return { bootcampTypes };
-};
-
-const BootcampTypes = ({ loaderData }: Route.ComponentProps) => {
+const BootcampTypes = () => {
   const [selectedBootcampType, setSelectedBootcampType] =
     useState<BootcampType | null>(null);
   const [activeModal, setActiveModal] = useState<ModalType>(null);
   const revalidator = useRevalidator();
+
+  const [bootcampTypeData, setbootcampTypeData] = useState<BootcampType[]>([])
+  
+    const fetchbootcampType = async () => {
+      try {
+        let {data: bootcampTypeData} = await getBootcampTypes()
+        setbootcampTypeData(bootcampTypeData)
+      } catch (error) {
+        console.log(getErrorMessage(error))
+      }
+    };
+  
+  
+    useEffect(() => {
+      fetchbootcampType()
+    }, [])
 
   const onSuccess = () => {
     setActiveModal(null);
@@ -79,7 +90,7 @@ const BootcampTypes = ({ loaderData }: Route.ComponentProps) => {
           Add type
         </Button>
         <BootcampTypesList
-          bootcampTypes={loaderData.bootcampTypes}
+          bootcampTypes={bootcampTypeData}
           onUpdate={onUpdate}
           onDelete={onDelete}
         />

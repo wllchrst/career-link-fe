@@ -11,45 +11,54 @@ import { TableCell, TableRow } from "~/components/ui/table"
 import { format } from "date-fns"
 import { Button } from "~/components/ui/button"
 import { exportToExcel } from "~/lib/excel"
-import type { StudentScore } from "~/types/api"
+import { type Enrollment, type StudentAttempt, type SessionTest, type StudentScore } from "~/types/api"
 import { getEnrollmentByBootcamp } from "~/features/enrollments/api/get-enrollment-by-bootcamp"
+import { useEffect, useState } from "react"
 
 
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
-    
-    const {data: attempts} = await getAllStudentAttemptByTest(params.test).catch(() => ({data: []}))
-    const {data: test} = await getTest(params.test).catch(() => ({data: null}))
-    const {data: enrollments} = await getEnrollmentByBootcamp(params.bootcamp).catch(() => ({data: []}))
-
-    // return {attempts: attempts.sort((a,b) => a.user_id.localeCompare(b.user_id)).reduce((acc, item) => {
-    //     if (acc.find(e => e.user_id == item.user_id) == undefined){
-    //         let studentAttempts = attempts.filter(e => e.user_id == item.user_id)
-    //         let maxScore = Math.max(...studentAttempts.map(e => e.score))
-    //         let studentBestAttempt = studentAttempts.filter(e => e.score == maxScore)[0]
-    
-    //         acc.push(studentBestAttempt)
-    //     }
-    //     return acc
-    // }, [] as StudentScore[]), 
-    return {
-        attempts: enrollments.map(enroll => {
-            let studentAttempts = attempts.filter(e => e.user_id == enroll.user_id)
-            let maxScore = Math.max(...studentAttempts.map(e => e.score), 0)
-            let studentBestAttempt = studentAttempts.filter(e => e.score == maxScore)[0]
-            
-            return studentBestAttempt?studentBestAttempt:{
-                user: enroll.user,
-                score: 0,
-                attempt: undefined,
-            }
-        }),
-    test, session: params.session, bootcamp: params.bootcamp}
+    return {test: params.test, session: params.session, bootcamp: params.bootcamp}
 }
 
 const SessionTestResults = ({loaderData}:Route.ComponentProps) => {
 
-    const {attempts, test, session, bootcamp} = loaderData
+    const [test, setTest] = useState<SessionTest>()
+    const [attempts, setAttempts] = useState<StudentScore[]>([])
+
+    const fetchTest = async () => {
+        const {data: test} = await getTest(loaderData.test).catch(() => ({data: null}))
+        if (test){
+            setTest(test)
+        }
+    }
+
+    const fetchAttempts= async () => {
+        if (test){
+            const {data: attempts} = await getAllStudentAttemptByTest(loaderData.test).catch(() => ({data: []}))
+            const {data: enrollments} = await getEnrollmentByBootcamp(loaderData.bootcamp).catch(() => ({data: []}))
+
+            setAttempts(enrollments.map(enroll => {
+                let studentAttempts = attempts.filter(e => e.user_id == enroll.user_id)
+                let maxScore = Math.max(...studentAttempts.map(e => e.score), 0)
+                let studentBestAttempt = studentAttempts.filter(e => e.score == maxScore)[0]
+                
+                return studentBestAttempt?studentBestAttempt:{
+                    user: enroll.user,
+                    user_id: enroll.user_id,
+                    score: 0,
+                    attempt: undefined,
+                    attempt_id: "",
+                    id: "",
+                } as StudentScore
+            }))
+        }
+    }
+
+    useEffect(() => {
+        fetchTest().then(fetchAttempts)
+    }, [])
+
 
     const exportResult = () => {
         exportToExcel(`${test?.title}-result`, attempts.map(e => (
@@ -65,7 +74,7 @@ const SessionTestResults = ({loaderData}:Route.ComponentProps) => {
     return (
     <div className="flex flex-col w-full gap-y-4 bg-white rounded-lg shadow-md p-5">
             <div className={'w-full flex items-center'}>
-                <Link to={`/bootcamps/${bootcamp}/session/${session}`}>
+                <Link to={`/bootcamps/${loaderData.bootcamp}/session/${loaderData.session}`}>
                     <button
                         className="w-12 h-12 flex items-center justify-center bg-accent text-white rounded-full shadow-md">
                         <FaArrowLeft/>

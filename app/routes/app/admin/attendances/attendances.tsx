@@ -10,16 +10,15 @@ import { getAttendanceBySession } from "~/features/attendance/api/get-attendance
 import { format } from "date-fns"
 import { getBootcampSession } from "~/features/session/api/get-session"
 import { exportToExcel } from "~/lib/excel"
-import type { Attendance } from "~/types/api"
+import { type Session, type Attendance } from "~/types/api"
+import { useEffect, useState } from "react"
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
 
-    const {data: attendances} = await getAttendanceBySession(params.session)
-    const {data: session} = await getBootcampSession(params.session)
-    
-    return {attendances, session}
+    return {session: params.session}
     
 }
+
 
 interface AttendanceRow {
     nim: string,
@@ -31,7 +30,21 @@ interface AttendanceRow {
 
 const Attendances = ({loaderData}:Route.ComponentProps) => {
     
-    const {attendances, session} = loaderData
+    // const {attendances, session} = loaderData
+
+    const [attendances, setAttendances] = useState<Attendance[]>([])
+    const [session, setSession] = useState<Session>()
+    
+    const fetchAttendances =async () => {
+        const {data: attendances} = await getAttendanceBySession(loaderData.session)
+        const {data: session} = await getBootcampSession(loaderData.session)
+        setAttendances(attendances)
+        setSession(session)
+    }
+
+    useEffect(() => {
+        fetchAttendances()
+    }, [])
     
     function transform(attendances: Attendance[]): AttendanceRow[] {
         return attendances.sort((a,b) => a.user.nim!.localeCompare(b.user.nim!)).reduce((acc, curr) => {
@@ -54,6 +67,8 @@ const Attendances = ({loaderData}:Route.ComponentProps) => {
             return acc
         }, [] as AttendanceRow[])
     }
+
+    if (!session) return null
 
     const exportResult = () => {
         exportToExcel(`${session.title}-attendance`, transform(attendances))

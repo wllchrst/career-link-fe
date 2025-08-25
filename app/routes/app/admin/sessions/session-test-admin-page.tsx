@@ -1,27 +1,37 @@
 import type { Route } from "./+types/session-test-admin-page";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getSessionTestQuestions } from "~/features/quiz/api/question/get-test-question";
 import { Link, useRevalidator } from "react-router";
 import { type ModalType } from "~/components/modal";
 import { FaArrowLeft } from "react-icons/fa";
 import TestQuestionGrid from "~/features/quiz/components/test-question-grid";
+import { type Question } from "~/types/api";
 
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
 
-    const {data:questions} = await getSessionTestQuestions(params.test)
     
-    return {questions, id: params.test, session: params.session, bootcamp: params.bootcamp}
+    return {id: params.test, session: params.session, bootcamp: params.bootcamp}
 };
 
 const SessionTestAdminPage = ({loaderData}:Route.ComponentProps) => {
 
-    const {questions, id, session, bootcamp} = loaderData
+    const {id, session, bootcamp} = loaderData
+
+    const [questions, setQuestions] = useState<Question[]>([])
+    
+    const fetchQuestions = async () => {
+        const {data:questions} = await getSessionTestQuestions(loaderData.id)
+        setQuestions(questions)
+    }
+
+    useEffect(() => {
+        fetchQuestions()
+    }, [])
     
     const [activeModal, setActiveModal] = useState<ModalType>(null);
-    const revalidator = useRevalidator();
     const onSuccess = () => {
-        revalidator.revalidate().then(() => setActiveModal(null));
+        fetchQuestions().then(() => setActiveModal(null));
     };
     
     return (

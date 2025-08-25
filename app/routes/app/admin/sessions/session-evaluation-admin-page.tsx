@@ -2,28 +2,37 @@ import EvaluationAdminGrid from "~/features/evaluation/components/evaluation-adm
 import type { Route } from "./+types/session-evaluation-admin-page";
 import { getEvaluationQuestionBySession } from "~/features/evaluation/api/get-evaluation-question-by-session";
 import { useRevalidator } from "react-router";
+import { useEffect, useState } from "react";
+import { type EvaluationQuestion } from "~/types/api";
 
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
-
-    let {data: evaluationQuestions} = await getEvaluationQuestionBySession(params.session)
-    
-    return {session: params.session, evaluationQuestions}
+    return {session: params.session}
 };
 
 const SessionEvaluationAdminPage = ({loaderData}:Route.ComponentProps) => {
 
-    const {session, evaluationQuestions} = loaderData
 
-    let revalidator = useRevalidator()
+    const [evaluationQuestions, setEvaluationQuestions] = useState<EvaluationQuestion[]>([])
+
+    const fetchEvaluationQuestions = async () => {
+
+        let {data: evaluationQuestions} = await getEvaluationQuestionBySession(loaderData.session)
+        setEvaluationQuestions(evaluationQuestions)
+    }
+
+    useEffect(() => {
+        fetchEvaluationQuestions()
+    }, [])
 
     const onSuccess = async () => {
-        await revalidator.revalidate()
+        await fetchEvaluationQuestions()
+
     }
 
     return (
         <>
-           <EvaluationAdminGrid onSuccess={onSuccess} id="" sessionId={session} questions={evaluationQuestions}/> 
+           <EvaluationAdminGrid onSuccess={onSuccess} id="" sessionId={loaderData.session} questions={evaluationQuestions}/> 
         </>
     )
 }

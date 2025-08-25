@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRevalidator } from "react-router";
 
 import { Button } from "~/components/ui/button";
@@ -57,6 +57,20 @@ const Bootcamps = () => {
     setSelectedBootcamp(null);
     revalidator.revalidate();
   };
+
+  const fetchBootcamps = async () => {
+    const {data: bootcamps} = await getBootcamps()
+    const {data: bootcampTypes} = await getBootcampTypes()
+    const {data: bootcampCategories} = await getBootcampCategories()
+
+    setBootcampTypes(bootcampTypes)
+    setCategories(bootcampCategories)
+    setBootcamps(bootcamps)
+  }
+
+  useEffect(() => {
+    fetchBootcamps()
+  }, [])
 
   const dummySpeakers: User[] = [
     

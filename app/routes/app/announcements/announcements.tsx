@@ -17,11 +17,11 @@ import { useAuth } from "~/lib/auth";
 import { getErrorMessage } from "~/lib/error";
 
 const Announcements = ({ loaderData }: Route.ComponentProps) => {
-  const [announcementsData, setAnnouncementsData] = useState<Announcement[]>([])
   const { role } = useRole();
   const { user } = useAuth();
   const [activeModal, setActiveModal] = useState<ModalType>(null);
   const [selectedAnnouncement, setSelectedAnnouncement] = useState<Announcement | null>(null);
+  const [announcementsData, setAnnouncementsData] = useState<Announcement[]>([])
 
   const fetchAnnouncements = async () => {
     try {

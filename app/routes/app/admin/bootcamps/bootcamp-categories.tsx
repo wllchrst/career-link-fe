@@ -1,26 +1,36 @@
 import { getBootcampCategories } from "~/features/bootcamp-category/api/get-bootcamp-categories";
 import { BootcampCategoriesList } from "~/features/bootcamp-category/components/bootcamp-categories-list.";
 import { Button } from "~/components/ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Modal, type ModalType } from "~/components/modal";
 import { CreateBootcampCategory } from "~/features/bootcamp-category/components/create-bootcamp-category";
 import { useRevalidator } from "react-router";
 import type { BootcampCategory } from "~/types/api";
 import { DeleteBootcampCategory } from "~/features/bootcamp-category/components/delete-bootcamp-category";
 import { UpdateBootcampCategory } from "~/features/bootcamp-category/components/update-bootcamp-category";
-import type { Route } from "./+types/bootcamp-categories";
+import { getErrorMessage } from "~/lib/error";
 
-export const loader = async () => {
-  const { data: categories } = await getBootcampCategories();
-
-  return { categories };
-};
-
-const BootcampCategories = ({ loaderData }: Route.ComponentProps) => {
+const BootcampCategories = () => {
   const [selectedCategory, setSelectedCategory] =
     useState<BootcampCategory | null>(null);
   const [activeModal, setActiveModal] = useState<ModalType>(null);
   const revalidator = useRevalidator();
+
+  const [data, setdata] = useState<BootcampCategory[]>([])
+  
+    const fetchBootcampCategories = async () => {
+      try {
+        let {data: data} = await getBootcampCategories()
+        setdata(data)
+      } catch (error) {
+        console.log(getErrorMessage(error))
+      }
+    };
+  
+  
+    useEffect(() => {
+      fetchBootcampCategories()
+    }, [])
 
   const onSuccess = () => {
     setActiveModal(null);
@@ -85,7 +95,7 @@ const BootcampCategories = ({ loaderData }: Route.ComponentProps) => {
         <BootcampCategoriesList
           onDelete={onDelete}
           onUpdate={onUpdate}
-          categories={loaderData.categories}
+          categories={data}
         />
       </div>
     </>

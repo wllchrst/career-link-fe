@@ -115,7 +115,7 @@ export type StudentScore = {
   attempt_id: string;
   score: number;
   user: User;
-  attempt: StudentAttempt;
+  attempt?: StudentAttempt;
 };
 
 export type Session = {

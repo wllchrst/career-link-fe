@@ -1,24 +1,35 @@
 import { AnnouncementDetail } from "~/features/announcements/components/announcement-detail";
 import type { Route } from "./+types/announcement";
-import {
-  announcementsData,
-  getAnnouncementById,
-} from "~/services/announcement-service";
 import { getAnnouncement } from "~/features/announcements/api/get-announcement";
+import { useEffect, useState } from "react";
+import type { Announcement } from "~/types/api";
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
-  //TODO: api call to get announcement detail by id
 
   const { announcementId } = params;
   if (!announcementId) throw new Error("no announcement id");
 
-  const {data: announcement} = await getAnnouncement({id: announcementId});
-
-  if (!announcement) throw new Error("no announcement found");
-
-  return { announcement };
+  return { id: announcementId };
 };
 
 export default function Announcement({ loaderData }: Route.ComponentProps) {
-  return <AnnouncementDetail announcement={loaderData.announcement} />;
+  const [announcement, setAnnouncement] = useState<Announcement>()
+
+  const fetchAnnouncement = async () => {
+    
+      const {data: announcement} = await getAnnouncement({id: loaderData.id});
+
+      if (!announcement) throw new Error("no announcement found");
+
+      setAnnouncement(announcement)
+  }
+
+  useEffect(() => {
+    fetchAnnouncement()
+  },[])
+
+  if (!announcement){
+    return null;
+  }
+  return <AnnouncementDetail announcement={announcement} />;
 }

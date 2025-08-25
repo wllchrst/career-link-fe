@@ -21,7 +21,6 @@ interface Props {
 
 export const AnnouncementDetail = ({ announcement }: Props) => {
   const {user} = useAuth()
-  const {role} = useRole()
   const [replies, setReplies] = useState<AnnouncementReply[]>([])
 
   const getReplies = async () => {
