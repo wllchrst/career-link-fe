@@ -6,7 +6,7 @@ import AssignmentCard from "~/components/assignment/assignment-card";
 import { TestType } from "~/types/enum";
 import { getSessionTest } from "~/features/quiz/api/get-test-by-session";
 import { getStudentAttemptByTest } from "~/features/quiz/api/attempt/get-student-attempt-by-test";
-import type { AssignmentAnswer, Attendance, StudentAttempt, StudentScore } from "~/types/api";
+import { type EvaluationQuestion, type SessionTest, type Assignment, type AssignmentAnswer, type Attendance, type Session, type StudentAttempt, type StudentScore, type SessionData } from "~/types/api";
 import { Button } from "~/components/ui/button";
 import { useEffect, useState } from "react";
 import { useRevalidator } from "react-router";
@@ -29,21 +29,8 @@ import { TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/tab
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
 
-    const { data: session } = await getBootcampSession(params.session);
-    const { data: tests } = await getSessionTest(session.id);
-    const { data: assignment } = await getAssignment(session.id).catch(() => ({data: undefined}));
-    const { data: sessionData } = await getSessionDataBySession(session.id)
-    const preTest = tests.filter(e => e.type == TestType.PRE_TEST)[0]
-    const postTest = tests.filter(e => e.type == TestType.POST_TEST)[0]
-    const {data: evaluationQuestions} = await getEvaluationQuestionBySession(params.session)
-    
     return {
-        session, 
-        sessionData,
-        preTest,
-        postTest,
-        assignment,
-        evaluationQuestions
+        session: params.session
     }
 };
 
@@ -52,24 +39,43 @@ const Session = ({loaderData}:Route.ComponentProps) => {
 
     const {user} = useAuth();
 
-    const {
-        session, 
-        sessionData, 
-        preTest, 
-        postTest, 
-        assignment, 
-        evaluationQuestions
-    } = loaderData
+    const [session, setSession] = useState<Session>()
+    const [sessionData, setSessionData] = useState<SessionData[]>([])
+    const [assignment, setAssignment] = useState<Assignment>()
+    const [preTest, setPretest] = useState<SessionTest>()
+    const [postTest, setPosttest] = useState<SessionTest>()
+    const [evaluationQuestions, setEvaluationQuestions] = useState<EvaluationQuestion[]>([])
 
     const [attemptsPretest, setAttemptPretest] = useState<StudentScore[]>([])
     const [attemptsPosttest, setAttemptPosttest] = useState<StudentScore[]>([])
     const [attendances, setAttendances] = useState<Attendance[]>([])
-    const [activeModal, setActiveModal] = useState<ModalType>(null);
+    const [activeModal, setActiveModal] = useState<ModalType>(null);    
     const revalidator = useRevalidator();
+    
+    
+    if (!session) return null
 
     const fetchAll = async () => {
         console.log(user)
         try {
+            const { data: session } = await getBootcampSession(loaderData.session);
+            setSession(session)
+            
+            const { data: tests } = await getSessionTest(session.id);
+            const preTest = tests.filter(e => e.type == TestType.PRE_TEST)[0]
+            const postTest = tests.filter(e => e.type == TestType.POST_TEST)[0]
+            setPretest(preTest)
+            setPosttest(postTest)
+
+            const { data: assignment } = await getAssignment(session.id).catch(() => ({data: undefined}))
+            setAssignment(assignment)
+
+            const { data: sessionData } = await getSessionDataBySession(session.id)
+            setSessionData(sessionData)
+
+            const {data: evaluationQuestions} = await getEvaluationQuestionBySession(loaderData.session)
+            setEvaluationQuestions(evaluationQuestions)
+
             const {data: pretestAttempts} = await getStudentAttemptByTest(preTest ? preTest.id:"", user?.id!)
             setAttemptPretest(pretestAttempts)
             const {data: posttestAttempts} = await getStudentAttemptByTest(postTest ? postTest.id:"", user?.id!)
@@ -89,6 +95,7 @@ const Session = ({loaderData}:Route.ComponentProps) => {
         setActiveModal(null);
         revalidator.revalidate();
     };
+
 
     const takeAttendance = async () => {
         const toastId = toast.loading("Submitting Attendance...");
@@ -128,6 +135,10 @@ const Session = ({loaderData}:Route.ComponentProps) => {
         new Date(type == 'clock_in'?a.finished_at:b.finished_at).getTime() - 
         new Date(type == 'clock_in'?b.finished_at:a.finished_at).getTime()
     )[0].finished_at, "dd/MM/yyyy HH:mm:ss")
+
+    if (!preTest || !postTest){
+        return null
+    }
 
     return (
     <>
