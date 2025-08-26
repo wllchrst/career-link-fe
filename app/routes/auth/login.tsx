@@ -12,7 +12,7 @@ export const Login = () => {
 
   useEffect(() => {
     if (user){
-      navigate("/career-link/home")
+      navigate("home")
     }
   }, [])
 
@@ -22,7 +22,7 @@ export const Login = () => {
 
   return (
     <LoginForm
-      onSuccess={() => navigate(`/career-link/home`)}
+      onSuccess={() => navigate(`home`)}
     />
   );
 };
