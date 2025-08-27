@@ -47,7 +47,7 @@ export default function Navbar() {
         </div>
         <Button onClick={() => {
           console.log('log out')
-          logout("")
+          logout("/")
         }}>{"Sign out"}</Button>
       </div>
     </>

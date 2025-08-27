@@ -20,35 +20,34 @@ const Quiz = ({loaderData}:Route.ComponentProps) => {
 
     let {sessionId, bootcampId, attemptId, testId} = loaderData
     
-    const [question, setQuestion] = useState<Question[]>([])
+    const [questions, setQuestions] = useState<Question[]>([]);
 
     const fetchQuestion = async () => {
-        let {data: questions}:{data: Question[]} = await getSessionTestQuestions(loaderData.testId).catch(() => ({data: []}))
-        setQuestion(questions)
-    }
-
-    useEffect(() => {
-        fetchQuestion()
-    }, [])
-    
-    const [questions, setQuestions] = useState<Question[]>([]);
-    const {user} = useAuth()
-    
-    useEffect(() => {
+        
         let savedQuestions = window.localStorage.getItem(`test_questions-${attemptId}`);
+
         if (!savedQuestions) {
-            let data = question
+
+            let {data}:{data: Question[]} = await getSessionTestQuestions(loaderData.testId).catch(() => ({data: []}))
             for (let i = data.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [data[i], data[j]] = [data[j], data[i]];
             }
             setQuestions(data);
             window.localStorage.setItem(`test_questions-${attemptId}`, JSON.stringify(data));
+            
         }else{
             console.log("Using saved questions")
             setQuestions(JSON.parse(savedQuestions));
         }
-    }, []);
+    }
+
+    useEffect(() => {
+        fetchQuestion()
+    }, [])
+
+    const {user} = useAuth()
+    
 
     const navigate = useNavigate()
 
@@ -81,9 +80,10 @@ const Quiz = ({loaderData}:Route.ComponentProps) => {
                     </button>
                 </Link>
             </div>
+{            questions.length}
             <div className="flex gap-2 w-full">
                {
-               questions.length > 1 && 
+               questions.length > 0 && 
                <SessionTestAttemptGrid onFinish={finish} attemptId={attemptId} questions={questions}/>
                }
             </div>
