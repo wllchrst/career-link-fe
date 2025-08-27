@@ -6,8 +6,8 @@ export const createSessionInputSchema = z.object({
   description: z.string().min(1, "Description is required"),
   session_number: z.string().min(1, "Session number is required"),
   bootcamp_id: z.string().min(1, 'Bootcamp ID is required'),
-  start_attendance_date: z.date().min(new Date(), "Date must not current date or before"),
-  end_date: z.date().min(new Date(), "Date must not current date or before"),
+  start_attendance_date: z.date(),
+  end_date: z.date(),
 }).refine((data) => {
   if (data.end_date.getTime() < data.start_attendance_date.getTime()) {
     return false;

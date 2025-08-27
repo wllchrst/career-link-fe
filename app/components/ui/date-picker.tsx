@@ -53,7 +53,7 @@ export default function DatePicker<T extends FieldValues>(
                       mode="single"
                       selected={new Date(field.value)}
                       onSelect={(e) => onSelect(name, e)}
-                      disabled={e => e.getTime() < new Date().getTime()}
+                      disabled={e => e.getTime() < new Date().getTime() - 1000 * 60 * 60 * 24}
                       autoFocus
                     />
                     <div className="flex flex-col sm:flex-row sm:h-[300px] divide-y sm:divide-y-0 sm:divide-x">
