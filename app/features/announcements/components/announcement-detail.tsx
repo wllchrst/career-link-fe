@@ -2,8 +2,8 @@ import { AnnouncementTag } from "~/components/announcement/announcement-tag";
 import { Card, CardContent, CardHeader } from "~/components/ui/card";
 import { Separator } from "~/components/ui/separator";
 import { Badge } from "~/components/ui/badge";
-import { CalendarDays } from "lucide-react";
-import type { Announcement, AnnouncementReply } from "~/types/api";
+import { CalendarDays, Send } from "lucide-react";
+import type { Announcement, AnnouncementReply, User } from "~/types/api";
 import CreateAnnouncementReply from "./create-announcement-reply";
 import { useAuth } from "~/lib/auth";
 import { Accordion } from "~/components/ui/accordion";
@@ -14,6 +14,13 @@ import { AnnouncementReplyCard } from "./announcement-reply-card";
 import EmptyMessage from "~/components/ui/empty-message";
 import { useRole } from "~/provider/role-testing-provider";
 import { getAnnouncementReplyByUser } from "../api/get-announcement-reply-by-user";
+import { Button } from "~/components/ui/button";
+import SendAnnouncement from "./send-announcement";
+import { sendAnnouncement } from "../api/send-email-announcement";
+import toast from "react-hot-toast";
+import { getUsers } from "~/features/home/api/get-student-data";
+import { getErrorMessage } from "~/lib/error";
+import { Modal } from "~/components/modal";
 
 interface Props {
   announcement: Announcement;
@@ -22,6 +29,9 @@ interface Props {
 export const AnnouncementDetail = ({ announcement }: Props) => {
   const {user} = useAuth()
   const [replies, setReplies] = useState<AnnouncementReply[]>([])
+  const [isSend, setSend] = useState(false)
+  const [users, setUsers] = useState<User[]>([])
+
 
   const getReplies = async () => {
 
@@ -31,9 +41,14 @@ export const AnnouncementDetail = ({ announcement }: Props) => {
     
     setReplies(replies)
   }
+  const getAllUsers = async () => {
+    const {data: users} = await getUsers(1,10000)
+    setUsers(users)
+  }
 
   useEffect(() => {
     getReplies()
+    getAllUsers()
   }, [])
 
   if (!user){
@@ -43,8 +58,17 @@ export const AnnouncementDetail = ({ announcement }: Props) => {
     </div>
   }
 
+  
+
   return (
     <div className="container mx-auto max-w-4xl px-4 py-8 flex flex-col gap-3">
+        <Modal onClose={() => setSend(false)} isOpen={isSend}>
+          <SendAnnouncement announcement={announcement} users={users} />
+        </Modal>
+      {user.name == 'admin' && <Button variant="outline" size="sm" onClick={(e) => setSend(true)}>
+        <Send className="h-4 w-4" />
+        Blast Announcements
+      </Button>}
       <AccordionLayout text={announcement.title}>
         <Card className="w-full">
 

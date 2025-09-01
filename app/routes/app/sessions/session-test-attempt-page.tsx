@@ -80,7 +80,6 @@ const Quiz = ({loaderData}:Route.ComponentProps) => {
                     </button>
                 </Link>
             </div>
-{            questions.length}
             <div className="flex gap-2 w-full">
                {
                questions.length > 0 && 

@@ -1,4 +1,4 @@
-import type { Announcement } from "~/types/api";
+import type { Announcement, User } from "~/types/api";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader } from "~/components/ui/card";
@@ -10,6 +10,7 @@ import type { ModalType } from "~/components/modal";
 import { sendAnnouncement } from "../api/send-email-announcement";
 import toast from "react-hot-toast";
 import { getErrorMessage } from "~/lib/error";
+import { useState } from "react";
 
 interface AnnouncementCardProps {
   announcement: Announcement;
@@ -20,21 +21,6 @@ interface AnnouncementCardProps {
 export const AnnouncementCard = ({ announcement, onSelect }: AnnouncementCardProps) => {
   const { role } = useRole();
 
-  const sendEmail = () => {
-    const toastId = toast.loading("Sending email...")
-    try {
-      sendAnnouncement({
-        id: announcement.id,
-      })
-      toast.success("Announcement has sent to the email", {
-        id: toastId,
-      })
-    } catch (error) {
-      toast.error(getErrorMessage(error), {
-        id: toastId,
-      })
-    }
-  }
 
   return (
     <Card className="group hover:shadow-md transition-all duration-200 border-border/50">
@@ -58,17 +44,9 @@ export const AnnouncementCard = ({ announcement, onSelect }: AnnouncementCardPro
 
             {role === "admin" && (
               <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                <Button variant="outline" size="sm" onClick={(e) => {
-                  e.preventDefault()
-                  e.stopPropagation()
-                  sendEmail()
-                }}>
-                  <Send className="h-4 w-4" />
-                  Blast Announcements
-                </Button>
                 <Button
                   variant="ghost"
-                  size="icon-sm"
+                  
                   className="h-8 w-8 text-muted-foreground hover:text-foreground"
                   onClick={(e) => {
                     e.preventDefault()
@@ -79,7 +57,7 @@ export const AnnouncementCard = ({ announcement, onSelect }: AnnouncementCardPro
                 </Button>
                 <Button
                   variant="ghost"
-                  size="icon-sm"
+                  
                   className="h-8 w-8 text-muted-foreground hover:text-destructive"
                   onClick={(e) => {
                     e.preventDefault()

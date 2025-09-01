@@ -1,4 +1,4 @@
-import type { Announcement } from "~/types/api";
+import type { Announcement, User } from "~/types/api";
 import { AnnouncementCard } from "./announcement-card";
 import { Send } from "lucide-react";
 import type { ModalType } from "~/components/modal";

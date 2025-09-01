@@ -7,7 +7,7 @@ import { Button } from "~/components/ui/button";
 import { useRevalidator } from "react-router";
 import { useEffect, useState } from "react";
 import { Modal, type ModalType } from "~/components/modal";
-import type { Announcement } from "~/types/api";
+import type { Announcement, User } from "~/types/api";
 import { CreateAnnouncement } from "~/features/announcements/components/create-announcement";
 import { getAnnouncements } from "~/features/announcements/api/get-announcements";
 import { UpdateAnnouncement } from "~/features/announcements/components/update-announcement";
@@ -15,6 +15,7 @@ import { DeleteAnnouncement } from "~/features/announcements/components/delete-a
 import EmptyMessage from "~/components/ui/empty-message";
 import { useAuth } from "~/lib/auth";
 import { getErrorMessage } from "~/lib/error";
+import { getUsers } from "~/features/home/api/get-student-data";
 
 const Announcements = ({ loaderData }: Route.ComponentProps) => {
   const { role } = useRole();
