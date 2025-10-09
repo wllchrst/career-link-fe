@@ -114,7 +114,7 @@ export const HomeProfileCard = () => {
 
             <Separator />
 
-            {user?.duration.startsWith("12") && <div className="space-y-4">
+            {user?.duration?.startsWith("12") && <div className="space-y-4">
               <div className="flex justify-between items-start">
                 <div>
                   <h3 className="text-2xl font-semibold text-primary mb-2">

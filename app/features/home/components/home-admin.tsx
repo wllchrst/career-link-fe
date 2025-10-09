@@ -1,17 +1,19 @@
-import { CiSearch } from "react-icons/ci";
 import { FaFilter } from "react-icons/fa";
 import type { User } from "~/types/api";
 import TableLayout from "~/components/layouts/table-layout";
 import Paginator from "~/components/ui/paginator";
 import { Button } from "~/components/ui/button";
-import { exportToExcel } from "~/lib/excel";
-import { useNavigate } from "react-router";
+import { exportToExcel, importExcel } from "~/lib/excel";
+import { useNavigate, useRevalidator } from "react-router";
 import { syncUser } from "../api/sync-student-data";
-import { useState } from "react";
+import { useRef, useState, type ChangeEvent } from "react";
 import { MasterDataTableHeader } from "~/components/ui/table-header";
 import StudentRow from "./student-row";
 import { compare } from "~/lib/utils";
 import toast from "react-hot-toast";
+import { getErrorMessage } from "~/lib/error";
+import { Progress } from "~/components/ui/progress";
+import { createBatchUsers, type BatchUserInput } from "../api/create-batch-users";
 
 interface StudentProps {
   student: User[];
@@ -22,7 +24,59 @@ interface StudentProps {
 const HomeAdmin = ({ student, cur, lastPage }: StudentProps) => {
 
   const [isLoading, setLoading] = useState(false);
+  const [progress, setProgress] = useState(0);
   const navigate = useNavigate();
+  const revalidator = useRevalidator();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Student data template based on User type
+  const studentTemplate = [
+    {
+      nim: "",
+      name: "",
+      email: "",
+      phone: "",
+      major: "",
+      cv_file_path: ""
+    }
+  ];
+
+  const mappingStudents = async (res: BatchUserInput[]) => {
+    const toastId = toast.loading("Importing students...");
+    try {
+      // Convert numeric fields to strings
+      const processedStudents = res.map(student => ({
+        ...student,
+        nim: String(student.nim || ''),
+        phone: String(student.phone || ''),
+        email: String(student.email || ''),
+        name: String(student.name || ''),
+        major: String(student.major || ''),
+        cv_file_path: String(student.cv_file_path || '') // Always send as string, never null
+      }));
+
+      await createBatchUsers(processedStudents);
+      toast.success("Students imported successfully", { id: toastId });
+      setTimeout(() => {
+        setProgress(0);
+        revalidator.revalidate();
+      }, 2000);
+    } catch (error) {
+      toast.error(getErrorMessage(error), {
+        id: toastId,
+      });
+    } finally {
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
+  };
+
+  const importStudents = (e: ChangeEvent<HTMLInputElement>) => {
+    const reader = new FileReader();
+    reader.onload = (event) => importExcel<BatchUserInput>(event, (res) => mappingStudents(res));
+    reader.readAsArrayBuffer(e.target.files![0]);
+  };
 
   const onPrev = () => {
     if (cur == 1) return;
@@ -58,6 +112,23 @@ const HomeAdmin = ({ student, cur, lastPage }: StudentProps) => {
           >
             Download Student Data
           </Button>
+          <label htmlFor="student-file" className="flex text-accent border border-accent bg-white items-center h-12 rounded-md gap-2 p-3 hover:text-white hover:bg-primary transition duration-400 cursor-pointer">
+            Import Student Data from Excel
+          </label>
+          <input 
+            ref={fileInputRef} 
+            type="file" 
+            id="student-file" 
+            hidden 
+            accept=".xlsx,.xls" 
+            onChange={importStudents}
+          />
+          <Button
+            onClick={() => exportToExcel("Student-data-template", studentTemplate)}
+            className="flex text-accent border border-accent bg-white items-center h-12 rounded-md gap-2 p-3 hover:text-white transition duration-400"
+          >
+            Download Student Data Excel Template
+          </Button>
           <Button
             onClick={sync}
             className="flex text-accent border border-accent bg-white items-center h-12 rounded-md gap-2 p-3 hover:text-white transition duration-400"
@@ -70,6 +141,7 @@ const HomeAdmin = ({ student, cur, lastPage }: StudentProps) => {
           </div>
         </div>
       </div>
+      {progress > 0 && <Progress value={progress} className="w-full"/>}
       <Paginator cur={cur} student={student} onPrev={onPrev} onNext={onNext} lastPage={lastPage} />
       <TableLayout
         header = {<MasterDataTableHeader />}
