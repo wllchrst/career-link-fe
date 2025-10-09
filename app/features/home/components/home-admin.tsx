@@ -107,7 +107,7 @@ const HomeAdmin = ({ student, cur, lastPage }: StudentProps) => {
         
         <div className="flex gap-4">
           <Button
-            onClick={() => exportToExcel("Student-data-master", student)}
+            onClick={() => exportToExcel("student-data-master", student)}
             className="flex text-accent border border-accent bg-white items-center h-12 rounded-md gap-2 p-3 hover:text-white transition duration-400"
           >
             Download Student Data
@@ -124,7 +124,7 @@ const HomeAdmin = ({ student, cur, lastPage }: StudentProps) => {
             onChange={importStudents}
           />
           <Button
-            onClick={() => exportToExcel("Student-data-template", studentTemplate)}
+            onClick={() => exportToExcel("student-data-template", studentTemplate)}
             className="flex text-accent border border-accent bg-white items-center h-12 rounded-md gap-2 p-3 hover:text-white transition duration-400"
           >
             Download Student Data Excel Template
