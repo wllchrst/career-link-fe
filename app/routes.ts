@@ -13,6 +13,9 @@ export default [
   
   layout("components/layouts/navbar-layout.tsx", [
     route("/home", "routes/home.tsx"),
+    route("/enrichment", "routes/enrichment.tsx"),
+    route("/thesis", "routes/thesis.tsx"),
+    route("/future", "routes/future.tsx"),
     ...prefix("announcements", [
       index("routes/app/announcements/announcements.tsx"),
       route(":announcementId", "routes/app/announcements/announcement.tsx"),

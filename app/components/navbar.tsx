@@ -31,7 +31,7 @@ export default function Navbar() {
 
   return (
     <>
-      <div className="w-full bg-primary flex items-center justify-between">
+      <div className="w-full bg-primary flex items-center justify-between px-3">
         <div className="flex items-center">
             <SidebarTrigger />
             <NavLink to={"home"}>

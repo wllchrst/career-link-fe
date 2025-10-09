@@ -10,12 +10,6 @@ interface Props {
   e: User;
 }
 
-const displayOrDash = (value?: string, limit = 10) => {
-  if (!value || value.trim() === "") return "-";
-  if (value.length <= limit) return value;
-  return value.slice(0, limit) + "...";
-};
-
 const StudentRow = ({ idx, cur, e }: Props) => {
   return (
     <TableRow className="shadow-md p-5 border-box bg-white rounded-lg items-center my-2 flex w-full">
@@ -33,7 +27,7 @@ const StudentRow = ({ idx, cur, e }: Props) => {
         <TooltipLayout text={e?.email ?? "no email"}>
           <p>
             {e?.email
-              ? displayOrDash(e.email, e.email.indexOf("@")) + "..."
+              ? e.email
               : "-"}
           </p>
         </TooltipLayout>
@@ -45,19 +39,19 @@ const StudentRow = ({ idx, cur, e }: Props) => {
 
       <TableCell className="w-[10%] text-center whitespace-normal break-words">
         <TooltipLayout text={e?.major ?? "no major yet"}>
-          <p>{displayOrDash(e?.major)}</p>
+          <p>{e?.major ? e.major : "-"}</p>
         </TooltipLayout>
       </TableCell>
 
       <TableCell className="w-[11%] text-center whitespace-normal break-words">
         <TooltipLayout text={e?.future_position ?? "no future position yet"}>
-          <p>{displayOrDash(e?.future_position)}</p>
+          <p>{e?.future_position ? e.future_position : "-"}</p>
         </TooltipLayout>
       </TableCell>
 
       <TableCell className="w-[8%] text-center whitespace-normal break-words">
         <TooltipLayout text={e?.skill ?? "no skill yet"}>
-          <p>{displayOrDash(e?.skill)}</p>
+          <p>{e?.skill ? e.skill : "-"}</p>
         </TooltipLayout>
       </TableCell>
 
