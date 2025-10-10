@@ -14,33 +14,49 @@ import { Separator } from "~/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { useAuth } from "~/lib/auth";
 
-
 export const HomeProfileCard = () => {
-  const {user, fetchUser} = useAuth();
+  const { user, fetchUser } = useAuth();
   const { role } = useRole();
   const [activeModal, setActiveModal] = useState<ModalType>(null);
 
   const onSuccess = () => {
     setActiveModal(null);
-    fetchUser()
+    fetchUser();
   };
 
-  useEffect(() => {  
-    if (user && (user.skill == "" || user.future_position == "" || user.cv_image_path == "")) {
-      setActiveModal('update')
+  const extractInitials = (name: string | undefined) => {
+    if (!name) return "";
+    const names = name.split(" ");
+    const initials = names.map((n) => n.charAt(0).toUpperCase()).join("");
+    return initials;
+  };
+
+  useEffect(() => {
+    if (
+      user &&
+      (user.skill == "" ||
+        user.future_position == "" ||
+        user.cv_image_path == "")
+    ) {
+      setActiveModal("update");
     }
-  }, [user])
+  }, [user]);
 
   return (
     <div className="max-w-6xl mx-auto p-6 space-y-8">
       <Modal
         title="Update Future Plan"
         isOpen={activeModal == "update"}
-        onClose={() =>{
-          if (user && (user.cv_image_path == "" || user.skill == "" || user.future_position == "")){
-            return
+        onClose={() => {
+          if (
+            user &&
+            (user.cv_image_path == "" ||
+              user.skill == "" ||
+              user.future_position == "")
+          ) {
+            return;
           }
-          setActiveModal(null)
+          setActiveModal(null);
         }}
       >
         <UpdateStudentData user={user!} onSuccess={onSuccess} />
@@ -50,11 +66,10 @@ export const HomeProfileCard = () => {
         <CardContent className="p-8">
           <div className="flex flex-col lg:flex-row gap-8 items-start lg:items-center">
             <Avatar className="w-48 h-48 mx-auto lg:mx-0">
-              <AvatarImage
-                src="https://i.pinimg.com/280x280_RS/4d/3d/5d/4d3d5dbfdae11f199d158de3bb7ada35.jpg"
-                alt={user?.name}
-              />
-              <AvatarFallback className="text-4xl">DA</AvatarFallback>
+              <AvatarImage alt={user?.name} />
+              <AvatarFallback className="text-4xl">
+                {extractInitials(user?.name)}
+              </AvatarFallback>
             </Avatar>
 
             <div className="flex-1 space-y-6 w-full">
@@ -65,9 +80,11 @@ export const HomeProfileCard = () => {
                 <p className="text-xl text-muted-foreground">{user?.nim}</p>
               </div>
 
-              <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
-                <EnrichmentTrack />
-              </div>
+              {user?.enrichment_track && (
+                <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
+                  <EnrichmentTrack />
+                </div>
+              )}
 
               <div className="flex flex-col sm:flex-row gap-3">
                 <Button className="flex items-center gap-2 flex-1">
@@ -81,64 +98,75 @@ export const HomeProfileCard = () => {
       </Card>
 
       <div className="space-y-6">
-        <div className="flex justify-between items-center">
-          <h2 className="text-3xl font-bold text-primary">My Experiences</h2>
-          {role === "user" && (
-            <Button>
-              <IoMdAdd className="w-6 h-6" />
-              Add Experiences
-            </Button>
-          )}
-        </div>
-
-        <Card>
-          <CardContent className="p-8 space-y-8">
-            <div className="space-y-4">
-              <div className="flex justify-between items-start">
-                <div>
-                  <h3 className="text-2xl font-semibold text-primary mb-2">
-                    1st Semester
-                  </h3>
-                  <Badge variant="secondary" className="mb-3">
-                    {user?.enrichment_track}
-                  </Badge>
-                  <p className="text-xl font-medium mb-2">
-                    {user?.partner} - {user?.current_position}
-                  </p>
-                </div>
-                <Button variant="ghost" size="icon">
-                  <MdEdit className="w-5 h-5" />
+        {user?.enrichment_track && (
+          <>
+            <div className="flex justify-between items-center">
+              <h2 className="text-3xl font-bold text-primary">
+                My Experiences
+              </h2>
+              {role === "user" && (
+                <Button>
+                  <IoMdAdd className="w-6 h-6" />
+                  Add Experiences
                 </Button>
-              </div>
+              )}
             </div>
-
-            <Separator />
-
-            {user?.duration?.startsWith("12") && <div className="space-y-4">
-              <div className="flex justify-between items-start">
-                <div>
-                  <h3 className="text-2xl font-semibold text-primary mb-2">
-                    2nd Semester
-                  </h3>
-                  <Badge variant="secondary" className="mb-3">
-                    {user.enrichment_track}
-                  </Badge>
-                  <p className="text-xl font-medium mb-2">
-                    {user.partner} - {user.current_position}
-                  </p>
+            <Card>
+              <CardContent className="p-8 space-y-8">
+                <div className="space-y-4">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h3 className="text-2xl font-semibold text-primary mb-2">
+                        1st Semester
+                      </h3>
+                      <Badge variant="secondary" className="mb-3">
+                        {user?.enrichment_track}
+                      </Badge>
+                      <p className="text-xl font-medium mb-2">
+                        {user?.partner} - {user?.current_position}
+                      </p>
+                    </div>
+                    <Button variant="ghost" size="icon">
+                      <MdEdit className="w-5 h-5" />
+                    </Button>
+                  </div>
                 </div>
-                <Button variant="ghost" size="icon">
-                  <MdEdit className="w-5 h-5" />
-                </Button>
-              </div>
-            </div>}
-          </CardContent>
-        </Card>
+
+                <Separator />
+
+                {user?.duration?.startsWith("12") && (
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <h3 className="text-2xl font-semibold text-primary mb-2">
+                          2nd Semester
+                        </h3>
+                        <Badge variant="secondary" className="mb-3">
+                          {user.enrichment_track}
+                        </Badge>
+                        <p className="text-xl font-medium mb-2">
+                          {user.partner} - {user.current_position}
+                        </p>
+                      </div>
+                      <Button variant="ghost" size="icon">
+                        <MdEdit className="w-5 h-5" />
+                      </Button>
+                    </div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </>
+        )}
       </div>
 
       <div className="space-y-6">
         <h2 className="text-3xl font-bold text-primary">My Future Plan</h2>
-        <FuturePlan onClick={() => setActiveModal("update")} position={user?.future_position ?? ""} skill={user?.skill ?? ""}/>
+        <FuturePlan
+          onClick={() => setActiveModal("update")}
+          position={user?.future_position ?? ""}
+          skill={user?.skill ?? ""}
+        />
       </div>
     </div>
   );

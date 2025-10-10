@@ -83,7 +83,7 @@ export const CreateBootcamp = ({
             <Field
               control={form.control}
               placeholder="Enter short name"
-              label="Short name"
+              label="Short Name"
               type="text"
               name="short_name"
             />
@@ -108,7 +108,7 @@ export const CreateBootcamp = ({
             )}
           </>
         ) : (
-          <>
+          <div className="space-y-4">
             <SelectField
               control={form.control}
               name="category_id"
@@ -127,16 +127,14 @@ export const CreateBootcamp = ({
                 text: e.name,
               }))}
             />
-            <SelectField
+            <Field
               control={form.control}
+              placeholder="Enter speaker name"
+              label="Speaker Name"
+              type="text"
               name="speaker_id"
-              label="Speaker"
-              values={speakers.map((e) => ({
-                value: e.id,
-                text: e.name,
-              }))}
             />
-          </>
+          </div>
         )}
         <div className="flex gap-5 justify-end">
           {stage == 0 ? (

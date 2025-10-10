@@ -31,7 +31,7 @@ export default function SelectField<T extends FieldValues>({
             {label && <FormLabel>{label}</FormLabel>}
             <Select onValueChange={field.onChange} defaultValue={field.value}>
               <FormControl>
-                <SelectTrigger className="bg-white text-black border border-gray-300 focus:ring-2 w-4/5 focus:ring-ring focus:ring-offset-2">
+                <SelectTrigger className="bg-white text-black border border-gray-300 focus:ring-2 w-full focus:ring-ring focus:ring-offset-2">
                   <SelectValue placeholder="Select an option"  className="bg-white text-black border border-gray-300 w-full "/>
                 </SelectTrigger>
               </FormControl>
