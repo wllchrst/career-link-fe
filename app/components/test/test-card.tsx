@@ -184,8 +184,8 @@ const TestCard = ({ sessionId, testType, test, attempts }: Props) => {
       ) : (
         <>
           <EmptyMessage
-            text={`there are no ${testType} yet. please contact the admin or create a new one`}
-            title={`No ${testType}`}
+            text={`There are no ${testType == TestType.PRE_TEST ? 'Pre Test' : 'Post Test'} yet. Please contact the admin or create a new one.`}
+            title={`No ${testType == TestType.PRE_TEST ? 'Pre Test' : 'Post Test'}`}
           />
           {role == "admin" && (
             <Button

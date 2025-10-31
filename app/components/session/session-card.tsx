@@ -107,7 +107,7 @@ const SessionCard = ({session}:Props) => {
                         <div className="bg-green-200 border-green-700 border-1 p-3 rounded-md flex items-center gap-3 w-2/5">
                         <AlertCircle className="text-green-700" />
                             <p className="text-md font-bold text-green-700">
-                                Clock-in is open until {formatDate(new Date( new Date(session.start_attendance_date).getTime() + 1000 * 60 * 30), 'dd/MM/yyyy hh:mm a')}
+                                Clock-in is open until {formatDate(new Date( new Date(session.start_attendance_date).getTime() + 1000 * 60 * 60), 'dd/MM/yyyy hh:mm a')}
                             </p> 
                         </div> 
                     }
@@ -116,7 +116,7 @@ const SessionCard = ({session}:Props) => {
                         <div className="bg-green-200 border-green-700 border-1 p-3 rounded-md flex items-center gap-3 w-2/5">
                         <AlertCircle className="text-green-700" />
                             <p className="text-md font-bold text-green-700">
-                                Clock-out is open
+                                Clock-out is open until {formatDate(new Date( new Date(session.end_date).getTime() + 1000 * 60 * 60), 'dd/MM/yyyy hh:mm a')}
                             </p> 
                         </div>
                     }

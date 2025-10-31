@@ -141,7 +141,7 @@ const Session = ({loaderData}:Route.ComponentProps) => {
     return (
     <>
         <Modal
-            title={`Session Clock in/out`}
+            title={`Session Clock In / Clock Out`}
             isOpen={activeModal === "create"}
             onClose={() => setActiveModal(null)}
         >
@@ -157,8 +157,8 @@ const Session = ({loaderData}:Route.ComponentProps) => {
                     </TableCell>
                 </TableRow>
             </TableLayout>:<EmptyMessage 
-                title="No Clock in/out yet" 
-                text="You haven't clock in/out. please click button below to take attendance"
+                title="No Clock In / Clock Out yet." 
+                text="You haven't clocked in/out. Please click the button below to take attendance."
             />}
             <Button 
                 className="w-full mt-5"

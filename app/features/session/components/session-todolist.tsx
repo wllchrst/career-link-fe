@@ -105,7 +105,7 @@ const SessionTodolist = ({
         {role == "user" ? (
           ((isClockInOpen(session) && isClockInRange(session)) ||
             isClockOutOpen(session)) && (
-            <Button onClick={attendanceOnClick} className="w-1/5 cursor-pointer">
+            <Button onClick={attendanceOnClick} className="cursor-pointer py-6">
               Session Clock In / Clock Out
             </Button>
           )

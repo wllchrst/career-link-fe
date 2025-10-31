@@ -5,9 +5,9 @@ export const isClockInOpen = (session:Session) => (
 )
 
 export const isClockInRange = (session:Session) => ( 
-    new Date().getTime() <= new Date(session.start_attendance_date).getTime() + 1000 * 60 * 30
+    new Date().getTime() <= new Date(session.start_attendance_date).getTime() + 1000 * 60 * 60
 )
 
 export const isClockOutOpen = (session:Session) =>  (
-    new Date().getTime() >= new Date(session.end_date).getTime()
+    new Date().getTime() <= new Date(session.end_date).getTime() + 1000 * 60 * 60
 )
