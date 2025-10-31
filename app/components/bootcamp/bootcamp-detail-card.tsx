@@ -36,7 +36,7 @@ const BootcampDetailCard = ({
             className="rounded-lg border w-80 object-cover"
           />
           <div className={"flex flex-col gap-2 justify-between flex-1"}>
-            <div className="flex flex-col gap-5">
+            <div className="flex flex-col gap-3">
               <p className={"text-primary text-3xl font-semibold"}>{name}</p>
               <div className="flex gap-2">
                 <BootcampTypeTag type={type.name} />
@@ -46,7 +46,7 @@ const BootcampDetailCard = ({
             </div>
           </div>
         </div>
-        <div className="flex justify-end gap-5">
+        <div className="flex justify-start gap-5 mt-4">
           {role == "admin" && (
             <>
               <Button className="w-fit p-5" onClick={onClick}>

@@ -16,11 +16,11 @@ export const DeleteAnnouncement = ({onSuccess, onClose, announcement}:Props) => 
 
     const onDelete = async () => {
     setIsLoading(true);
-    const toastId = toast.loading("Deleting bootcamp...");
+    const toastId = toast.loading("Deleting announcement...");
 
     try {
         await deleteAnnouncement({id: announcement.id});
-        toast.success("Delete bootcamp success", { id: toastId });
+        toast.success("Delete announcement success", { id: toastId });
 
         onSuccess();
     } catch (error) {

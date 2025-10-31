@@ -49,15 +49,15 @@ const SessionsGrid = ({
   return (
     <>
       <div className="flex flex-col">
-        <p className={"text-primary text-3xl font-semibold ml-4 mb-8"}>
-          Bootcamp Content
+        <p className={"text-primary text-3xl font-semibold ml-4 mb-3"}>
+          Bootcamp Sessions
         </p>
-        <div className="flex flex-col gap-7">
+        <div className="flex flex-col gap-3">
           {sessions.length > 0 ? (
             sessions
               .sort((a, b) => a.session_number - b.session_number)
               .map((session) => (
-                <div className="box-border flex items-center border-2 gap-x-4 bg-white py-2 px-4 rounded-md shadow-md justify-between">
+                <div className="box-border flex items-center gap-x-4 bg-white py-2 px-4 rounded-md justify-between hover:cursor-pointer">
                   <Link
                     to={`session/${session.id}`}
                     type={"single"}
@@ -65,14 +65,14 @@ const SessionsGrid = ({
                   >
                     <h2
                       className={
-                        "font-normal text-xl text-green-500 border-r-2 border-green-500 py-6 h-full flex justify-center items-center aspect-square"
+                        "text-xl text-accent border-r-2 border-accent py-6 h-full flex justify-center items-center aspect-square"
                       }
                     >
                       {session.session_number}
                     </h2>
                     <h2
                       className={
-                        "font-normal text-xl text-green-500 p-6 h-full "
+                        "text-xl text-accent p-6 h-full "
                       }
                     >
                       {session.title}
@@ -82,21 +82,21 @@ const SessionsGrid = ({
                     <div className="flex gap-4">
                       <Button
                         variant={"ghost"}
-                        className="hover:bg-slate-200"
+                        className="hover:cursor-pointer"
                         onClick={() => onUpdateSession(session)}
                       >
                         <Edit />
                       </Button>
                       <Button
                         variant={"ghost"}
-                        className="hover:bg-slate-200"
+                        className="hover:cursor-pointer"
                         onClick={() => copySession(session)}
                       >
                         <Copy />
                       </Button>
                       <Button
                         variant={"ghost"}
-                        className="hover:bg-slate-200"
+                        className="hover:cursor-pointer"
                         onClick={() => onDeleteSession(session)}
                       >
                         <Trash />

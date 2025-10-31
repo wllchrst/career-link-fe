@@ -80,7 +80,7 @@ const Quiz = ({loaderData}:Route.ComponentProps) => {
                     </button>
                 </Link>
             </div>
-            <div className="flex gap-2 w-full">
+            <div className="flex flex-col gap-2 w-full">
                {
                questions.length > 0 && 
                <SessionTestAttemptGrid onFinish={finish} attemptId={attemptId} questions={questions}/>

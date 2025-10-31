@@ -101,19 +101,12 @@ const SessionTodolist = ({
 
   return (
     <>
-      <h2
-        className={
-          "font-semibold text-left text-4xl text-slate-700 py-6 w-full h-full"
-        }
-      >
-        To Do List
-      </h2>
-      <div className={"flex flex-col gap-y-6 mb-8"}>
+      <div className={"flex flex-col gap-y-4 mb-8"}>
         {role == "user" ? (
           ((isClockInOpen(session) && isClockInRange(session)) ||
             isClockOutOpen(session)) && (
-            <Button onClick={attendanceOnClick} className="w-1/6">
-              Session Clock in/out
+            <Button onClick={attendanceOnClick} className="w-1/5 cursor-pointer">
+              Session Clock In / Clock Out
             </Button>
           )
         ) : (
@@ -121,6 +114,13 @@ const SessionTodolist = ({
             <Button className="w-1/6">View Attendances</Button>
           </Link>
         )}
+        <h2
+          className={
+            "font-semibold text-left text-3xl text-slate-700 w-full h-full mt-6"
+          }
+        >
+          To-Do List
+        </h2>
         <AccordionLayout text={"Pre Test"}>
           <TestCard
             testType={TestType.PRE_TEST}
@@ -174,7 +174,7 @@ const SessionTodolist = ({
               </form>
               :
               <>
-                <EmptyMessage text="There is no evaluation. Please contact your instructor!" title="No Evaluation form yet."/>
+                <EmptyMessage text="There is no evaluation. Please contact your instructor!" title="No evaluation form yet."/>
             
               </>
           )}

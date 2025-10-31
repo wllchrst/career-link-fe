@@ -4,6 +4,8 @@ import { useRole } from "~/provider/role-testing-provider";
 import { NavItem } from "./ui/nav-item";
 import { Button } from "./ui/button";
 import { useAuth } from "~/lib/auth";
+import { FaDoorOpen } from "react-icons/fa";
+import { DoorClosed, DoorClosedIcon, DoorOpen } from "lucide-react";
 
 export default function Navbar() {
   const { role } = useRole();
@@ -33,7 +35,7 @@ export default function Navbar() {
     <>
       <div className="w-full bg-primary flex items-center justify-between px-3">
         <div className="flex items-center">
-            <SidebarTrigger />
+            {/* <SidebarTrigger /> */}
             <NavLink to={"home"}>
               <h2 className="font-semibold text-white text-3xl mx-10">
                 CareerLink
@@ -46,9 +48,11 @@ export default function Navbar() {
             })}
         </div>
         <Button onClick={() => {
-          console.log('log out')
           logout("/")
-        }}>{"Sign out"}</Button>
+        }}>
+          <DoorOpen/>
+          {"Log out"}
+        </Button>
       </div>
     </>
   );

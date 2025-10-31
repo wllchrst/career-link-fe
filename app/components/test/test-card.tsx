@@ -114,10 +114,10 @@ const TestCard = ({ sessionId, testType, test, attempts }: Props) => {
           <TestInformationCard test={test} minimum_score={test.minimum_score} score={attempts.length > 0 ? Math.max(...attempts.map(e => Math.ceil(e.score))):0}/>
           {role == 'user' && <>
           <h4></h4>
-            <TableLayout header={<DefaultTableHeader columns={["Attempt", "State", "Duration", "Score"]}/>}>
+            <TableLayout header={<DefaultTableHeader columns={["Attempt", "Status", "Duration", "Score"]}/>}>
               {
                 attempts.length < 1?
-                <EmptyMessage title="No Attempts" text="You haven't made any attempts yet."/>:
+                <EmptyMessage title="No attempts." text="You haven't made any attempts yet."/>:
                 attempts.filter(e => e.attempt.done_at != null).sort((a,b) => new Date(a.attempt.done_at).getTime() - new Date(b.attempt.done_at).getTime()).map((e, idx) => 
                 <TableRow className="flex w-full border-b-1 border-gray-200">
                     <TableCell className="w-1/4 text-center">{idx + 1}</TableCell>

@@ -32,7 +32,7 @@ const Bootcamps = () => {
   }
 
   return (
-    <div className="container flex flex-col gap-6">
+    <div className="container flex flex-col gap-6 mt-4">
       {
         bootcamps.length > 4 && 
         <div className="flex flex-col gap-3">
@@ -42,16 +42,15 @@ const Bootcamps = () => {
           <BootcampsCarousel bootcamps={bootcamps} />
         </div>
       }
-      <div className="flex flex-col gap-5">
-        <h1 className="text-2xl text-primary font-bold">
+      <div className="flex flex-col gap-3">
+        <h1 className="text-4xl text-primary font-bold mb-3">
           Learn Fast, Grow Faster
         </h1>
         <div>
-          Master essential hard and soft skills through our comprehensive
-          training programs, accessible anytime, anywhere
+          Master essential hard and soft skills through our comprehensive, expertly designed training programs. Gain practical knowledge, build confidence, and unlock your full potential with courses that are accessible anytime, anywhere—empowering you to learn at your own pace and advance your career with flexibility and ease.
         </div>
         <div className="flex justify-between items-center mb-3">
-          <div className="mt-4 flex gap-5">
+          {/* <div className="mt-4 flex gap-5">
             <div className="flex items-center border bg-white px-3 py-2 rounded-md w-120">
               <CiSearch className="text-gray-500 text-xl" />
               <input
@@ -63,11 +62,7 @@ const Bootcamps = () => {
             <button className="bg-accent text-white px-4 py-2 rounded-md">
               Search
             </button>
-          </div>
-          <div className="flex text-accent border border-accent bg-white items-center h-12 rounded-md gap-2 p-3">
-            <FaFilter />
-            <div>Filter</div>
-          </div>
+          </div> */}
         </div>
         <BootcampsGrid bootcamps={bootcamps} />
       </div>

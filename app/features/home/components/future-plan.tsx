@@ -14,7 +14,7 @@ const FuturePlan = ({ onClick, skill, position }: Props) => {
   
   return (
     <Card>
-      <CardContent className="p-8 space-y-6">
+      <CardContent className="space-y-6">
         <div className="flex justify-between items-start">
           <div className="space-y-4">
             <div>

@@ -29,12 +29,14 @@ const SessionTestResults = ({loaderData}:Route.ComponentProps) => {
     const fetchTest = async () => {
         const {data: test} = await getTest(loaderData.test).catch(() => ({data: null}))
         if (test){
+            console.log(test)
             setTest(test)
         }
     }
 
     const fetchAttempts= async () => {
         if (test){
+            console.log("Fetching attempts")
             const {data: attempts} = await getAllStudentAttemptByTest(loaderData.test).catch(() => ({data: []}))
             const {data: enrollments} = await getEnrollmentByBootcamp(loaderData.bootcamp).catch(() => ({data: []}))
 
@@ -56,9 +58,12 @@ const SessionTestResults = ({loaderData}:Route.ComponentProps) => {
     }
 
     useEffect(() => {
-        fetchTest().then(fetchAttempts)
+        fetchTest()
     }, [])
 
+    useEffect(() => {
+        fetchAttempts()
+    }, [test])
 
     const exportResult = () => {
         exportToExcel(`${test?.title}-result`, attempts.map(e => (
@@ -87,7 +92,7 @@ const SessionTestResults = ({loaderData}:Route.ComponentProps) => {
             <TableLayout header={<DefaultTableHeader columns={["NIM", "Name", "Done at", "Score", "Status"]}/>}>
                 {
                 attempts.length < 1?
-                <EmptyMessage title="No Attempts" text="The students hasn't made any attempts yet."/>:
+                <EmptyMessage title="No attempts." text="The students hasn't made any attempts yet."/>:
                 attempts.map(e => 
                     <TableRow className="flex w-full border-b-1 border-gray-200">
                         <TableCell className="w-1/5 text-center">{e.user.nim ?? "-"}</TableCell>

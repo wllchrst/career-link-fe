@@ -43,9 +43,9 @@ export const HomeProfileCard = () => {
   }, [user]);
 
   return (
-    <div className="max-w-6xl mx-auto p-6 space-y-8">
+    <div className="w-full mx-auto p-6 space-y-8">
       <Modal
-        title="Update Future Plan"
+        title="Update My Future Plan"
         isOpen={activeModal == "update"}
         onClose={() => {
           if (
@@ -86,12 +86,12 @@ export const HomeProfileCard = () => {
                 </div>
               )}
 
-              <div className="flex flex-col sm:flex-row gap-3">
-                <Button className="flex items-center gap-2 flex-1">
+              {/* <div className="flex flex-col sm:flex-row gap-3">
+                <Button className="flex items-center gap-2 flex-1 hover:cursor-pointer">
                   <AiOutlineUpload className="w-4 h-4" />
                   Upload CV
                 </Button>
-              </div>
+              </div> */}
             </div>
           </div>
         </CardContent>
@@ -100,19 +100,19 @@ export const HomeProfileCard = () => {
       <div className="space-y-6">
         {user?.enrichment_track && (
           <>
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center mt-16">
               <h2 className="text-3xl font-bold text-primary">
                 My Experiences
               </h2>
-              {role === "user" && (
+              {/* {role === "user" && (
                 <Button>
                   <IoMdAdd className="w-6 h-6" />
-                  Add Experiences
+                  Add Experience
                 </Button>
-              )}
+              )} */}
             </div>
             <Card>
-              <CardContent className="p-8 space-y-8">
+              <CardContent className="space-y-8">
                 <div className="space-y-4">
                   <div className="flex justify-between items-start">
                     <div>
@@ -126,9 +126,9 @@ export const HomeProfileCard = () => {
                         {user?.partner} - {user?.current_position}
                       </p>
                     </div>
-                    <Button variant="ghost" size="icon">
+                    {/* <Button variant="ghost" size="icon">
                       <MdEdit className="w-5 h-5" />
-                    </Button>
+                    </Button> */}
                   </div>
                 </div>
 
@@ -148,9 +148,9 @@ export const HomeProfileCard = () => {
                           {user.partner} - {user.current_position}
                         </p>
                       </div>
-                      <Button variant="ghost" size="icon">
+                      {/* <Button variant="ghost" size="icon">
                         <MdEdit className="w-5 h-5" />
-                      </Button>
+                      </Button> */}
                     </div>
                   </div>
                 )}
@@ -160,7 +160,7 @@ export const HomeProfileCard = () => {
         )}
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-6 mt-12">
         <h2 className="text-3xl font-bold text-primary">My Future Plan</h2>
         <FuturePlan
           onClick={() => setActiveModal("update")}

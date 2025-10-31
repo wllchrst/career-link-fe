@@ -10,7 +10,7 @@ interface Props extends HTMLProps<HTMLDivElement> {
 export default function AccordionLayout({text, isLocked,children}:Props) {
 
     return (
-        <Accordion type={'single'} className={`${isLocked?'bg-gray-600/80':'bg-white'} w-full shadow-md rounded-md`} collapsible>
+        <Accordion type={'single'} className={`${isLocked?'bg-gray-300/80':'bg-white'} w-full shadow-md rounded-md`} collapsible>
             <AccordionItem value={text}>
                 <AccordionTrigger className={'flex items-center py-6 px-6 justify-between w-full no-underline hover:no-underline focus:no-underline hover:bg-gray-300/50'}>
                     <h2 className={`font-medium text-xl ${isLocked?'text-black/60':'text-slate-500'}`}>{text}</h2>
