@@ -54,11 +54,13 @@ const Session = ({loaderData}:Route.ComponentProps) => {
     
     
     const fetchAll = async () => {
-        console.log(user)
-        try {
+        // try {
             const { data: session } = await getBootcampSession(loaderData.session);
             setSession(session)
             
+            const {data: myAttendances} = await getAttendanceByUserAndSession(session.id, user?.id!)
+            setAttendances(myAttendances)
+
             const { data: tests } = await getSessionTest(session.id);
             const preTest = tests.filter(e => e.type == TestType.PRE_TEST)[0]
             const postTest = tests.filter(e => e.type == TestType.POST_TEST)[0]
@@ -78,11 +80,10 @@ const Session = ({loaderData}:Route.ComponentProps) => {
             setAttemptPretest(pretestAttempts)
             const {data: posttestAttempts} = await getStudentAttemptByTest(postTest ? postTest.id:"", user?.id!)
             setAttemptPosttest(posttestAttempts)
-            const {data: myAttendances} = await getAttendanceByUserAndSession(session.id, user?.id!)
-            setAttendances(myAttendances)
-        } catch (error) {
-            console.log(error)            
-        }
+
+        // } catch (error) {
+        //     console.log(error)            
+        // }
     }
     
     useEffect(() => {
