@@ -1,12 +1,11 @@
 import { EnrichmentTrack } from "~/components/home/enrichment-track";
-import { AiOutlineUpload } from "react-icons/ai";
-import { IoMdAdd } from "react-icons/io";
 import { MdEdit } from "react-icons/md";
 import { useRole } from "~/provider/role-testing-provider";
 import FuturePlan from "./future-plan";
 import { useEffect, useState } from "react";
 import { Modal, type ModalType } from "~/components/modal";
 import UpdateStudentData from "./update-student-data";
+import UpdatePassword from "./update-password";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent } from "~/components/ui/card";
 import { Badge } from "~/components/ui/badge";
@@ -18,6 +17,7 @@ export const HomeProfileCard = () => {
   const { user, fetchUser } = useAuth();
   const { role } = useRole();
   const [activeModal, setActiveModal] = useState<ModalType>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const onSuccess = () => {
     setActiveModal(null);
@@ -29,6 +29,10 @@ export const HomeProfileCard = () => {
     const names = name.split(" ");
     const initials = names.map((n) => n.charAt(0).toUpperCase()).join("");
     return initials;
+  };
+
+  const onClickEdit = () => {
+    setIsModalOpen(prev => !prev);
   };
 
   useEffect(() => {
@@ -62,6 +66,14 @@ export const HomeProfileCard = () => {
         <UpdateStudentData user={user!} onSuccess={onSuccess} />
       </Modal>
 
+      <Modal
+        title="Update Password"
+        isOpen={activeModal == "password"}
+        onClose={() => setActiveModal(null)}
+      >
+        <UpdatePassword user={user!} onSuccess={onSuccess} />
+      </Modal>
+
       <Card className="overflow-hidden">
         <CardContent className="p-8">
           <div className="flex flex-col lg:flex-row gap-8 items-start lg:items-center">
@@ -73,11 +85,19 @@ export const HomeProfileCard = () => {
             </Avatar>
 
             <div className="flex-1 space-y-6 w-full">
+              <div className="flex items-center justify-between gap-4">
               <div className="text-center lg:text-left">
                 <h1 className="text-4xl font-bold text-primary mb-2">
                   {user?.name}
                 </h1>
                 <p className="text-xl text-muted-foreground">{user?.nim}</p>
+              </div>
+                <Button 
+                  variant="outline" 
+                  onClick={() => setActiveModal("password")}
+                >
+                  Change Password
+                </Button>
               </div>
 
               {user?.enrichment_track && (

@@ -49,8 +49,8 @@ export const UpdateBootcamp = ({
       category_id: bootcamp.category_id,
       type_id: bootcamp.type_id,
       speaker_id: bootcamp.speaker_id,
-      short_name: bootcamp.shortName,
-      about_this_bootcamp: "",
+      short_name: bootcamp.short_name,
+      about_this_bootcamp: bootcamp.about_this_bootcamp,
     },
   });
 
@@ -128,13 +128,6 @@ export const UpdateBootcamp = ({
               label="Bootcamp Image"
               name="image_file"
             />
-            {previewUrl && (
-              <img
-                src={`${import.meta.env.VITE_STORAGE_URL}/${previewUrl}`}
-                alt="Preview"
-                className="mt-4 w-full max-h-32 object-cover rounded-md border"
-              />
-            )}
           </>
         ) : (
           <>

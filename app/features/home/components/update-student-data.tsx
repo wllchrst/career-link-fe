@@ -17,6 +17,7 @@ interface Props {
 
 const UpdateStudentData = ({user,onSuccess}:Props) => {
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+    const [fileType, setFileType] = useState<string | null>(null);
     const form = useForm<UpdateStudentDataInput>({
         resolver: zodResolver(updateStudentInputSchema),
         defaultValues: {
@@ -51,6 +52,7 @@ const UpdateStudentData = ({user,onSuccess}:Props) => {
         const file = e.target.files?.[0];
         if (file) {
           setPreviewUrl(URL.createObjectURL(file));
+          setFileType(file.type);
         }
       };
 
@@ -67,10 +69,21 @@ const UpdateStudentData = ({user,onSuccess}:Props) => {
               name="cv_file"
             />
             {previewUrl && (
-              <img
-                src={previewUrl}
-                alt="Preview"
-                className="mt-4 w-full max-h-32 object-cover rounded-md border"></img>
+              <div className="mt-4">
+                {fileType === "application/pdf" ? (
+                  <embed
+                    src={previewUrl}
+                    type="application/pdf"
+                    className="w-full h-96 rounded-md border"
+                  />
+                ) : (
+                  <img
+                    src={previewUrl}
+                    alt="Preview"
+                    className="w-full max-h-32 object-cover rounded-md border"
+                  />
+                )}
+              </div>
             )} 
             <div className="flex justify-end">
                 <Button

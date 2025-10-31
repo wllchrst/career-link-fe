@@ -1,7 +1,7 @@
 import { useEffect, type ReactNode } from "react";
 import ReactDOM from "react-dom";
 
-export type ModalType = "create" | "delete" | "update" | null;
+export type ModalType = "create" | "delete" | "update" | "password" | null;
 
 interface Props {
   title?: string;
