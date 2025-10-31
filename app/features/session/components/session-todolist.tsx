@@ -121,7 +121,7 @@ const SessionTodolist = ({
             <Button className="w-1/6">View Attendances</Button>
           </Link>
         )}
-        <AccordionLayout text={"Pretest"}>
+        <AccordionLayout text={"Pre Test"}>
           <TestCard
             testType={TestType.PRE_TEST}
             sessionId={session.id}
