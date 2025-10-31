@@ -55,6 +55,7 @@ export type Bootcamp = {
   image_path: string;
   description: string;
   sessions: Session[];
+  speaker_id: string;
 };
 
 export type BootcampCategory = {

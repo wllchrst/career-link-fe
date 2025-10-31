@@ -42,6 +42,7 @@ export const CreateBootcamp = ({
       image_path: "",
       type_id: "",
       speaker_id: "",
+      about_this_bootcamp: "",
     },
   });
 
@@ -86,6 +87,12 @@ export const CreateBootcamp = ({
               label="Short Name"
               type="text"
               name="short_name"
+            />
+            <TextAreaField
+              control={form.control}
+              placeholder="Enter about this bootcamp"
+              label="About This Bootcamp"
+              name="about_this_bootcamp"
             />
             <TextAreaField
               control={form.control}
