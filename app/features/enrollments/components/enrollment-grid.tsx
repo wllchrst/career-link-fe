@@ -36,9 +36,12 @@ const EnrollmentGrid = ({enrollments, bootcampId}:Props) => {
 
     const mappingStudent=  async (res:Template[]) => {
         const toastId = toast.loading("Enrolling students...");
-    try {
         for (let i = 0; i < res.length; i++){
-            await createEnrollment(res[i].email, bootcampId)
+            try {
+                await createEnrollment(res[i].email, bootcampId)
+            } catch (error) {
+                console.log(`Failed to enroll ${res[i].email}: ${getErrorMessage(error)}`);                
+            }
             setProgress(prev => prev + 100 / res.length);
         }
         toast.success("Student imported", { id: toastId });
@@ -46,15 +49,6 @@ const EnrollmentGrid = ({enrollments, bootcampId}:Props) => {
             setProgress(0)
             revalidator.revalidate()
         }, 3000);
-    } catch (error) {
-      toast.error(getErrorMessage(error), {
-        id: toastId,
-      });
-    }finally{
-        if (fileInputRef.current){
-            fileInputRef.current.value = "";
-        }
-    }
 
     }
     
