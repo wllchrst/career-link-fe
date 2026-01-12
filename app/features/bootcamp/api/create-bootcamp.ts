@@ -8,7 +8,7 @@ export const createBootcampInputSchema = z.object({
   description: z.string().min(1, "Description is required"),
   category_id: z.string().min(1, "Category ID is required"),
   type_id: z.string().min(1, "Type ID is required"),
-  speaker_id: z.string().min(1, "Speaker ID is required"),
+  speaker_id: z.string().min(1, "Speaker name is required"),
   image_path: z.string().optional(),
   image_file: z
     .instanceof(File)
