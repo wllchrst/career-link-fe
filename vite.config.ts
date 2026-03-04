@@ -11,6 +11,7 @@ export default defineConfig({
     alias: {
       "@": path.resolve(__dirname, "./"),
     },
+    dedupe: ["react", "react-dom", "react-router"],
   },
   base: "/career-link/"
 });
