@@ -25,9 +25,19 @@ const HomeAdmin = ({ student, cur, lastPage }: StudentProps) => {
 
   const [isLoading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [search, setSearch] = useState("");
   const navigate = useNavigate();
   const revalidator = useRevalidator();
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const filteredStudents = student.filter((s) => {
+    const q = search.toLowerCase();
+    return (
+      (s.name ?? "").toLowerCase().includes(q) ||
+      (s.nim ?? "").toLowerCase().includes(q) ||
+      (s.email ?? "").toLowerCase().includes(q)
+    );
+  });
 
   // Student data template based on User type
   const studentTemplate = [
@@ -90,21 +100,28 @@ const HomeAdmin = ({ student, cur, lastPage }: StudentProps) => {
     setLoading(true);
     const toastId = toast.loading("Syncing data...")
     syncUser().then(() => {
-      toast.success("Sync success", {id: toastId})
+      toast.success("Sync success", { id: toastId })
 
       setTimeout(() => {
         setLoading(false);
         navigate(`/?page=${1}`);
       }, 2000);
-      
+
     });
   };
 
   return (
     <div className="container flex flex-col">
       <h1 className="text-2xl text-primary font-bold mb-4">Student Lists</h1>
+      <input
+        type="text"
+        placeholder="Search by name, NIM, or email..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        className="mb-4 w-full max-w-md border border-gray-300 rounded-md px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+      />
       <div className="flex justify-between items-center">
-        
+
         <div className="flex gap-4">
           <Button
             onClick={() => exportToExcel("student-data-master", student)}
@@ -115,12 +132,12 @@ const HomeAdmin = ({ student, cur, lastPage }: StudentProps) => {
           <label htmlFor="student-file" className="flex text-accent border border-accent bg-white items-center h-12 rounded-md gap-2 p-3 hover:text-white hover:bg-primary transition duration-400 cursor-pointer">
             Import Student Data from Excel
           </label>
-          <input 
-            ref={fileInputRef} 
-            type="file" 
-            id="student-file" 
-            hidden 
-            accept=".xlsx,.xls" 
+          <input
+            ref={fileInputRef}
+            type="file"
+            id="student-file"
+            hidden
+            accept=".xlsx,.xls"
             onChange={importStudents}
           />
           <Button
@@ -141,14 +158,14 @@ const HomeAdmin = ({ student, cur, lastPage }: StudentProps) => {
           </div>
         </div>
       </div>
-      {progress > 0 && <Progress value={progress} className="w-full"/>}
-      <Paginator cur={cur} student={student} onPrev={onPrev} onNext={onNext} lastPage={lastPage} />
+      {progress > 0 && <Progress value={progress} className="w-full" />}
+      <Paginator cur={cur} student={filteredStudents} onPrev={onPrev} onNext={onNext} lastPage={lastPage} />
       <TableLayout
-        header = {<MasterDataTableHeader />}
+        header={<MasterDataTableHeader />}
       >
-        {student.sort((a, b) => compare(a.nim ?? '', b.nim ?? '')).map(
+        {filteredStudents.sort((a, b) => compare(a.nim ?? '', b.nim ?? '')).map(
           (e, idx) => (
-            <StudentRow cur={cur} idx={idx} e={e}/>
+            <StudentRow cur={cur} idx={idx} e={e} />
           )
           // <tr key={idx} className="bg-white shadow rounded-md">
           //     <td className="px-4 py-3 rounded-l-md">
@@ -185,7 +202,7 @@ const HomeAdmin = ({ student, cur, lastPage }: StudentProps) => {
           // </tr>
         )}
       </TableLayout>
-      <Paginator cur={cur} student={student} onPrev={onPrev} onNext={onNext} lastPage={lastPage} />
+      <Paginator cur={cur} student={filteredStudents} onPrev={onPrev} onNext={onNext} lastPage={lastPage} />
     </div>
   );
 };

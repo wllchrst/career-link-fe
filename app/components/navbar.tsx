@@ -9,9 +9,10 @@ import { DoorClosed, DoorClosedIcon, DoorOpen } from "lucide-react";
 
 export default function Navbar() {
   const { role } = useRole();
-  const {logout} = useAuth();
+  const { logout } = useAuth();
 
   const navLinks = [
+    { label: "Home", to: "home" },
     { label: "Announcements", to: "announcements" },
     { label: "Bootcamps", to: "bootcamps", userOnly: true },
     {
@@ -23,9 +24,9 @@ export default function Navbar() {
         { label: "Types", to: "admin/bootcamps/types" },
       ],
     },
-    { 
-      label: "Certificates", 
-      to: "certificates", 
+    {
+      label: "Certificates",
+      to: "certificates",
       userOnly: true
     },
   ];
@@ -35,22 +36,22 @@ export default function Navbar() {
     <>
       <div className="w-full bg-primary flex items-center justify-between px-3">
         <div className="flex items-center">
-            {/* <SidebarTrigger /> */}
-            <NavLink to={"home"}>
-              <h2 className="font-semibold text-white text-3xl mx-10">
-                CareerLink
-              </h2>
-            </NavLink>     
-            {navLinks.map((link) => {
-              if (link.adminOnly && role !== "admin") return null;
-              if (link.userOnly && role !== "user") return null;
-              return <NavItem key={link.label} link={link} />;
-            })}
+          {/* <SidebarTrigger /> */}
+          <NavLink to={"home"}>
+            <h2 className="font-semibold text-white text-3xl mx-10">
+              CareerLink
+            </h2>
+          </NavLink>
+          {navLinks.map((link) => {
+            if (link.adminOnly && role !== "admin") return null;
+            if (link.userOnly && role !== "user") return null;
+            return <NavItem key={link.label} link={link} />;
+          })}
         </div>
         <Button onClick={() => {
           logout("/")
         }}>
-          <DoorOpen/>
+          <DoorOpen />
           {"Log out"}
         </Button>
       </div>
